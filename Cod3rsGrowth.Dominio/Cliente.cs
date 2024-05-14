@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.ComponentModel;
+using System.Data;
 
 namespace Cod3rsGrowth.Dominio
 {
@@ -10,8 +11,10 @@ namespace Cod3rsGrowth.Dominio
         public string Cnpj { get; set; }
         public enum Tipo 
         {
-            Fisico = 1,
-            Juridico = 2
+            [Description("Pessoa Física")]
+            Fisica = 1,
+            [Description("Pessoa Jurídica")]
+            Juridica = 2
         }
     }
 }
