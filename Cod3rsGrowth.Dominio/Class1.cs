@@ -2,24 +2,24 @@
 
 namespace Cod3rsGrowth.Dominio
 {
-     internal class Cliente
+     public class Cliente
     {
-        string nome;
-        int id;
-        string cfp;
-        string cnpj;
-        enum tipo
+        private string nome;
+        private int id;
+        private string cfp;
+        private string cnpj;
+        private enum tipo
         {
             Fisico = 1,
             Juridico = 2
         }
     }
-     internal class Pedido
+     public class Pedido
     {
-        int clienteid;
-        DateTime data;
-        decimal numeroCartao;
-        enum formaPagamento
+        private int clienteid;
+        private DateTime data;
+        private decimal numeroCartao;
+        private enum formaPagamento
         {
             Cartao = 1,
             Pix = 2,
