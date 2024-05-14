@@ -9,10 +9,10 @@ namespace Cod3rsGrowth.Testes
 {
     public interface ICliente
     {
-        insert Nome();
-        insert Id();
-        insert Cpf();
-        insert Cnpj();
-        insert Tipo();
+        string AdicionarNome();
+        int AdicionarId();
+        string AdicionarCpf();
+        string AdicionarCnpj();
+        enum DefinirTipo();
     }
 }
