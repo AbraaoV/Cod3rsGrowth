@@ -10,10 +10,14 @@ namespace Cod3rsGrowth.Testes
     public class TesteBase : IDisposable
     {
         protected ServiceProvider ServiceProvider;
-        MeuServico = new MeuServico();
+        public TesteBase() 
+        {
+            ServiceProvider = ModuloDeInjecaoTeste.BindServices(new ServiceCollection());
+        }
         void IDisposable.Dispose()
         {
-            throw new NotImplementedException();
+            ServiceProvider.Dispose();
+      
         }
     }
 }
