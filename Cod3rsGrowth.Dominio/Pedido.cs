@@ -12,8 +12,10 @@ namespace Cod3rsGrowth.Dominio
         public int Id { get; set; }
         public int ClienteId { get; set; }
         public DateTime Data { get; set; }
-        public decimal NumeroCartao { get; set; }
-        public enum FormaPagamento
+        public string NumeroCartao { get; set; }
+        public decimal Valor {  get; set; }
+        public Pagamentos FormaPagamento { get; set; }
+        public enum Pagamentos
         {
             [Description("Pagamento efetuado no cartão")]
             Cartao = 1,
