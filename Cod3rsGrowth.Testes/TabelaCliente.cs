@@ -8,17 +8,12 @@ using Cod3rsGrowth.Dominio;
 
 namespace Cod3rsGrowth.Testes
 {
-    public sealed class TabelaPedido
+    public sealed class TabelaCliente
     {
-        private static readonly TabelaPedido instance = new TabelaCliente();
-        public List<Cliente> ListaCliente = new List<Cliente>();
+        private static readonly List<Cliente> instance = new List<Cliente>();
 
 
-        static TabelaPedido() { }
-
-        private TabelaPedido() { }
-
-        public static TabelaPedido Instance { get { return instance; } }
+        public static List<Cliente> Instance { get { return instance; } }
     }
     
 }

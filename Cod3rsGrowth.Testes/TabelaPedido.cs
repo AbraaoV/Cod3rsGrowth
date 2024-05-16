@@ -9,14 +9,9 @@ namespace Cod3rsGrowth.Testes
 {
     public sealed class TabelaPedido
     {
-        private static readonly TabelaPedido instance = new TabelaPedido();
-        public List<Pedido> ListaCliente = new List<Pedido>();
+        private static readonly List<Pedido> instance = new List<Pedido>();
+ 
 
-
-        static TabelaPedido() { }
-
-        private TabelaPedido() { }
-
-        public static TabelaPedido Instance { get { return instance; } }
+        public static List<Pedido> Instance { get { return instance; } }
     }
 }
