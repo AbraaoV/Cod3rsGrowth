@@ -10,8 +10,10 @@ namespace Cod3rsGrowth.Testes
 {
     public sealed class Singleton
     {
+        public List<Cliente> ListaCliente = new List<Cliente>();
+        public List<Pedido> PedidoCliente = new List<Pedido>();
         private static readonly Singleton instance = new Singleton();
-        public List<Singleton> ListaSingleton = new List<Singleton>();
+
 
         static Singleton() { }
 
