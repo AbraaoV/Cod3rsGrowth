@@ -14,6 +14,8 @@ namespace Cod3rsGrowth.Testes
 
 
         public static List<Cliente> Instance { get { return instance; } }
+
+
     }
     
 }
