@@ -9,7 +9,8 @@ namespace Cod3rsGrowth.Dominio
         public int Id { get; set; }
         public string Cfp { get; set; }
         public string Cnpj { get; set; }
-        public enum Tipo 
+        public TipoDeCliente Tipo { get; set; }
+        public enum TipoDeCliente 
         {
             [Description("Pessoa Física")]
             Fisica = 1,
