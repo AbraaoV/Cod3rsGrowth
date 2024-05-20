@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cod3rsGrowth.Dominio.Servicos
 {
-    public interface IServicosCliente
+    public interface IServicoCliente
     {
         List<Cliente> ObterTodos();
     }

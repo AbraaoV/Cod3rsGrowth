@@ -6,15 +6,14 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-
+using Cod3rsGrowth.Infra;
 namespace Cod3rsGrowth.Testes
 {
     public class ClienteRepositorioMock : IClienteRepositorio
     {
         public List<Cliente> ObterTodos()
         {
-            List<Cliente>clientes = new List<Cliente>();
-            return clientes;
+            return TabelaCliente.Instance;
         }
         public Cliente ObterPorId(int id)
         {
