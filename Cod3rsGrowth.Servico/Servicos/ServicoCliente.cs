@@ -4,21 +4,24 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Cod3rsGrowth.Dominio;
 using Cod3rsGrowth.Infra;
+using Cod3rsGrowth.Servicos.Servicos;
 
-namespace Cod3rsGrowth.Dominio.Servicos
+namespace Cod3rsGrowth.Servico.Servicos
 {
     public class ServicoCliente : IServicoCliente
     {
         private readonly IClienteRepositorio _clienteRepositorio;
-        public ServicoCliente(IClienteRepositorio ClienteRepositorio)
+        public ServicoCliente(IClienteRepositorio clienteRepositorio)
         {
-            _clienteRepositorio = ClienteRepositorio;
+            _clienteRepositorio = clienteRepositorio;
         }
         public List<Cliente> ObterTodos()
         {
             var clientes = _clienteRepositorio.ObterTodos();
             return clientes;
         }
+
     }
 }

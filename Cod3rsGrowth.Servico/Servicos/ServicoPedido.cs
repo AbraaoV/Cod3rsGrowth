@@ -12,9 +12,9 @@ namespace Cod3rsGrowth.Servico.Servicos
     public class ServicoPedido : IServicoPedido
     {
         private readonly IPedidoRepositorio _pedidoRepositorio;
-        public ServicoPedido(IPedidoRepositorio PedidoRepositorio)
+        public ServicoPedido(IPedidoRepositorio pedidoRepositorio)
         {
-            _pedidoRepositorio = PedidoRepositorio;
+            _pedidoRepositorio = pedidoRepositorio;
         }
         public List<Pedido> ObterTodos()
         {
