@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cod3rsGrowth.Dominio;
+using Cod3rsGrowth.Infra;
 
 namespace Cod3rsGrowth.Testes
 {
@@ -11,8 +12,7 @@ namespace Cod3rsGrowth.Testes
     {
         public List<Pedido> ObterTodos()
         {
-            List<Pedido> pedidos = new List<Pedido>();
-            return pedidos;
+            return TabelaPedido.Instance;
         }
         public Pedido ObterPorId(int id)
         {

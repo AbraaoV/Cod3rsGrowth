@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cod3rsGrowth.Dominio;
+using Cod3rsGrowth.Infra;
+using Cod3rsGrowth.Servico;
+using Cod3rsGrowth.Servico.Servicos;
 
 namespace Cod3rsGrowth.Testes
 {
@@ -12,6 +15,8 @@ namespace Cod3rsGrowth.Testes
     {
         public static ServiceProvider BindServices(IServiceCollection services)
         {
+            services.AddScoped<IServicoCliente, ServicoCliente>();
+            services.AddScoped<IServicoPedido, ServicoPedido>();
             services.AddScoped<IClienteRepositorio, ClienteRepositorioMock>();
             services.AddScoped<IPedidoRepositorio, PedidoRepositorioMock>();
             return services.BuildServiceProvider();

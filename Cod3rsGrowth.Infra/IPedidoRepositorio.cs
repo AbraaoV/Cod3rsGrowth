@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Cod3rsGrowth.Dominio;
 
-namespace Cod3rsGrowth.Testes
+namespace Cod3rsGrowth.Infra
 {
     public interface IPedidoRepositorio
     {
