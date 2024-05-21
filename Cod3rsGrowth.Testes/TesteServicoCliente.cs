@@ -40,7 +40,7 @@ namespace Cod3rsGrowth.Testes
             Assert.NotEmpty(clientes);
         }
         [Fact]
-        public void Ao_obter_por_id_deve_retornar_a_lista_do_id_escolhido()
+        public void Ao_obter_por_id_deve_retornar_cliente()
         {
             var cliente1 = new Cliente
             {
@@ -59,6 +59,15 @@ namespace Cod3rsGrowth.Testes
             Assert.Equal("123.456.789-10", cliente1.Cpf);
             Assert.Equal("", cliente1.Cnpj);
             Assert.Equal(Cliente.TipoDeCliente.Fisica, cliente1.Tipo);
+        }
+
+        [Fact]
+        public void Ao_obter_por_id_deve_retornar_cliente_nullo()
+        {
+
+            var pedidos = _servicosCliente.ObterPorId(id: 1);
+
+            Assert.Null(pedidos);
         }
     }
 }

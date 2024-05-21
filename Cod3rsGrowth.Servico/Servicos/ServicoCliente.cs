@@ -13,6 +13,8 @@ namespace Cod3rsGrowth.Servico.Servicos
     public class ServicoCliente : IServicoCliente
     {
         private readonly IClienteRepositorio _clienteRepositorio;
+
+
         public ServicoCliente(IClienteRepositorio clienteRepositorio)
         {
             _clienteRepositorio = clienteRepositorio;

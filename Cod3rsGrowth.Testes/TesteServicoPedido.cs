@@ -48,7 +48,7 @@ namespace Cod3rsGrowth.Testes
         }
 
         [Fact]
-        public void Ao_obter_por_id_deve_retornar_a_lista_do_id_escolhido()
+        public void Ao_obter_por_id_deve_retornar_pedido()
         {
             var pedido1 = new Pedido
             {
@@ -69,6 +69,15 @@ namespace Cod3rsGrowth.Testes
             Assert.Equal("", pedido1.NumeroCartao);
             Assert.Equal(540.50m, pedido1.Valor);
             Assert.Equal(Pedido.Pagamentos.Pix, pedido1.FormaPagamento);
+        }
+
+        [Fact]
+        public void Ao_obter_por_id_deve_retornar_pedido_nullo()
+        {
+
+            var pedidos = _servicoPedido.ObterPorId(id : 1);
+
+            Assert.Null(pedidos);
         }
     }
 }
