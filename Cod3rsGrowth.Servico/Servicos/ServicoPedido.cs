@@ -1,4 +1,4 @@
-﻿using Cod3rsGrowth.Dominio.Servicos;
+﻿using Cod3rsGrowth.Servico.Servicos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +18,13 @@ namespace Cod3rsGrowth.Servico.Servicos
         }
         public List<Pedido> ObterTodos()
         {
-            var clientes = _pedidoRepositorio.ObterTodos();
-            return clientes;
+            var pedidos = _pedidoRepositorio.ObterTodos();
+            return pedidos;
+        }
+        public Pedido ObterPorId(int id)
+        {
+            var pedidos = _pedidoRepositorio.ObterPorId(id);
+            return pedidos;
         }
 
     }

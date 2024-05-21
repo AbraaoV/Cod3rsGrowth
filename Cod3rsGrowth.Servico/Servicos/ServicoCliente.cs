@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Cod3rsGrowth.Dominio;
 using Cod3rsGrowth.Infra;
-using Cod3rsGrowth.Servicos.Servicos;
+using Cod3rsGrowth.Servico.Servicos;
 
 namespace Cod3rsGrowth.Servico.Servicos
 {
@@ -20,6 +20,11 @@ namespace Cod3rsGrowth.Servico.Servicos
         public List<Cliente> ObterTodos()
         {
             var clientes = _clienteRepositorio.ObterTodos();
+            return clientes;
+        }
+        public Cliente ObterPorId(int id)
+        {
+            var clientes = _clienteRepositorio.ObterPorId(id);
             return clientes;
         }
 

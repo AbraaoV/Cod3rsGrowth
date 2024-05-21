@@ -17,8 +17,7 @@ namespace Cod3rsGrowth.Testes
         }
         public Cliente ObterPorId(int id)
         {
-            Cliente cliente = new Cliente();
-            return cliente;
+           return TabelaCliente.Instance.Where(i => i.Id == id).FirstOrDefault();
         }
         public void Atualizar(int id, Cliente cliente)
         {
