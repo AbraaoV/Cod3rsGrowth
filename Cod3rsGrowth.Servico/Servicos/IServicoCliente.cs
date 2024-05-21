@@ -9,5 +9,6 @@ namespace Cod3rsGrowth.Servico.Servicos
     public interface IServicoCliente
     {
         List<Cliente> ObterTodos();
+        Cliente ObterPorId(int id);
     }
 }

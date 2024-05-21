@@ -39,5 +39,35 @@ namespace Cod3rsGrowth.Testes
 
             Assert.NotEmpty(clientes);
         }
+        [Fact]
+        public void Ao_obter_por_id_deve_retornar_cliente()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "123.456.789-10",
+                Cnpj = "",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var clientes = _servicosCliente.ObterPorId(id: cliente1.Id = 100);
+
+            Assert.Equal("Teste", cliente1.Nome);
+            Assert.Equal(100, cliente1.Id);
+            Assert.Equal("123.456.789-10", cliente1.Cpf);
+            Assert.Equal("", cliente1.Cnpj);
+            Assert.Equal(Cliente.TipoDeCliente.Fisica, cliente1.Tipo);
+        }
+
+        [Fact]
+        public void Ao_obter_por_id_deve_retornar_cliente_nullo()
+        {
+
+            var pedidos = _servicosCliente.ObterPorId(id: 1);
+
+            Assert.Null(pedidos);
+        }
     }
 }

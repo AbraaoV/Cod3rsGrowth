@@ -16,8 +16,7 @@ namespace Cod3rsGrowth.Testes
         }
         public Pedido ObterPorId(int id)
         {
-            Pedido pedido = new Pedido();
-            return pedido;
+            return TabelaPedido.Instance.Where(i => i.Id == id).FirstOrDefault();
         }
         public void Atualizar(int id, Pedido pedido)
         {

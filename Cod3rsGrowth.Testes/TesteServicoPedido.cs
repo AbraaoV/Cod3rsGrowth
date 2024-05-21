@@ -46,5 +46,38 @@ namespace Cod3rsGrowth.Testes
 
             Assert.NotEmpty(pedidos);
         }
+
+        [Fact]
+        public void Ao_obter_por_id_deve_retornar_pedido()
+        {
+            var pedido1 = new Pedido
+            {
+                Id = 2,
+                ClienteId = 200,
+                Data = new DateTime(2024, 05, 15),
+                NumeroCartao = "",
+                Valor = 540.50m,
+                FormaPagamento = Pedido.Pagamentos.Pix,
+            };
+            TabelaPedido.Instance.Add(pedido1);
+
+            var pedidos = _servicoPedido.ObterPorId(pedido1.Id = 2);
+
+            Assert.Equal(2, pedido1.Id);
+            Assert.Equal(200, pedido1.ClienteId);
+            Assert.Equal(new DateTime(2024, 05, 15), pedido1.Data);
+            Assert.Equal("", pedido1.NumeroCartao);
+            Assert.Equal(540.50m, pedido1.Valor);
+            Assert.Equal(Pedido.Pagamentos.Pix, pedido1.FormaPagamento);
+        }
+
+        [Fact]
+        public void Ao_obter_por_id_deve_retornar_pedido_nullo()
+        {
+
+            var pedidos = _servicoPedido.ObterPorId(id : 1);
+
+            Assert.Null(pedidos);
+        }
     }
 }

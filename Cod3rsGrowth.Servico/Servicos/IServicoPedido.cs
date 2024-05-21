@@ -10,5 +10,6 @@ namespace Cod3rsGrowth.Servico.Servicos
     public interface IServicoPedido
     {
         List<Pedido> ObterTodos();
+        Pedido ObterPorId(int id);
     }
 }
