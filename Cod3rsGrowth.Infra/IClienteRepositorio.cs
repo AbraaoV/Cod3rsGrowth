@@ -13,6 +13,6 @@ namespace Cod3rsGrowth.Infra
         Cliente ObterPorId (int id);
         void Atualizar(int id,Cliente cliente);
         void Deletar(int id);
-        int Adicionar(Cliente cliente);
+        void Adicionar(Cliente cliente);
     }
 }

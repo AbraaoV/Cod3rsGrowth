@@ -1,6 +1,10 @@
 using Cod3rsGrowth.Dominio;
 using Cod3rsGrowth.Servico.Servicos;
 using Microsoft.Extensions.DependencyInjection;
+using FluentValidation;
+using FluentValidation.TestHelper;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 namespace Cod3rsGrowth.Testes
 {
     public class TesteServicoCliente : TesteBase
@@ -65,9 +69,25 @@ namespace Cod3rsGrowth.Testes
         public void Ao_obter_por_id_deve_retornar_cliente_nullo()
         {
 
-            var pedidos = _servicosCliente.ObterPorId(id: 1);
+            var cliente = _servicosCliente.ObterPorId(id: 400);
 
-            Assert.Null(pedidos);
+            Assert.Null(cliente);
+        }
+
+        [Fact]
+        public void Ao_adicionar_cliente_deve_retornar_nome_valido()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+
+            _servicosCliente.Adicionar(cliente1);
+
+            Assert.
         }
     }
 }
