@@ -5,15 +5,18 @@ using FluentValidation;
 using FluentValidation.TestHelper;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using ValidationException = FluentValidation.ValidationException;
+using FluentValidation.Results;
 namespace Cod3rsGrowth.Testes
 {
     public class TesteServicoCliente : TesteBase
     {
         private readonly IServicoCliente _servicosCliente;
-
+        private readonly ValidacaoCliente _validarCliente;
         public TesteServicoCliente()
         {
             _servicosCliente = ServiceProvider.GetService<IServicoCliente>();
+            _validarCliente = new ValidacaoCliente();
         }
 
         [Fact]
@@ -75,19 +78,101 @@ namespace Cod3rsGrowth.Testes
         }
 
         [Fact]
-        public void Ao_adicionar_cliente_deve_retornar_nome_valido()
+        public void Ao_adicionar_nome_nulo_ou_vazio_deve_retornar_erro()
         {
             var cliente1 = new Cliente
             {
-                Nome = "Teste",
+                Nome = "",
                 Id = 100,
                 Cpf = "12345678910",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
 
-            _servicosCliente.Adicionar(cliente1);
+            var mensagemErro = _validarCliente.Validate(cliente1).Errors.Single().ErrorMessage;
 
-            Assert.
+            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("O nome é um campo obrigatório.", mensagemErro);
+ 
+        }
+
+        [Fact]
+        public void Ao_adicionar_nome_de_mais_50_caracteres_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            var mensagemErro = _validarCliente.Validate(cliente1).Errors.Single().ErrorMessage;
+            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("O nome não pode ter mais de 50 caracteres", mensagemErro);
+        }
+
+        [Fact]
+        public void Ao_adicionar_cpf_que_nao_tenha_11_digitos_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "1112345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            var mensagemErro = _validarCliente.Validate(cliente1).Errors.Single().ErrorMessage;
+
+            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("CPF inválido", mensagemErro);
+        }
+
+        [Fact]
+        public void Ao_adicionar_cnpj_que_nao_tenha_14_digitos_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Empresa Teste",
+                Id = 200,
+                Cnpj = "11112345678000190",
+                Tipo = Cliente.TipoDeCliente.Juridica
+            };
+
+            var mensagemErro = _validarCliente.Validate(cliente1).Errors.Single().ErrorMessage;
+
+            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("CNPJ inválido", mensagemErro);
+        }
+
+        [Fact]
+        public void Ao_adicionar_um_cliente_sem_tipo_definido_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Empresa Teste",
+                Id = 200,
+            };
+
+            var mensagemErro = _validarCliente.Validate(cliente1).Errors.Single().ErrorMessage;
+
+            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("O Tipo é um campo obrigatório", mensagemErro);
+        }
+
+        [Fact]
+        public void Ao_adicionar_cliente_do_tipo_fisica_com_cnpj_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "213122113",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+
+            var mensagemErro = _validarCliente.Validate(cliente1).Errors.Single().ErrorMessage;
+
+            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("Informe apenas CPF para pessoa física.", mensagemErro);
         }
     }
 }

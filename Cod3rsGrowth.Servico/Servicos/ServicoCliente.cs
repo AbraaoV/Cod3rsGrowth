@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -9,14 +10,14 @@ using Cod3rsGrowth.Infra;
 using Cod3rsGrowth.Servico.Servicos;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace Cod3rsGrowth.Servico.Servicos
 {
     public class ServicoCliente : IServicoCliente
     {
         private readonly IClienteRepositorio _clienteRepositorio;
-        private readonly ValidacaoCliente _validarCliente; 
-
+        private readonly ValidacaoCliente _validarCliente;
 
         public ServicoCliente(IClienteRepositorio clienteRepositorio)
         {
@@ -39,6 +40,11 @@ namespace Cod3rsGrowth.Servico.Servicos
             if (result.IsValid)
             {
                 _clienteRepositorio.Adicionar(cliente);
+            }
+            else if (!result.IsValid)
+            {
+                string mensagemErro = string.Join(Environment.NewLine, result.Errors.Select(e => e.ErrorMessage));
+                throw new ValidationException("Falha na validação dos dados:" + Environment.NewLine + mensagemErro);
             }
         }
 
