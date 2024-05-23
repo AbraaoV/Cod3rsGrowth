@@ -20,7 +20,13 @@ namespace Cod3rsGrowth.Testes
         }
         public void Atualizar(int id, Pedido pedido)
         {
-
+            Pedido procurarPedido = TabelaPedido.Instance.FirstOrDefault(c => c.Id == id);
+            procurarPedido.Id = pedido.Id;
+            procurarPedido.ClienteId = pedido.ClienteId;
+            procurarPedido.Data = pedido.Data;
+            procurarPedido.NumeroCartao = pedido.NumeroCartao;
+            procurarPedido.Valor = pedido.Valor;
+            procurarPedido.FormaPagamento = pedido.FormaPagamento;
         }
         public void Deletar (int id)
         {

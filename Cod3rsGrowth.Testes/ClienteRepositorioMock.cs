@@ -21,7 +21,12 @@ namespace Cod3rsGrowth.Testes
         }
         public void Atualizar(int id, Cliente cliente)
         {
-        
+            Cliente procurarCliente = TabelaCliente.Instance.FirstOrDefault(c => c.Id == id);
+            procurarCliente.Nome = cliente.Nome;
+            procurarCliente.Id = cliente.Id;
+            procurarCliente.Cpf = cliente.Cpf;
+            procurarCliente.Cnpj = cliente.Cnpj;
+            procurarCliente.Tipo = cliente.Tipo;
         }
         public void Deletar(int id)
         {

@@ -35,6 +35,19 @@ namespace Cod3rsGrowth.Servico.Servicos
             _validarPedido.ValidateAndThrow(pedido);
             _pedidoRepositorio.Adicionar(pedido);
         }
+        public void Atualizar(int id, Pedido pedido)
+        {
+            ValidationResult result = _validarPedido.Validate(pedido, options => options.IncludeRuleSets("BuscarId"));
+            if (result.IsValid)
+            {
+                _pedidoRepositorio.Atualizar(id, pedido);
+            }
+            else if (!result.IsValid)
+            {
+                throw new ValidationException(result.Errors);
+            }
+        }
+
 
     }
 }

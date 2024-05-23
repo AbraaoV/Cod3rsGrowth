@@ -169,5 +169,66 @@ namespace Cod3rsGrowth.Testes
             Assert.Equal(150.45m, pedido1.Valor);
             Assert.Equal(Pedido.Pagamentos.Cartao, pedido1.FormaPagamento);
         }
+
+        [Fact]
+        public void Ao_tentar_atualizar_um_pedido_de_um_id_inexistente_deve_retornar_erro()
+        {
+            var pedido1 = new Pedido
+            {
+                Id = 2,
+                ClienteId = 200,
+                Data = new DateTime(2024, 05, 15),
+                NumeroCartao = "0000111122223333",
+                Valor = 150.45m,
+                FormaPagamento = Pedido.Pagamentos.Cartao,
+            };
+            TabelaPedido.Instance.Add(pedido1);
+
+            var pedidoAtualizado = new Pedido
+            {
+                Id = 3,
+                ClienteId = 200,
+                Data = new DateTime(2024, 05, 15),
+                NumeroCartao = "0000111122223333",
+                Valor = 53.45m,
+                FormaPagamento = Pedido.Pagamentos.Cartao,
+            };
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Atualizar(3, pedidoAtualizado));
+            Assert.Equal("Esse Id não existe.", mensagemErro.Errors.Single().ErrorMessage);
+        }
+
+        [Fact]
+        public void Ao_atualizar_um_pedido_com_um_id_existente_deve_ser_atualizado_normalmente()
+        {
+            var pedido1 = new Pedido
+            {
+                Id = 2,
+                ClienteId = 200,
+                Data = new DateTime(2024, 05, 15),
+                NumeroCartao = "0000111122223333",
+                Valor = 150.45m,
+                FormaPagamento = Pedido.Pagamentos.Cartao,
+            };
+            TabelaPedido.Instance.Add(pedido1);
+
+            var pedidoAtualizado = new Pedido
+            {
+                Id = 2,
+                ClienteId = 200,
+                Data = new DateTime(2024, 05, 15),
+                NumeroCartao = "0000111122223333",
+                Valor = 53.45m,
+                FormaPagamento = Pedido.Pagamentos.Cartao,
+            };
+
+            _servicoPedido.Atualizar(2, pedidoAtualizado);
+
+            Assert.Equal(2, pedido1.Id);
+            Assert.Equal(200, pedido1.ClienteId);
+            Assert.Equal("0000111122223333", pedido1.NumeroCartao);
+            Assert.Equal(53.45m, pedido1.Valor);
+            Assert.Equal(Pedido.Pagamentos.Cartao, pedido1.FormaPagamento);
+        }
     }
 }

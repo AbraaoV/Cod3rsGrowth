@@ -220,5 +220,56 @@ namespace Cod3rsGrowth.Testes
             Assert.Equal(Cliente.TipoDeCliente.Fisica, cliente1.Tipo);
         }
 
+        [Fact]
+        public void Ao_tentar_atualizar_um_cliente_de_um_id_inexistente_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var clienteAtualizado = new Cliente
+            {
+                Nome = "João",
+                Id = 102,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(102, clienteAtualizado));
+            Assert.Equal("Esse Id não existe.", mensagemErro.Errors.Single().ErrorMessage);
+        }
+
+        [Fact]
+        public void Ao_atualizar_um_cliente_de_um_id_existente_deve_ser_atualizado_normalmente()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var clienteAtualizado = new Cliente
+            {
+                Nome = "João",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+
+            _servicosCliente.Atualizar(100, clienteAtualizado);
+      
+            Assert.Equal("João", cliente1.Nome);
+            Assert.Equal(100, cliente1.Id);
+            Assert.Equal("12345678910", cliente1.Cpf);
+            Assert.Equal(Cliente.TipoDeCliente.Fisica, cliente1.Tipo);
+        }
     }
 }
