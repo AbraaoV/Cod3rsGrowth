@@ -14,9 +14,9 @@ namespace Cod3rsGrowth.Servico.Servicos
         {
             RuleFor(pedido => pedido.Data).NotEmpty().NotNull().WithMessage("O campo Data é obrigatório.");
 
-            RuleFor(pedido => pedido.NumeroCartao).Length(Constantes.ComprimentoCartaoValido).WithMessage("Cartão invalido.");
+            RuleFor(pedido => pedido.NumeroCartao).Length(ConstantesDoValidador.COMPRIMENTO_CARTAO_VALIDO).WithMessage("Cartão invalido.");
 
-            RuleFor(pedido => pedido.Valor).GreaterThan(Constantes.ValorMinimoPedido).WithMessage("O valor do pedido deve ser maior que zero.");
+            RuleFor(pedido => pedido.Valor).GreaterThan(ConstantesDoValidador.VALOR_MINIMO_PEDIDO).WithMessage("O valor do pedido deve ser maior que zero.");
 
             RuleFor(pedido => pedido.FormaPagamento).NotEmpty().WithMessage("O campo FormaPagamento é obrigatório.");
  

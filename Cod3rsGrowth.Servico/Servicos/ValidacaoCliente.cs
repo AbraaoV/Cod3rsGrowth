@@ -9,7 +9,7 @@ namespace Cod3rsGrowth.Servico.Servicos
         public ValidacaoCliente()
         {
             RuleFor(cliente => cliente.Nome).NotEmpty().WithMessage("O nome é um campo obrigatório.")
-                .MaximumLength(Constantes.TamanhoMaxNome).WithMessage("O nome não pode ter mais de 50 caracteres");
+                .MaximumLength(ConstantesDoValidador.TAMANHO_MAX_NOME).WithMessage("O nome não pode ter mais de 50 caracteres");
 
             RuleFor(cliente => cliente.Tipo).NotEmpty().WithMessage("O Tipo é um campo obrigatório");
 
@@ -22,7 +22,7 @@ namespace Cod3rsGrowth.Servico.Servicos
                 .NotEmpty()
                 .When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Fisica)
                 .WithMessage("Para pessoa física, o Cpf é obrigatório.")
-                .Length(Constantes.ComprimentoCpfValido)
+                .Length(ConstantesDoValidador.COMPRIMENTO_CPF_VALIDO)
                 .WithMessage("CPF inválido");
 
             RuleFor(cliente => cliente.Cpf)
@@ -34,9 +34,8 @@ namespace Cod3rsGrowth.Servico.Servicos
                 .NotEmpty()
                 .When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Juridica)
                 .WithMessage("Para pessoa júridica, o Cpnj é obrigatório.")
-                .Length(Constantes.ComprimentoCnpjValido)
+                .Length(ConstantesDoValidador.COMPRIMENTO_CNPJ_VALIDO)
                 .WithMessage("CNPJ inválido");
-
 
 
 
