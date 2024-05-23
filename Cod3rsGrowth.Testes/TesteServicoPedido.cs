@@ -157,5 +157,27 @@ namespace Cod3rsGrowth.Testes
             Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
             Assert.Equal("O campo FormaPagamento é obrigatório.", mensagemErro);
         }
+
+        [Fact]
+        public void Ao_adicionar_cliente_que_atende_todas_as_regras_deve_ser_adicionado_normalmente()
+        {
+            var pedido1 = new Pedido
+            {
+                Id = 2,
+                ClienteId = 200,
+                Data = new DateTime(2024, 05, 15),
+                NumeroCartao = "0000111122223333",
+                Valor = 150.45m,
+                FormaPagamento = Pedido.Pagamentos.Cartao,
+            };
+
+            _servicoPedido.Adicionar(pedido1);
+
+            Assert.Equal(2, pedido1.Id);
+            Assert.Equal(200, pedido1.ClienteId);
+            Assert.Equal("0000111122223333", pedido1.NumeroCartao);
+            Assert.Equal(150.45m, pedido1.Valor);
+            Assert.Equal(Pedido.Pagamentos.Cartao, pedido1.FormaPagamento);
+        }
     }
 }

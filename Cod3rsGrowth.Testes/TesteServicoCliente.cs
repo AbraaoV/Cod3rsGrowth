@@ -165,14 +165,69 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "Teste",
                 Id = 100,
-                Cpf = "213122113",
+                Cnpj = "12345678000190",
+                Cpf = "12345678910",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
 
-            var mensagemErro = _validarCliente.Validate(cliente1).Errors.Single().ErrorMessage;
+            var mensagemErro = _validarCliente.Validate(cliente1).Errors.FirstOrDefault()?.ErrorMessage;
 
             Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
-            Assert.Equal("Informe apenas CPF para pessoa física.", mensagemErro);
+            Assert.Equal("Para pessoa física, não informe Cnpj.", mensagemErro);
         }
+
+        [Fact]
+        public void Ao_adicionar_cliente_do_tipo_juridica_com_cpf_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cnpj = "12345678000190",
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Juridica
+            };
+
+            var mensagemErro = _validarCliente.Validate(cliente1).Errors.FirstOrDefault()?.ErrorMessage;
+
+            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("Para pessoa júridica, não informe Cpf.", mensagemErro);
+        }
+        [Fact]
+        public void Ao_adicionar_cliente_do_tipo_fisica_com_cpf_vazio_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+
+            var mensagemErro = _validarCliente.Validate(cliente1).Errors.FirstOrDefault()?.ErrorMessage;
+
+            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("Para pessoa física, o Cpf é obrigatório.", mensagemErro);
+        }
+
+        [Fact]
+        public void Ao_adicionar_cliente_que_atende_todas_as_regras_deve_ser_adicionado_normalmente()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+
+            _servicosCliente.Adicionar(cliente1);
+
+            Assert.Equal("Teste", cliente1.Nome);
+            Assert.Equal(100, cliente1.Id);
+            Assert.Equal("12345678910", cliente1.Cpf);
+            Assert.Equal(Cliente.TipoDeCliente.Fisica, cliente1.Tipo);
+        }
+
     }
 }
