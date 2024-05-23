@@ -7,16 +7,17 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using ValidationException = FluentValidation.ValidationException;
 using FluentValidation.Results;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Cod3rsGrowth.Testes
 {
     public class TesteServicoCliente : TesteBase
     {
         private readonly IServicoCliente _servicosCliente;
-        private readonly ValidacaoCliente _validarCliente;
+        private readonly IValidator<Cliente> _validarCliente;
         public TesteServicoCliente()
         {
             _servicosCliente = ServiceProvider.GetService<IServicoCliente>();
-            _validarCliente = new ValidacaoCliente();
+            _validarCliente = ServiceProvider.GetService<IValidator<Cliente>>();
         }
 
         [Fact]
@@ -88,10 +89,8 @@ namespace Cod3rsGrowth.Testes
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
 
-            var mensagemErro = _validarCliente.Validate(cliente1).Errors.Single().ErrorMessage;
-
-            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
-            Assert.Equal("O nome é um campo obrigatório.", mensagemErro);
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("O nome é um campo obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
  
         }
 
@@ -105,9 +104,9 @@ namespace Cod3rsGrowth.Testes
                 Cpf = "12345678910",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
-            var mensagemErro = _validarCliente.Validate(cliente1).Errors.Single().ErrorMessage;
-            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
-            Assert.Equal("O nome não pode ter mais de 50 caracteres", mensagemErro);
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("O nome não pode ter mais de 50 caracteres", mensagemErro.Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -120,10 +119,9 @@ namespace Cod3rsGrowth.Testes
                 Cpf = "1112345678910",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
-            var mensagemErro = _validarCliente.Validate(cliente1).Errors.Single().ErrorMessage;
 
-            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
-            Assert.Equal("CPF inválido", mensagemErro);
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("CPF inválido", mensagemErro.Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -137,10 +135,9 @@ namespace Cod3rsGrowth.Testes
                 Tipo = Cliente.TipoDeCliente.Juridica
             };
 
-            var mensagemErro = _validarCliente.Validate(cliente1).Errors.Single().ErrorMessage;
 
-            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
-            Assert.Equal("CNPJ inválido", mensagemErro);
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("CNPJ inválido", mensagemErro.Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -152,10 +149,9 @@ namespace Cod3rsGrowth.Testes
                 Id = 200,
             };
 
-            var mensagemErro = _validarCliente.Validate(cliente1).Errors.Single().ErrorMessage;
 
-            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
-            Assert.Equal("O Tipo é um campo obrigatório", mensagemErro);
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("O Tipo é um campo obrigatório", mensagemErro.Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -170,10 +166,9 @@ namespace Cod3rsGrowth.Testes
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
 
-            var mensagemErro = _validarCliente.Validate(cliente1).Errors.FirstOrDefault()?.ErrorMessage;
 
-            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
-            Assert.Equal("Para pessoa física, não informe Cnpj.", mensagemErro);
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("Para pessoa física, não informe Cnpj.", mensagemErro.Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -188,10 +183,9 @@ namespace Cod3rsGrowth.Testes
                 Tipo = Cliente.TipoDeCliente.Juridica
             };
 
-            var mensagemErro = _validarCliente.Validate(cliente1).Errors.FirstOrDefault()?.ErrorMessage;
 
-            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
-            Assert.Equal("Para pessoa júridica, não informe Cpf.", mensagemErro);
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("Para pessoa júridica, não informe Cpf.", mensagemErro.Errors.Single().ErrorMessage);
         }
         [Fact]
         public void Ao_adicionar_cliente_do_tipo_fisica_com_cpf_vazio_deve_retornar_erro()
@@ -204,10 +198,9 @@ namespace Cod3rsGrowth.Testes
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
 
-            var mensagemErro = _validarCliente.Validate(cliente1).Errors.FirstOrDefault()?.ErrorMessage;
 
-            Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
-            Assert.Equal("Para pessoa física, o Cpf é obrigatório.", mensagemErro);
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("Para pessoa física, o Cpf é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
         }
 
         [Fact]

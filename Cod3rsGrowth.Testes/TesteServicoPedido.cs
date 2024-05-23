@@ -13,11 +13,11 @@ namespace Cod3rsGrowth.Testes
     public class TesteServicoPedido : TesteBase
     {
         private readonly IServicoPedido _servicoPedido;
-        private readonly ValidacaoPedido _validarPedido;
+        private readonly IValidator<Pedido> _validarPedido;
         public TesteServicoPedido()
         {
             _servicoPedido = ServiceProvider.GetService<IServicoPedido>();
-            _validarPedido = new ValidacaoPedido();
+            _validarPedido = ServiceProvider.GetService<IValidator<Pedido>>();
         }
 
         [Fact]
@@ -96,10 +96,8 @@ namespace Cod3rsGrowth.Testes
                 FormaPagamento = Pedido.Pagamentos.Cartao,
             };
 
-            var mensagemErro = _validarPedido.Validate(pedido1).Errors.Single().ErrorMessage;
-
-            Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
-            Assert.Equal("O campo Data é obrigatório.", mensagemErro);
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
+            Assert.Equal("O campo Data é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -115,10 +113,8 @@ namespace Cod3rsGrowth.Testes
                 FormaPagamento = Pedido.Pagamentos.Cartao,
             };
 
-            var mensagemErro = _validarPedido.Validate(pedido1).Errors.Single().ErrorMessage;
-
-            Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
-            Assert.Equal("Cartão invalido.", mensagemErro);
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
+            Assert.Equal("Cartão invalido.", mensagemErro.Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -134,10 +130,8 @@ namespace Cod3rsGrowth.Testes
                 FormaPagamento = Pedido.Pagamentos.Cartao,
             };
 
-            var mensagemErro = _validarPedido.Validate(pedido1).Errors.Single().ErrorMessage;
-
-            Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
-            Assert.Equal("O valor do pedido deve ser maior que zero.", mensagemErro);
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
+            Assert.Equal("O valor do pedido deve ser maior que zero.", mensagemErro.Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -152,10 +146,8 @@ namespace Cod3rsGrowth.Testes
                 Valor = 2,
             };
 
-            var mensagemErro = _validarPedido.Validate(pedido1).Errors.Single().ErrorMessage;
-
-            Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
-            Assert.Equal("O campo FormaPagamento é obrigatório.", mensagemErro);
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
+            Assert.Equal("O campo FormaPagamento é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
         }
 
         [Fact]

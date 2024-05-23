@@ -17,12 +17,12 @@ namespace Cod3rsGrowth.Servico.Servicos
     public class ServicoCliente : IServicoCliente
     {
         private readonly IClienteRepositorio _clienteRepositorio;
-        private readonly ValidacaoCliente _validarCliente;
+        private readonly IValidator<Cliente> _validarCliente;
 
-        public ServicoCliente(IClienteRepositorio clienteRepositorio)
+        public ServicoCliente(IClienteRepositorio clienteRepositorio, IValidator<Cliente> validator)
         {
             _clienteRepositorio = clienteRepositorio;
-            _validarCliente = new ValidacaoCliente();
+            _validarCliente = validator;
         }
         public List<Cliente> ObterTodos()
         {
@@ -36,17 +36,8 @@ namespace Cod3rsGrowth.Servico.Servicos
         }
         public void Adicionar(Cliente cliente)
         {
-            ValidationResult result = _validarCliente.Validate(cliente);
-            if (result.IsValid)
-            {
-                _clienteRepositorio.Adicionar(cliente);
-            }
-            else if (!result.IsValid)
-            {
-                string mensagemErro = string.Join(Environment.NewLine, result.Errors.Select(e => e.ErrorMessage));
-                throw new ValidationException("Falha na validação dos dados:" + Environment.NewLine + mensagemErro);
-            }
+            _validarCliente.ValidateAndThrow(cliente);
+            _clienteRepositorio.Adicionar(cliente);
         }
-
     }
 }
