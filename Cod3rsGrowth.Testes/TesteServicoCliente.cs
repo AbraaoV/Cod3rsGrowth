@@ -13,11 +13,9 @@ namespace Cod3rsGrowth.Testes
     public class TesteServicoCliente : TesteBase
     {
         private readonly IServicoCliente _servicosCliente;
-        private readonly IValidator<Cliente> _validarCliente;
         public TesteServicoCliente()
         {
             _servicosCliente = ServiceProvider.GetService<IServicoCliente>();
-            _validarCliente = ServiceProvider.GetService<IValidator<Cliente>>();
         }
 
         [Fact]

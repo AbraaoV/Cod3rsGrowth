@@ -10,11 +10,6 @@ namespace Cod3rsGrowth.Servico.Servicos
 {
     public class ValidacaoPedido : AbstractValidator<Pedido>
     {
-        static class Constantes
-        {
-            public const int ComprimentoCartaoValido = 16;
-            public const decimal ValorMinimoPedido = 0;
-        }
         public ValidacaoPedido()
         {
             RuleFor(pedido => pedido.Data).NotEmpty().NotNull().WithMessage("O campo Data é obrigatório.");

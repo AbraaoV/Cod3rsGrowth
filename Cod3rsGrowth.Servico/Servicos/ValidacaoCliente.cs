@@ -6,12 +6,6 @@ namespace Cod3rsGrowth.Servico.Servicos
 {
     public class ValidacaoCliente : AbstractValidator<Cliente>
     {
-        static class Constantes
-        {
-            public const int TamanhoMaxNome = 50;
-            public const int ComprimentoCpfValido = 11;
-            public const int ComprimentoCnpjValido = 14;
-        }
         public ValidacaoCliente()
         {
             RuleFor(cliente => cliente.Nome).NotEmpty().WithMessage("O nome é um campo obrigatório.")
