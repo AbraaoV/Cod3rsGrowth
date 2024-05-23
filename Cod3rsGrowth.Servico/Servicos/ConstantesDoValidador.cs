@@ -8,10 +8,10 @@ namespace Cod3rsGrowth.Servico.Servicos
 {
     static class ConstantesDoValidador
     {
-        public const int TAMANHO_MAX_NOME = 50;
-        public const int COMPRIMENTO_CPF_VALIDO = 11;
-        public const int COMPRIMENTO_CNPJ_VALIDO = 14;
-        public const int COMPRIMENTO_CARTAO_VALIDO = 16;
-        public const decimal VALOR_MINIMO_PEDIDO = 0;
+        public const int TAMANHO_MAXIMO_DO_NOME = 50;
+        public const int QUANTIDADE_DE_NUMEROS_PARA_CPF = 11;
+        public const int QUANTIDADE_DE_NUMEROS_PARA_CNPJ = 14;
+        public const int QUANTIDADE_DE_NUMEROS_PARA_CARTAO = 16;
+        public const decimal VALOR_MINIMO_PARA_PEDIDO = 0;
     }
 }
