@@ -26,10 +26,10 @@ namespace Cod3rsGrowth.Testes
         {
 
         }
-        public int Adicionar(Pedido pedido)
+        public void Adicionar(Pedido pedido)
         {
-            int adicionar = new int();
-            return adicionar;
+
+
         }
 
 

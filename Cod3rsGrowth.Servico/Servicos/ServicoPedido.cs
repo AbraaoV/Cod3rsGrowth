@@ -6,15 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Cod3rsGrowth.Infra;
 using Cod3rsGrowth.Dominio;
+using FluentValidation.Results;
+using FluentValidation;
 
 namespace Cod3rsGrowth.Servico.Servicos
 {
     public class ServicoPedido : IServicoPedido
     {
         private readonly IPedidoRepositorio _pedidoRepositorio;
-        public ServicoPedido(IPedidoRepositorio pedidoRepositorio)
+        private readonly IValidator<Pedido> _validarPedido;
+        public ServicoPedido(IPedidoRepositorio pedidoRepositorio, IValidator<Pedido> validator)
         {
             _pedidoRepositorio = pedidoRepositorio;
+            _validarPedido = validator;
         }
         public List<Pedido> ObterTodos()
         {
@@ -25,6 +29,11 @@ namespace Cod3rsGrowth.Servico.Servicos
         {
             var pedidos = _pedidoRepositorio.ObterPorId(id);
             return pedidos;
+        }
+        public void Adicionar(Pedido pedido)
+        {
+            _validarPedido.ValidateAndThrow(pedido);
+            _pedidoRepositorio.Adicionar(pedido);
         }
 
     }

@@ -11,5 +11,6 @@ namespace Cod3rsGrowth.Servico.Servicos
     {
         List<Pedido> ObterTodos();
         Pedido ObterPorId(int id);
+        void Adicionar(Pedido pedido);
     }
 }

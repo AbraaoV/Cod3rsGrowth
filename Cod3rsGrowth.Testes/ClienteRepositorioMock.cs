@@ -27,10 +27,9 @@ namespace Cod3rsGrowth.Testes
         {
 
         }
-        public int Adicionar(Cliente cliente)
+        public void Adicionar(Cliente cliente)
         {
-            int adicionar = new int();
-            return adicionar;
+            TabelaCliente.Instance.Add(cliente);
         }
     }
 

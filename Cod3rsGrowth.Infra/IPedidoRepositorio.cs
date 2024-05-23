@@ -13,6 +13,6 @@ namespace Cod3rsGrowth.Infra
         Pedido ObterPorId(int id);
         void Atualizar(int id, Pedido pedido);
         void Deletar(int id);
-        int Adicionar(Pedido pedido);
+        void Adicionar(Pedido pedido);
     }
 }
