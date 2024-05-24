@@ -17,7 +17,7 @@ namespace Cod3rsGrowth.Servico.Servicos
             _pedidoRepositorio = pedidoRepositorio;
 
 
-            RuleFor(pedido => pedido.Data).NotEmpty().NotNull().WithMessage("O campo Data é obrigatório.");
+            RuleFor(pedido => pedido.Data).NotEmpty().WithMessage("O campo Data é obrigatório.").NotNull().WithMessage("O campo Data é obrigatório.");
 
             RuleFor(pedido => pedido.NumeroCartao).Length(ConstantesDoValidador.QUANTIDADE_DE_NUMEROS_PARA_CARTAO).WithMessage("Cartão invalido.");
 
@@ -25,17 +25,17 @@ namespace Cod3rsGrowth.Servico.Servicos
 
             RuleFor(pedido => pedido.FormaPagamento).NotEmpty().WithMessage("O campo FormaPagamento é obrigatório.");
 
-            RuleSet("BuscarId", () =>
+            RuleSet(ConstantesDoValidador.ATUALIZAR, () =>
             {
                 RuleFor(pedido => pedido.Id)
                 .Must(id =>
                 {
-                    return BuscarId(id) == true;
+                    return Atualizar(id) == true;
                 })
                 .WithMessage("Esse Id não existe.");
             });
         }
-        public bool BuscarId(int id)
+        public bool Atualizar(int id)
         {
             var obter = _pedidoRepositorio.ObterPorId(id);
             if (obter != null)

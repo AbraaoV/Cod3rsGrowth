@@ -32,7 +32,7 @@ namespace Cod3rsGrowth.Servico.Servicos
         }
         public void Atualizar(int id, Cliente cliente)
         {
-            ValidationResult result = _validarCliente.Validate(cliente, options => options.IncludeRuleSets("BuscarId"));
+            ValidationResult result = _validarCliente.Validate(cliente, options => options.IncludeRuleSets(ConstantesDoValidador.ATUALIZAR, "default"));
             if (result.IsValid)
             {
                 _clienteRepositorio.Atualizar(id, cliente);

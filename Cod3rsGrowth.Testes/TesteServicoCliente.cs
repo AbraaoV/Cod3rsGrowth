@@ -271,5 +271,200 @@ namespace Cod3rsGrowth.Testes
             Assert.Equal("12345678910", cliente1.Cpf);
             Assert.Equal(Cliente.TipoDeCliente.Fisica, cliente1.Tipo);
         }
+
+        [Fact]
+        public void Ao_atualizar_nome_nulo_ou_vazio_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var clienteAtualizado = new Cliente
+            {
+                Nome = "",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
+            Assert.Equal("O nome é um campo obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
+
+        }
+
+        [Fact]
+        public void Ao_atualizar_nome_de_mais_50_caracteres_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+            var clienteAtualizado = new Cliente
+            {
+                Nome = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
+            Assert.Equal("O nome não pode ter mais de 50 caracteres", mensagemErro.Errors.Single().ErrorMessage);
+        }
+
+        [Fact]
+        public void Ao_atualizar_um_cpf_que_nao_tenha_11_digitos_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var clienteAtualizado = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "1112345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(clienteAtualizado));
+            Assert.Equal("CPF inválido", mensagemErro.Errors.Single().ErrorMessage);
+        }
+
+        [Fact]
+        public void Ao_atualizar_um_cnpj_que_nao_tenha_14_digitos_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var clienteAtualizado = new Cliente
+            {
+                Nome = "Empresa Teste",
+                Id = 100,
+                Cnpj = "11112345678000190",
+                Tipo = Cliente.TipoDeCliente.Juridica
+            };
+
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
+            Assert.Equal("CNPJ inválido", mensagemErro.Errors.Single().ErrorMessage);
+        }
+
+        [Fact]
+        public void Ao_atualizar_um_cliente_sem_tipo_definido_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var clienteAtualizado = new Cliente
+            {
+                Nome = "Empresa Teste",
+                Id = 100,
+            };
+
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
+            Assert.Equal("O Tipo é um campo obrigatório", mensagemErro.Errors.Single().ErrorMessage);
+        }
+
+        [Fact]
+        public void Ao_atualizar_cliente_do_tipo_fisica_com_cnpj_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var clienteAtualizado = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cnpj = "12345678000190",
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
+            Assert.Equal("Para pessoa física, não informe Cnpj.", mensagemErro.Errors.Single().ErrorMessage);
+        }
+
+        [Fact]
+        public void Ao_atualizar_cliente_do_tipo_juridica_com_cpf_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var clienteAtualizado = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cnpj = "12345678000190",
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Juridica
+            };
+
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
+            Assert.Equal("Para pessoa júridica, não informe Cpf.", mensagemErro.Errors.Single().ErrorMessage);
+        }
+        [Fact]
+        public void Ao_atualizar_cliente_do_tipo_fisica_com_cpf_vazio_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var clienteAtualizado = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
+            Assert.Equal("Para pessoa física, o Cpf é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
+        }
     }
 }

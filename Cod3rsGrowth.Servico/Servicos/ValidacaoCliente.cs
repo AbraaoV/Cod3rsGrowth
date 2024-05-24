@@ -45,19 +45,19 @@ namespace Cod3rsGrowth.Servico.Servicos
                 .WithMessage("CNPJ inválido");
 
             
-            RuleSet("BuscarId", () =>
+            RuleSet(ConstantesDoValidador.ATUALIZAR, () =>
             {
                 RuleFor(cliente => cliente.Id)
                 .Must(id =>
                 {
-                    return BuscarId(id) == true;
+                    return Atualizar(id) == true;
                 })
                 .WithMessage("Esse Id não existe.");
             });
 
 
         }
-        public bool BuscarId(int id)
+        public bool Atualizar(int id)
         {
            var obter = _clienteRepositorio.ObterPorId(id);
             if (obter != null)

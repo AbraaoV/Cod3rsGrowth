@@ -37,7 +37,7 @@ namespace Cod3rsGrowth.Servico.Servicos
         }
         public void Atualizar(int id, Pedido pedido)
         {
-            ValidationResult result = _validarPedido.Validate(pedido, options => options.IncludeRuleSets("BuscarId"));
+            ValidationResult result = _validarPedido.Validate(pedido, options => options.IncludeRuleSets(ConstantesDoValidador.ATUALIZAR, "default"));
             if (result.IsValid)
             {
                 _pedidoRepositorio.Atualizar(id, pedido);
