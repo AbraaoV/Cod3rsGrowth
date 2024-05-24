@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using Cod3rsGrowth.Dominio;
+﻿using Cod3rsGrowth.Dominio;
 using Cod3rsGrowth.Infra;
-using Cod3rsGrowth.Servico.Servicos;
 using FluentValidation;
 using FluentValidation.Results;
-using Microsoft.AspNetCore.OutputCaching;
 
 namespace Cod3rsGrowth.Servico.Servicos
 {
@@ -38,6 +29,18 @@ namespace Cod3rsGrowth.Servico.Servicos
         {
             _validarCliente.ValidateAndThrow(cliente);
             _clienteRepositorio.Adicionar(cliente);
+        }
+        public void Atualizar(int id, Cliente cliente)
+        {
+            ValidationResult result = _validarCliente.Validate(cliente, options => options.IncludeRuleSets(ConstantesDoValidador.ATUALIZAR, "default"));
+            if (result.IsValid)
+            {
+                _clienteRepositorio.Atualizar(id, cliente);
+            }
+            else if (!result.IsValid)
+            {
+                throw new ValidationException(result.Errors);
+            }
         }
     }
 }

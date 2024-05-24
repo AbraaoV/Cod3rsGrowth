@@ -1,13 +1,20 @@
 ﻿using Cod3rsGrowth.Dominio;
 using Cod3rsGrowth.Infra;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Cod3rsGrowth.Servico.Servicos
 {
     public class ValidacaoCliente : AbstractValidator<Cliente>
     {
-        public ValidacaoCliente()
+        private readonly IClienteRepositorio _clienteRepositorio;
+        public ValidacaoCliente(IClienteRepositorio clienteRepositorio)
         {
+            _clienteRepositorio = clienteRepositorio;
+
+
             RuleFor(cliente => cliente.Nome).NotEmpty().WithMessage("O nome é um campo obrigatório.")
                 .MaximumLength(ConstantesDoValidador.TAMANHO_MAXIMO_DO_NOME).WithMessage("O nome não pode ter mais de 50 caracteres");
 
@@ -37,6 +44,27 @@ namespace Cod3rsGrowth.Servico.Servicos
                 .Length(ConstantesDoValidador.QUANTIDADE_DE_NUMEROS_PARA_CNPJ)
                 .WithMessage("CNPJ inválido");
 
+            
+            RuleSet(ConstantesDoValidador.ATUALIZAR, () =>
+            {
+                RuleFor(cliente => cliente.Id)
+                .Must(id =>
+                {
+                    return Atualizar(id) == true;
+                })
+                .WithMessage("Esse Id não existe.");
+            });
+
+
+        }
+        public bool Atualizar(int id)
+        {
+           var obter = _clienteRepositorio.ObterPorId(id);
+            if (obter != null)
+            {
+              return true;
+            }
+              return false;
         }
     }
 }
