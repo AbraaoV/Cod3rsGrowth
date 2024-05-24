@@ -286,7 +286,7 @@ namespace Cod3rsGrowth.Testes
 
             var clienteAtualizado = new Cliente
             {
-                Nome = "",
+                Nome = null,
                 Id = 100,
                 Cpf = "12345678910",
                 Tipo = Cliente.TipoDeCliente.Fisica
@@ -465,6 +465,39 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
             Assert.Equal("Para pessoa física, o Cpf é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
+        }
+
+        [Fact]
+        public void Ao_deleter_um_cliente_com_id_inexistente_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Deletar(102));
+            Assert.Equal("Esse Id não existe.", mensagemErro.Errors.Single().ErrorMessage);
+        }
+
+        [Fact]
+        public void Ao_deletar_um_cliente_com_id_existente_nao_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            _servicosCliente.Deletar(100);
+
+            Assert.DoesNotContain(TabelaCliente.Instance, cliente1 => cliente1 == cliente1);
         }
     }
 }

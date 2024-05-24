@@ -12,5 +12,6 @@ namespace Cod3rsGrowth.Servico.Servicos
         Cliente ObterPorId(int id);
         void Adicionar(Cliente cliente);
         void Atualizar(int id, Cliente cliente);
+        void Deletar(int id);
     }
 }

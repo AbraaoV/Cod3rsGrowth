@@ -341,5 +341,42 @@ namespace Cod3rsGrowth.Testes
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Atualizar(2, pedidoAtualizado));
             Assert.Equal("O campo FormaPagamento é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
         }
+
+        [Fact]
+        public void Ao_deleter_um_pedido_com_id_inexistente_deve_retornar_erro()
+        {
+            var pedido1 = new Pedido
+            {
+                Id = 2,
+                ClienteId = 200,
+                Data = new DateTime(2024, 05, 15),
+                NumeroCartao = "0000111122223333",
+                Valor = 150.45m,
+                FormaPagamento = Pedido.Pagamentos.Cartao,
+            };
+            TabelaPedido.Instance.Add(pedido1);
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Deletar(3));
+            Assert.Equal("Esse Id não existe.", mensagemErro.Errors.Single().ErrorMessage);
+        }
+
+        [Fact]
+        public void Ao_deletar_um_pedido_com_id_existente_nao_deve_retornar_erro()
+        {
+            var pedido1 = new Pedido
+            {
+                Id = 2,
+                ClienteId = 200,
+                Data = new DateTime(2024, 05, 15),
+                NumeroCartao = "0000111122223333",
+                Valor = 150.45m,
+                FormaPagamento = Pedido.Pagamentos.Cartao
+            };
+            TabelaPedido.Instance.Add(pedido1);
+
+            _servicoPedido.Deletar(2);
+
+            Assert.DoesNotContain(TabelaCliente.Instance, cliente1 => cliente1 == cliente1);
+        }
     }
 }
