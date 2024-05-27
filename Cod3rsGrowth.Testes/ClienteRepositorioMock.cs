@@ -30,7 +30,8 @@ namespace Cod3rsGrowth.Testes
         }
         public void Deletar(int id)
         {
-
+            Cliente clienteParaRemover = TabelaCliente.Instance.Where(i => i.Id == id).FirstOrDefault();
+            TabelaCliente.Instance.Remove(clienteParaRemover);
         }
         public void Adicionar(Cliente cliente)
         {

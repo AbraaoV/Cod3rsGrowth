@@ -46,6 +46,8 @@ namespace Cod3rsGrowth.Testes
             var pedidos = _servicoPedido.ObterTodos();
 
             Assert.NotEmpty(pedidos);
+            TabelaPedido.Instance.Remove(pedido1);
+            TabelaPedido.Instance.Remove(pedido2);
         }
 
         [Fact]
@@ -70,6 +72,7 @@ namespace Cod3rsGrowth.Testes
             Assert.Equal("", pedido1.NumeroCartao);
             Assert.Equal(540.50m, pedido1.Valor);
             Assert.Equal(Pedido.Pagamentos.Pix, pedido1.FormaPagamento);
+            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -96,6 +99,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
             Assert.Equal("O campo Data é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -113,6 +117,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
             Assert.Equal("Cartão invalido.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -130,6 +135,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
             Assert.Equal("O valor do pedido deve ser maior que zero.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -146,6 +152,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
             Assert.Equal("O campo FormaPagamento é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -168,6 +175,7 @@ namespace Cod3rsGrowth.Testes
             Assert.Equal("0000111122223333", pedido1.NumeroCartao);
             Assert.Equal(150.45m, pedido1.Valor);
             Assert.Equal(Pedido.Pagamentos.Cartao, pedido1.FormaPagamento);
+            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -196,6 +204,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Atualizar(3, pedidoAtualizado));
             Assert.Equal("Esse Id não existe.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -229,6 +238,7 @@ namespace Cod3rsGrowth.Testes
             Assert.Equal("0000111122223333", pedido1.NumeroCartao);
             Assert.Equal(53.45m, pedido1.Valor);
             Assert.Equal(Pedido.Pagamentos.Cartao, pedido1.FormaPagamento);
+            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -257,6 +267,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Atualizar(2, pedidoAtualizado));
             Assert.Equal("O campo Data é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -285,6 +296,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Atualizar(2, pedidoAtualizado));
             Assert.Equal("Cartão invalido.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -313,6 +325,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Atualizar(2, pedidoAtualizado));
             Assert.Equal("O valor do pedido deve ser maior que zero.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -340,6 +353,46 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Atualizar(2, pedidoAtualizado));
             Assert.Equal("O campo FormaPagamento é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaPedido.Instance.Remove(pedido1);
+        }
+
+        [Fact]
+        public void Ao_deleter_um_pedido_com_id_inexistente_deve_retornar_erro()
+        {
+            var pedido1 = new Pedido
+            {
+                Id = 2,
+                ClienteId = 200,
+                Data = new DateTime(2024, 05, 15),
+                NumeroCartao = "0000111122223333",
+                Valor = 150.45m,
+                FormaPagamento = Pedido.Pagamentos.Cartao,
+            };
+            TabelaPedido.Instance.Add(pedido1);
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Deletar(3));
+            Assert.Equal("Esse Id não existe.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaPedido.Instance.Remove(pedido1);
+        }
+
+        [Fact]
+        public void Ao_deletar_um_pedido_com_id_existente_nao_deve_retornar_erro()
+        {
+            var pedido1 = new Pedido
+            {
+                Id = 2,
+                ClienteId = 200,
+                Data = new DateTime(2024, 05, 15),
+                NumeroCartao = "0000111122223333",
+                Valor = 150.45m,
+                FormaPagamento = Pedido.Pagamentos.Cartao
+            };
+            TabelaPedido.Instance.Add(pedido1);
+
+            _servicoPedido.Deletar(2);
+
+            Assert.DoesNotContain(TabelaPedido.Instance, pedido1 => pedido1 == pedido1);
+            TabelaPedido.Instance.Remove(pedido1);
         }
     }
 }

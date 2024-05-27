@@ -47,6 +47,21 @@ namespace Cod3rsGrowth.Servico.Servicos
                 throw new ValidationException(result.Errors);
             }
         }
+        public void Deletar(int id)
+        {
+            Pedido pedido1 = new Pedido();
+            pedido1.Id = id;
+
+            ValidationResult result = _validarPedido.Validate(pedido1, options => options.IncludeRuleSets(ConstantesDoValidador.REMOVER));
+            if (result.IsValid)
+            {
+                _pedidoRepositorio.Deletar(id);
+            }
+            else if (!result.IsValid)
+            {
+                throw new ValidationException(result.Errors);
+            }
+        }
 
 
     }

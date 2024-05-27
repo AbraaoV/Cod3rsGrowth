@@ -30,12 +30,12 @@ namespace Cod3rsGrowth.Testes
         }
         public void Deletar (int id)
         {
-
+            Pedido pedidoParaRemover = TabelaPedido.Instance.FirstOrDefault(c => c.Id == id);
+            TabelaPedido.Instance.Remove(pedidoParaRemover);
         }
         public void Adicionar(Pedido pedido)
         {
-
-
+            TabelaPedido.Instance.Add(pedido);
         }
 
 

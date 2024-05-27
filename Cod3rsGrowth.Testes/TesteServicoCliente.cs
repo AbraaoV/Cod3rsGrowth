@@ -44,6 +44,8 @@ namespace Cod3rsGrowth.Testes
             var clientes = _servicosCliente.ObterTodos();
 
             Assert.NotEmpty(clientes);
+            TabelaCliente.Instance.Remove(cliente1);
+            TabelaCliente.Instance.Remove(cliente2);
         }
         [Fact]
         public void Ao_obter_por_id_deve_retornar_cliente()
@@ -65,6 +67,7 @@ namespace Cod3rsGrowth.Testes
             Assert.Equal("123.456.789-10", cliente1.Cpf);
             Assert.Equal("", cliente1.Cnpj);
             Assert.Equal(Cliente.TipoDeCliente.Fisica, cliente1.Tipo);
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -89,7 +92,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
             Assert.Equal("O nome é um campo obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
- 
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -105,6 +108,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
             Assert.Equal("O nome não pode ter mais de 50 caracteres", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -120,6 +124,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
             Assert.Equal("CPF inválido", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -136,6 +141,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
             Assert.Equal("CNPJ inválido", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -150,6 +156,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
             Assert.Equal("O Tipo é um campo obrigatório", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -167,6 +174,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
             Assert.Equal("Para pessoa física, não informe Cnpj.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -184,6 +192,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
             Assert.Equal("Para pessoa júridica, não informe Cpf.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
         }
         [Fact]
         public void Ao_adicionar_cliente_do_tipo_fisica_com_cpf_vazio_deve_retornar_erro()
@@ -199,6 +208,24 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
             Assert.Equal("Para pessoa física, o Cpf é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
+        }
+
+        [Fact]
+        public void Ao_adicionar_cliente_do_tipo_juridica_com_cnpj_vazio_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cnpj = "",
+                Tipo = Cliente.TipoDeCliente.Juridica
+            };
+
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
+            Assert.Equal("Para pessoa júridica, o Cnpj é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -218,6 +245,7 @@ namespace Cod3rsGrowth.Testes
             Assert.Equal(100, cliente1.Id);
             Assert.Equal("12345678910", cliente1.Cpf);
             Assert.Equal(Cliente.TipoDeCliente.Fisica, cliente1.Tipo);
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -242,6 +270,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(102, clienteAtualizado));
             Assert.Equal("Esse Id não existe.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -270,6 +299,7 @@ namespace Cod3rsGrowth.Testes
             Assert.Equal(100, cliente1.Id);
             Assert.Equal("12345678910", cliente1.Cpf);
             Assert.Equal(Cliente.TipoDeCliente.Fisica, cliente1.Tipo);
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -286,7 +316,7 @@ namespace Cod3rsGrowth.Testes
 
             var clienteAtualizado = new Cliente
             {
-                Nome = "",
+                Nome = null,
                 Id = 100,
                 Cpf = "12345678910",
                 Tipo = Cliente.TipoDeCliente.Fisica
@@ -294,7 +324,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
             Assert.Equal("O nome é um campo obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
-
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -318,6 +348,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
             Assert.Equal("O nome não pode ter mais de 50 caracteres", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -342,6 +373,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(clienteAtualizado));
             Assert.Equal("CPF inválido", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -367,6 +399,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
             Assert.Equal("CNPJ inválido", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -390,6 +423,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
             Assert.Equal("O Tipo é um campo obrigatório", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -416,6 +450,7 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
             Assert.Equal("Para pessoa física, não informe Cnpj.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
         }
 
         [Fact]
@@ -442,7 +477,9 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
             Assert.Equal("Para pessoa júridica, não informe Cpf.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
         }
+        
         [Fact]
         public void Ao_atualizar_cliente_do_tipo_fisica_com_cpf_vazio_deve_retornar_erro()
         {
@@ -465,6 +502,68 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
             Assert.Equal("Para pessoa física, o Cpf é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
+        }
+
+        [Fact]
+        public void Ao_atualizar_cliente_do_tipo_juridica_com_cnpj_vazio_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var clienteAtualizado = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cnpj = "",
+                Tipo = Cliente.TipoDeCliente.Juridica
+            };
+
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Atualizar(100, clienteAtualizado));
+            Assert.Equal("Para pessoa júridica, o Cnpj é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
+        }
+
+        [Fact]
+        public void Ao_deleter_um_cliente_com_id_inexistente_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Deletar(102));
+            Assert.Equal("Esse Id não existe.", mensagemErro.Errors.Single().ErrorMessage);
+            TabelaCliente.Instance.Remove(cliente1);
+        }
+
+        [Fact]
+        public void Ao_deletar_um_cliente_com_id_existente_nao_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "12345678910",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            _servicosCliente.Deletar(100);
+
+            Assert.DoesNotContain(TabelaCliente.Instance, cliente1 => cliente1 == cliente1);
+            TabelaCliente.Instance.Remove(cliente1);
         }
     }
 }

@@ -13,5 +13,6 @@ namespace Cod3rsGrowth.Servico.Servicos
         Pedido ObterPorId(int id);
         void Adicionar(Pedido pedido);
         void Atualizar(int id, Pedido pedido);
+        void Deletar(int id);
     }
 }
