@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Cod3rsGrowth.Dominio;
 
-namespace Cod3rsGrowth.Testes
+namespace Cod3rsGrowth.Infra
 {
     public interface IPedidoRepositorio
     {
@@ -13,6 +13,6 @@ namespace Cod3rsGrowth.Testes
         Pedido ObterPorId(int id);
         void Atualizar(int id, Pedido pedido);
         void Deletar(int id);
-        int Adicionar(Pedido pedido);
+        void Adicionar(Pedido pedido);
     }
 }

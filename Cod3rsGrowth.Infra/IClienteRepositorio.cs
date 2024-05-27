@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Cod3rsGrowth.Dominio;
 
-namespace Cod3rsGrowth.Testes
+namespace Cod3rsGrowth.Infra
 {
     public interface IClienteRepositorio
     {
@@ -13,6 +13,6 @@ namespace Cod3rsGrowth.Testes
         Cliente ObterPorId (int id);
         void Atualizar(int id,Cliente cliente);
         void Deletar(int id);
-        int Adicionar(Cliente cliente);
+        void Adicionar(Cliente cliente);
     }
 }

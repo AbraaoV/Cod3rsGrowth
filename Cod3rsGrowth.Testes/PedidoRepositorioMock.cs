@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cod3rsGrowth.Dominio;
+using Cod3rsGrowth.Infra;
 
 namespace Cod3rsGrowth.Testes
 {
@@ -11,26 +12,30 @@ namespace Cod3rsGrowth.Testes
     {
         public List<Pedido> ObterTodos()
         {
-            List<Pedido> pedidos = new List<Pedido>();
-            return pedidos;
+            return TabelaPedido.Instance;
         }
         public Pedido ObterPorId(int id)
         {
-            Pedido pedido = new Pedido();
-            return pedido;
+            return TabelaPedido.Instance.Where(i => i.Id == id).FirstOrDefault();
         }
         public void Atualizar(int id, Pedido pedido)
         {
-
+            Pedido procurarPedido = TabelaPedido.Instance.FirstOrDefault(c => c.Id == id);
+            procurarPedido.Id = pedido.Id;
+            procurarPedido.ClienteId = pedido.ClienteId;
+            procurarPedido.Data = pedido.Data;
+            procurarPedido.NumeroCartao = pedido.NumeroCartao;
+            procurarPedido.Valor = pedido.Valor;
+            procurarPedido.FormaPagamento = pedido.FormaPagamento;
         }
         public void Deletar (int id)
         {
-
+            Pedido pedidoParaRemover = TabelaPedido.Instance.FirstOrDefault(c => c.Id == id);
+            TabelaPedido.Instance.Remove(pedidoParaRemover);
         }
-        public int Adicionar(Pedido pedido)
+        public void Adicionar(Pedido pedido)
         {
-            int adicionar = new int();
-            return adicionar;
+            TabelaPedido.Instance.Add(pedido);
         }
 
 
