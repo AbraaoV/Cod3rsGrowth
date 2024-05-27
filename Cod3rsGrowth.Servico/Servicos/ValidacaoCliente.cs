@@ -26,6 +26,7 @@ namespace Cod3rsGrowth.Servico.Servicos
                 .WithMessage("Para pessoa física, não informe Cnpj.");
 
             RuleFor(cliente => cliente.Cpf)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Fisica)
                 .WithMessage("Para pessoa física, o Cpf é obrigatório.")
@@ -38,9 +39,10 @@ namespace Cod3rsGrowth.Servico.Servicos
                 .WithMessage("Para pessoa júridica, não informe Cpf.");
 
             RuleFor(cliente => cliente.Cnpj)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Juridica)
-                .WithMessage("Para pessoa júridica, o Cpnj é obrigatório.")
+                .WithMessage("Para pessoa júridica, o Cnpj é obrigatório.")
                 .Length(ConstantesDoValidador.QUANTIDADE_DE_NUMEROS_PARA_CNPJ)
                 .WithMessage("CNPJ inválido");
 
