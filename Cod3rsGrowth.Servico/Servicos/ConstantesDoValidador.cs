@@ -14,5 +14,6 @@ namespace Cod3rsGrowth.Servico.Servicos
         public const int QUANTIDADE_DE_NUMEROS_PARA_CARTAO = 16;
         public const decimal VALOR_MINIMO_PARA_PEDIDO = 0;
         public const string ATUALIZAR = "Atualizar";
+        public const string REMOVER = "Remover";
     }
 }

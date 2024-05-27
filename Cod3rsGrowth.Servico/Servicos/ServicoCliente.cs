@@ -46,7 +46,7 @@ namespace Cod3rsGrowth.Servico.Servicos
         {   
             Cliente cliente1 = new Cliente();
             cliente1.Id = id;
-            ValidationResult result = _validarCliente.Validate(cliente1, options => options.IncludeRuleSets(ConstantesDoValidador.ATUALIZAR));
+            ValidationResult result = _validarCliente.Validate(cliente1, options => options.IncludeRuleSets(ConstantesDoValidador.REMOVER));
             if (result.IsValid)
             {
                 _clienteRepositorio.Deletar(id);

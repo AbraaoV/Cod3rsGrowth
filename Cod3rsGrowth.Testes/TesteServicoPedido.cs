@@ -391,7 +391,7 @@ namespace Cod3rsGrowth.Testes
 
             _servicoPedido.Deletar(2);
 
-            Assert.DoesNotContain(TabelaCliente.Instance, pedido1 => pedido1 == pedido1);
+            Assert.DoesNotContain(TabelaPedido.Instance, pedido1 => pedido1 == pedido1);
             TabelaPedido.Instance.Remove(pedido1);
         }
     }

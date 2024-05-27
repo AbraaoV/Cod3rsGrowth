@@ -52,7 +52,7 @@ namespace Cod3rsGrowth.Servico.Servicos
             Pedido pedido1 = new Pedido();
             pedido1.Id = id;
 
-            ValidationResult result = _validarPedido.Validate(pedido1, options => options.IncludeRuleSets(ConstantesDoValidador.ATUALIZAR));
+            ValidationResult result = _validarPedido.Validate(pedido1, options => options.IncludeRuleSets(ConstantesDoValidador.REMOVER));
             if (result.IsValid)
             {
                 _pedidoRepositorio.Deletar(id);

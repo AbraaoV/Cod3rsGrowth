@@ -30,12 +30,22 @@ namespace Cod3rsGrowth.Servico.Servicos
                 RuleFor(pedido => pedido.Id)
                 .Must(id =>
                 {
-                    return Atualizar(id) == true;
+                    return ValidarId(id) == true;
+                })
+                .WithMessage("Esse Id não existe.");
+            });
+
+            RuleSet(ConstantesDoValidador.REMOVER, () =>
+            {
+                RuleFor(pedido => pedido.Id)
+                .Must(id =>
+                {
+                    return ValidarId(id) == true;
                 })
                 .WithMessage("Esse Id não existe.");
             });
         }
-        public bool Atualizar(int id)
+        public bool ValidarId(int id)
         {
             var obter = _pedidoRepositorio.ObterPorId(id);
             if (obter != null)
