@@ -18,8 +18,8 @@ namespace Cod3rsGrowth.Testes
         {
             services.AddScoped<IValidator<Cliente>, ValidacaoCliente>();
             services.AddScoped<IValidator<Pedido>, ValidacaoPedido>();
-            services.AddScoped<IServicoCliente, ServicoCliente>();
-            services.AddScoped<IServicoPedido, ServicoPedido>();
+            services.AddScoped<ServicoCliente>();
+            services.AddScoped<ServicoPedido>();
             services.AddScoped<IClienteRepositorio, ClienteRepositorioMock>();
             services.AddScoped<IPedidoRepositorio, PedidoRepositorioMock>();
             return services.BuildServiceProvider();
