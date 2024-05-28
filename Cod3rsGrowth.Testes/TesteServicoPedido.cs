@@ -12,10 +12,11 @@ namespace Cod3rsGrowth.Testes
 {
     public class TesteServicoPedido : TesteBase
     {
-        private readonly IServicoPedido _servicoPedido;
+        private readonly ServicoPedido _servicoPedido;
         public TesteServicoPedido()
         {
-            _servicoPedido = ServiceProvider.GetService<IServicoPedido>();
+            _servicoPedido = ServiceProvider.GetService<ServicoPedido>();
+            TabelaPedido.Instance.Clear();
         }
 
         [Fact]
@@ -64,15 +65,33 @@ namespace Cod3rsGrowth.Testes
             };
             TabelaPedido.Instance.Add(pedido1);
 
-            var pedidos = _servicoPedido.ObterPorId(pedido1.Id = 2);
+            var pedido = _servicoPedido.ObterPorId(pedido1.Id = 2);
 
-            Assert.Equal(2, pedido1.Id);
-            Assert.Equal(200, pedido1.ClienteId);
-            Assert.Equal(new DateTime(2024, 05, 15), pedido1.Data);
-            Assert.Equal("", pedido1.NumeroCartao);
-            Assert.Equal(540.50m, pedido1.Valor);
-            Assert.Equal(Pedido.Pagamentos.Pix, pedido1.FormaPagamento);
-            TabelaPedido.Instance.Remove(pedido1);
+            Assert.Contains(TabelaPedido.Instance, pedido1 => pedido1 == pedido);
+        }
+        [Fact]
+        public void Ao_obter_por_id_deve_retornar_pedido_com_os_valores_iguais()
+        {
+            var pedido1 = new Pedido
+            {
+                Id = 2,
+                ClienteId = 200,
+                Data = new DateTime(2024, 05, 15),
+                NumeroCartao = "",
+                Valor = 540.50m,
+                FormaPagamento = Pedido.Pagamentos.Pix,
+            };
+            TabelaPedido.Instance.Add(pedido1);
+
+            var pedido = _servicoPedido.ObterPorId(pedido1.Id = 2);
+
+
+            Assert.Contains(TabelaPedido.Instance, pedido1 => pedido1.Id == pedido.Id);
+            Assert.Contains(TabelaPedido.Instance, pedido1 => pedido1.ClienteId == pedido.ClienteId);
+            Assert.Contains(TabelaPedido.Instance, pedido1 => pedido1.Data == pedido.Data);
+            Assert.Contains(TabelaPedido.Instance, pedido1 => pedido1.NumeroCartao == pedido.NumeroCartao);
+            Assert.Contains(TabelaPedido.Instance, pedido1 => pedido1.Valor == pedido.Valor);
+            Assert.Contains(TabelaPedido.Instance, pedido1 => pedido1.FormaPagamento == pedido.FormaPagamento);
         }
 
         [Fact]
@@ -99,7 +118,6 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
             Assert.Equal("O campo Data é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
-            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -117,7 +135,6 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
             Assert.Equal("Cartão invalido.", mensagemErro.Errors.Single().ErrorMessage);
-            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -135,7 +152,6 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
             Assert.Equal("O valor do pedido deve ser maior que zero.", mensagemErro.Errors.Single().ErrorMessage);
-            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -152,7 +168,6 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
             Assert.Equal("O campo FormaPagamento é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
-            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -170,12 +185,30 @@ namespace Cod3rsGrowth.Testes
 
             _servicoPedido.Adicionar(pedido1);
 
-            Assert.Equal(2, pedido1.Id);
-            Assert.Equal(200, pedido1.ClienteId);
-            Assert.Equal("0000111122223333", pedido1.NumeroCartao);
-            Assert.Equal(150.45m, pedido1.Valor);
-            Assert.Equal(Pedido.Pagamentos.Cartao, pedido1.FormaPagamento);
-            TabelaPedido.Instance.Remove(pedido1);
+            Assert.Contains(TabelaPedido.Instance, pedido1 => pedido1 == pedido1);
+        }
+
+        [Fact]
+        public void Ao_adicionar_cliente_que_atende_todas_as_regras_deve_ser_adicionado_normalmente_com_os_valores_iguais()
+        {
+            var pedido1 = new Pedido
+            {
+                Id = 2,
+                ClienteId = 200,
+                Data = new DateTime(2024, 05, 15),
+                NumeroCartao = "0000111122223333",
+                Valor = 150.45m,
+                FormaPagamento = Pedido.Pagamentos.Cartao,
+            };
+
+            _servicoPedido.Adicionar(pedido1);
+
+            Assert.Contains(TabelaPedido.Instance, pedido1 => pedido1.Id == pedido1.Id);
+            Assert.Contains(TabelaPedido.Instance, pedido1 => pedido1.ClienteId == pedido1.ClienteId);
+            Assert.Contains(TabelaPedido.Instance, pedido1 => pedido1.Data == pedido1.Data);
+            Assert.Contains(TabelaPedido.Instance, pedido1 => pedido1.NumeroCartao == pedido1.NumeroCartao);
+            Assert.Contains(TabelaPedido.Instance, pedido1 => pedido1.Valor == pedido1.Valor);
+            Assert.Contains(TabelaPedido.Instance, pedido1 => pedido1.FormaPagamento == pedido1.FormaPagamento);
         }
 
         [Fact]
@@ -204,7 +237,6 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Atualizar(3, pedidoAtualizado));
             Assert.Equal("Esse Id não existe.", mensagemErro.Errors.Single().ErrorMessage);
-            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -238,7 +270,6 @@ namespace Cod3rsGrowth.Testes
             Assert.Equal("0000111122223333", pedido1.NumeroCartao);
             Assert.Equal(53.45m, pedido1.Valor);
             Assert.Equal(Pedido.Pagamentos.Cartao, pedido1.FormaPagamento);
-            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -267,7 +298,6 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Atualizar(2, pedidoAtualizado));
             Assert.Equal("O campo Data é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
-            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -296,7 +326,6 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Atualizar(2, pedidoAtualizado));
             Assert.Equal("Cartão invalido.", mensagemErro.Errors.Single().ErrorMessage);
-            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -325,7 +354,6 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Atualizar(2, pedidoAtualizado));
             Assert.Equal("O valor do pedido deve ser maior que zero.", mensagemErro.Errors.Single().ErrorMessage);
-            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -353,7 +381,6 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Atualizar(2, pedidoAtualizado));
             Assert.Equal("O campo FormaPagamento é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
-            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -372,7 +399,6 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Deletar(3));
             Assert.Equal("Esse Id não existe.", mensagemErro.Errors.Single().ErrorMessage);
-            TabelaPedido.Instance.Remove(pedido1);
         }
 
         [Fact]
@@ -392,7 +418,6 @@ namespace Cod3rsGrowth.Testes
             _servicoPedido.Deletar(2);
 
             Assert.DoesNotContain(TabelaPedido.Instance, pedido1 => pedido1 == pedido1);
-            TabelaPedido.Instance.Remove(pedido1);
         }
     }
 }

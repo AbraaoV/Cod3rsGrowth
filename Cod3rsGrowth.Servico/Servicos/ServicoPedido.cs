@@ -11,7 +11,7 @@ using FluentValidation;
 
 namespace Cod3rsGrowth.Servico.Servicos
 {
-    public class ServicoPedido : IServicoPedido
+    public class ServicoPedido
     {
         private readonly IPedidoRepositorio _pedidoRepositorio;
         private readonly IValidator<Pedido> _validarPedido;
@@ -62,7 +62,5 @@ namespace Cod3rsGrowth.Servico.Servicos
                 throw new ValidationException(result.Errors);
             }
         }
-
-
     }
 }

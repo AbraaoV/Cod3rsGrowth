@@ -5,14 +5,14 @@ using FluentValidation.Results;
 
 namespace Cod3rsGrowth.Servico.Servicos
 {
-    public class ServicoCliente : IServicoCliente
+    public class ServicoCliente
     {
         private readonly IClienteRepositorio _clienteRepositorio;
         private readonly IValidator<Cliente> _validarCliente;
 
         public ServicoCliente(IClienteRepositorio clienteRepositorio, IValidator<Cliente> validator)
         {
-            _clienteRepositorio = clienteRepositorio;
+            _clienteRepositorio = clienteRepositorio;   
             _validarCliente = validator;
         }
         public List<Cliente> ObterTodos()
