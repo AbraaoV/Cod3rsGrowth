@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cod3rsGrowth.Dominio;
-using Cod3rsGrowth.Infra;
 
 namespace Cod3rsGrowth.Testes
 {
