@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Cod3rsGrowth.Infra
 {
-    internal class ConstantesDosRepositorios
+    static class ConstantesDosRepositorios
     {
+        public const string CONNECTION_STRING = "ConnectionString";
     }
 }
