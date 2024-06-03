@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Cod3rsGrowth.Dominio\Cod3rsGrowth.Dominio.csproj" />
+    <ProjectReference Include="..\Cod3rsGrowth.Forms\Cod3rsGrowth.Forms.csproj" />
   </ItemGroup>
 
 </Project>

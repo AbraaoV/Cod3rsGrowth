@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cod3rsGrowth.Dominio;
+﻿using Cod3rsGrowth.Dominio;
 using LinqToDB;
 using LinqToDB.Data;
-using LinqToDB.DataProvider.SqlServer;
+using System.Configuration;
 
 namespace Cod3rsGrowth.Infra
 {
     public class ClienteRepositorio : IClienteRepositorio
     {
         private readonly DataConnection _dataConnection;
-        private SqlServerVersion connectionString;
 
         public ClienteRepositorio()
         {
+            var appSettings = ConfigurationManager.AppSettings;
+            string result = appSettings[ConstantesDosRepositorios.CONNECTION_STRING];
             _dataConnection = new DataConnection(
            new DataOptions()
-               .UseSqlServer(connectionString));
+               .UseSqlServer(result));
         }
 
         public virtual List<Cliente> ObterTodos()
