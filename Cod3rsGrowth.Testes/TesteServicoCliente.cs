@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using ValidationException = FluentValidation.ValidationException;
 using FluentValidation.Results;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Cod3rsGrowth.Testes
 {
     public class TesteServicoCliente : TesteBase

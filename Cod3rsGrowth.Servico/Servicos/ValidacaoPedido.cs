@@ -1,11 +1,5 @@
 ﻿using Cod3rsGrowth.Dominio;
-using Cod3rsGrowth.Infra;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cod3rsGrowth.Servico.Servicos
 {
