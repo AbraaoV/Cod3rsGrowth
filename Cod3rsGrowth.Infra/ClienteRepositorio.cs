@@ -6,17 +6,20 @@ using System.Threading.Tasks;
 using Cod3rsGrowth.Dominio;
 using LinqToDB;
 using LinqToDB.Data;
+using LinqToDB.DataProvider.SqlServer;
 
 namespace Cod3rsGrowth.Infra
 {
     public class ClienteRepositorio : IClienteRepositorio
     {
         private readonly DataConnection _dataConnection;
+        private SqlServerVersion connectionString;
+
         public ClienteRepositorio()
         {
             _dataConnection = new DataConnection(
            new DataOptions()
-               .UseSqlServer(@"Server=BOOK-DPKA6KUT4U\SQLEXPRESS.\;Database=Cod3rsGrowth.BancoDeDados;Trusted_Connection=True;"));
+               .UseSqlServer(connectionString));
         }
 
         public virtual List<Cliente> ObterTodos()

@@ -1,6 +1,7 @@
 ﻿using Cod3rsGrowth.Dominio;
 using LinqToDB;
 using LinqToDB.Data;
+using LinqToDB.DataProvider.SqlServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,13 @@ namespace Cod3rsGrowth.Infra
     public class PedidoRepositorio : IPedidoRepositorio
     {
         private readonly DataConnection _dataConnection;
+        private SqlServerVersion connectionString;
+
         public PedidoRepositorio()
         {
             _dataConnection = new DataConnection(
            new DataOptions()
-               .UseSqlServer(@"Server=.\;Database=Cod3rsGrowth.BancoDeDados;Trusted_Connection=True;"));
+               .UseSqlServer(connectionString));
         }
 
         public virtual List<Pedido> ObterTodos()
