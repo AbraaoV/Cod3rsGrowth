@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cod3rsGrowth.Dominio;
+using static Cod3rsGrowth.Dominio.Cliente;
 
 namespace Cod3rsGrowth.Dominio
 {
     public interface IClienteRepositorio
     {
-        List<Cliente> ObterTodos();
+        List<Cliente> ObterTodos(TipoDeCliente? tipo = null);
         Cliente ObterPorId (int id);
         void Atualizar(int id,Cliente cliente);
         void Deletar(int id);

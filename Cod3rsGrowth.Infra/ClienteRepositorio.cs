@@ -2,6 +2,7 @@
 using LinqToDB;
 using LinqToDB.Data;
 using System.Configuration;
+using static Cod3rsGrowth.Dominio.Cliente;
 
 namespace Cod3rsGrowth.Infra
 {
@@ -18,9 +19,16 @@ namespace Cod3rsGrowth.Infra
                .UseSqlServer(result));
         }
 
-        public virtual List<Cliente> ObterTodos()
+        public virtual List<Cliente> ObterTodos(TipoDeCliente? tipo = null)
         {
-            return new List<Cliente>();
+            var clientes = _dataConnection.GetTable<Cliente>();
+
+            if (tipo.HasValue)
+            {
+                clientes = (ITable<Cliente>)clientes.Where(c => c.Tipo == tipo.Value);
+            }
+
+            return clientes.ToList();
         }
         public virtual Cliente ObterPorId(int id)
         {

@@ -8,6 +8,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Cod3rsGrowth.Dominio.Pedido;
 
 namespace Cod3rsGrowth.Infra
 {
@@ -24,9 +25,16 @@ namespace Cod3rsGrowth.Infra
                .UseSqlServer(result));
         }
 
-        public virtual List<Pedido> ObterTodos()
+        public virtual List<Pedido> ObterTodos(Pagamentos? FormaPagamento = null)
         {
-            return new List<Pedido>();
+            var pedidos = _dataConnection.GetTable<Pedido>();
+
+            if (FormaPagamento.HasValue)
+            {
+                pedidos = (ITable<Pedido>)pedidos.Where(c => c.FormaPagamento == FormaPagamento.Value);
+            }
+
+            return pedidos.ToList();
         }
         public virtual Pedido ObterPorId(int id)
         {

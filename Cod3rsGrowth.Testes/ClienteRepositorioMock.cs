@@ -6,11 +6,12 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static Cod3rsGrowth.Dominio.Cliente;
 namespace Cod3rsGrowth.Testes
 {
     public class ClienteRepositorioMock : IClienteRepositorio
     {
-        public List<Cliente> ObterTodos()
+        public List<Cliente> ObterTodos(TipoDeCliente? tipo = null)
         {
             return TabelaCliente.Instance;
         }
