@@ -1,3 +1,5 @@
+using System.Configuration;
+
 namespace Cod3rsGrowth.Forms
 {
     internal static class Program
@@ -12,6 +14,7 @@ namespace Cod3rsGrowth.Forms
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());
+
         }
     }
 }

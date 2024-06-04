@@ -1,12 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Cod3rsGrowth.Dominio;
-using Cod3rsGrowth.Infra;
-using Cod3rsGrowth.Servico;
 using Cod3rsGrowth.Servico.Servicos;
 using FluentValidation;
 
