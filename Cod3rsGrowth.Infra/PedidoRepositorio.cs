@@ -38,7 +38,8 @@ namespace Cod3rsGrowth.Infra
         }
         public virtual Pedido ObterPorId(int id)
         {
-            return new Pedido();
+            var pedidos = _dataConnection.GetTable<Pedido>().FirstOrDefault(c => c.Id == id);
+            return pedidos;
         }
         public virtual void Atualizar(int id, Pedido pedido)
         {
