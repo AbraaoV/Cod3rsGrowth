@@ -40,7 +40,7 @@ namespace Cod3rsGrowth.Infra
         {
             return new Pedido();
         }
-        public virtual void Atualizar(int id, Pedido cliente)
+        public virtual void Atualizar(int id, Pedido pedido)
         {
 
         }
@@ -48,9 +48,9 @@ namespace Cod3rsGrowth.Infra
         {
 
         }
-        public virtual void Adicionar(Pedido cliente)
+        public virtual void Adicionar(Pedido pedido)
         {
-
+            _dataConnection.Insert(pedido);
         }
     }
 }

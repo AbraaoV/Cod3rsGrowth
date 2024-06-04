@@ -44,7 +44,7 @@ namespace Cod3rsGrowth.Infra
         }
         public virtual void Adicionar(Cliente cliente)
         {
-
+            _dataConnection.Insert(cliente);
         }
     }
 }
