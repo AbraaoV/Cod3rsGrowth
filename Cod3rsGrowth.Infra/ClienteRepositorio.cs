@@ -36,7 +36,13 @@ namespace Cod3rsGrowth.Infra
         }
         public virtual void Atualizar(int id, Cliente cliente)
         {
-
+            _dataConnection.GetTable<Cliente>()
+              .Where(p => p.Id == id)
+              .Set(p => p.Nome, cliente.Nome)
+              .Set(p => p.Cpf, cliente.Cpf)
+              .Set(p => p.Cnpj, cliente.Cnpj)
+              .Set(P => P.Tipo, cliente.Tipo)
+              .Update();
         }
         public virtual void Deletar(int id)
         {
