@@ -25,7 +25,7 @@ namespace Cod3rsGrowth.Infra
                .UseSqlServer(result));
         }
 
-        public virtual List<Pedido> ObterTodos(Pagamentos? FormaPagamento = null) //Objetivo de filtrar por tipo de pagamento
+        public virtual List<Pedido> ObterTodos(Pagamentos? FormaPagamento = null)
         {
             var pedidos = _dataConnection.GetTable<Pedido>();
 

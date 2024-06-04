@@ -19,7 +19,7 @@ namespace Cod3rsGrowth.Infra
                .UseSqlServer(result));
         }
 
-        public virtual List<Cliente> ObterTodos(TipoDeCliente? tipo = null) //Objetivo de filtrar por tipo clientes
+        public virtual List<Cliente> ObterTodos(TipoDeCliente? tipo = null)
         {
             var clientes = _dataConnection.GetTable<Cliente>();
 
