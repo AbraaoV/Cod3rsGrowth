@@ -36,7 +36,12 @@ namespace Cod3rsGrowth.Infra
         }
         public virtual void Atualizar(int id, Cliente cliente)
         {
-
+            Cliente procurarCliente = _dataConnection.GetTable<Cliente>().FirstOrDefault(c => c.Id == id);
+            procurarCliente.Nome = cliente.Nome;
+            procurarCliente.Id = cliente.Id;
+            procurarCliente.Cpf = cliente.Cpf;
+            procurarCliente.Cnpj = cliente.Cnpj;
+            procurarCliente.Tipo = cliente.Tipo;
         }
         public virtual void Deletar(int id)
         {

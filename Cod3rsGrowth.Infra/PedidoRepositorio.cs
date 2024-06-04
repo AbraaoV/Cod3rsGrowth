@@ -42,7 +42,13 @@ namespace Cod3rsGrowth.Infra
         }
         public virtual void Atualizar(int id, Pedido pedido)
         {
-
+            Pedido procurarPedido = _dataConnection.GetTable<Pedido>().FirstOrDefault(c => c.Id == id);
+            procurarPedido.Id = pedido.Id;
+            procurarPedido.ClienteId = pedido.ClienteId;
+            procurarPedido.Data = pedido.Data;
+            procurarPedido.NumeroCartao = pedido.NumeroCartao;
+            procurarPedido.Valor = pedido.Valor;
+            procurarPedido.FormaPagamento = pedido.FormaPagamento;
         }
         public virtual void Deletar(int id)
         {
