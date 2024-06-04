@@ -43,17 +43,19 @@ namespace Cod3rsGrowth.Infra
         public virtual void Atualizar(int id, Pedido pedido)
         {
             _dataConnection.GetTable<Pedido>()
-              .Where(p => p.Id == id)
-              .Set(p => p.ClienteId, pedido.ClienteId)
-              .Set(p => p.Data, pedido.Data)
-              .Set(p => p.NumeroCartao, pedido.NumeroCartao)
-              .Set(P => P.Valor, pedido.Valor)
-              .Set(p => p.FormaPagamento, pedido.FormaPagamento)
-              .Update();
+                .Where(p => p.Id == id)
+                .Set(p => p.ClienteId, pedido.ClienteId)
+                .Set(p => p.Data, pedido.Data)
+                .Set(p => p.NumeroCartao, pedido.NumeroCartao)
+                .Set(P => P.Valor, pedido.Valor)
+                .Set(p => p.FormaPagamento, pedido.FormaPagamento)
+                .Update();
         }
         public virtual void Deletar(int id)
         {
-
+            _dataConnection.GetTable<Pedido>()
+                .Where(p => p.Id == id)
+                .Delete();
         }
         public virtual void Adicionar(Pedido pedido)
         {

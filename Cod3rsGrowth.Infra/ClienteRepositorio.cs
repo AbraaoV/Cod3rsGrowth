@@ -46,7 +46,9 @@ namespace Cod3rsGrowth.Infra
         }
         public virtual void Deletar(int id)
         {
-
+            _dataConnection.GetTable<Cliente>()
+                .Where(p => p.Id == id)
+                .Delete();
         }
         public virtual void Adicionar(Cliente cliente)
         {
