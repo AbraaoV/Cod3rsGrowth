@@ -32,7 +32,8 @@ namespace Cod3rsGrowth.Infra
         }
         public virtual Cliente ObterPorId(int id)
         {
-            return new Cliente();
+            var clientes = _dataConnection.GetTable<Cliente>().Where(c => c.Id == id);
+            return (Cliente)clientes;
         }
         public virtual void Atualizar(int id, Cliente cliente)
         {
