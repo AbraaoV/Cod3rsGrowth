@@ -5,6 +5,7 @@ using FluentMigrator.Runner;
 using FluentMigrator.Runner.Initialization;
 using Microsoft.Extensions.DependencyInjection;
 using Cod3rsGrowth.Infra;
+using Cod3rsGrowth.Dominio;
 
 namespace Cod3rsGrowth.Forms
 {
