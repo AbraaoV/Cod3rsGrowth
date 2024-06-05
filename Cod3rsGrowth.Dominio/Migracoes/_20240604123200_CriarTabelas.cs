@@ -18,7 +18,7 @@ namespace Cod3rsGrowth.Dominio
                 .WithColumn("Id").AsInt32().PrimaryKey().Identity().NotNullable()
                 .WithColumn("ClienteId").AsInt32().ForeignKey("Cliente", "Id").NotNullable()
                 .WithColumn("Data").AsDateTime().NotNullable()
-                .WithColumn("NumeroCartao").AsString().NotNullable()
+                .WithColumn("NumeroCartao").AsString()
                 .WithColumn("Valor").AsDecimal().NotNullable()
                 .WithColumn("FormaPagamento").AsInt32().NotNullable();
         }
