@@ -1,6 +1,6 @@
 ﻿using FluentMigrator;
 
-namespace Cod3rsGrowth.Forms
+namespace Cod3rsGrowth.Dominio
 {
     [Migration(20240604123200)]
     public class AdicionarTabelas : Migration
@@ -10,8 +10,8 @@ namespace Cod3rsGrowth.Forms
             Create.Table("Cliente")
                 .WithColumn("Nome").AsString().NotNullable()
                 .WithColumn("Id").AsInt32().PrimaryKey().Identity().NotNullable()
-                .WithColumn("Cpf").AsString().NotNullable()
-                .WithColumn("Cnpj").AsString().NotNullable()
+                .WithColumn("Cpf").AsString()
+                .WithColumn("Cnpj").AsString()
                 .WithColumn("Tipo").AsInt32().NotNullable();
 
             Create.Table("Pedido")
