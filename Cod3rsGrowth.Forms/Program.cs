@@ -4,11 +4,11 @@ using System.Linq;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.Initialization;
 using Microsoft.Extensions.DependencyInjection;
-
+using Cod3rsGrowth.Infra;
 
 namespace Cod3rsGrowth.Forms
 {
-    internal static class Program
+    public static class Program
     {
         /// <summary>
         ///  The main entry point for the application.
@@ -25,7 +25,7 @@ namespace Cod3rsGrowth.Forms
         private static ServiceProvider CreateServices()
         {
             var appSettings = ConfigurationManager.AppSettings;
-            string result = appSettings["ConnectionString"];
+            string result = appSettings[ConstantesDosRepositorios.CONNECTION_STRING];
 
             return new ServiceCollection()
                 .AddFluentMigratorCore()
