@@ -1,5 +1,4 @@
 ﻿using Cod3rsGrowth.Dominio;
-using Cod3rsGrowth.Infra;
 using FluentValidation;
 using FluentValidation.Results;
 

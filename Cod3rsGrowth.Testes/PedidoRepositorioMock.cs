@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cod3rsGrowth.Dominio;
-using Cod3rsGrowth.Infra;
+using static Cod3rsGrowth.Dominio.Pedido;
 
 namespace Cod3rsGrowth.Testes
 {
     public class PedidoRepositorioMock : IPedidoRepositorio
     {
-        public List<Pedido> ObterTodos()
+        public List<Pedido> ObterTodos(Pagamentos? FormaPagamento = null)
         {
             return TabelaPedido.Instance;
         }

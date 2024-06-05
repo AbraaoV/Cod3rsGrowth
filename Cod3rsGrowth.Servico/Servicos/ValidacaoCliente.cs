@@ -1,9 +1,5 @@
 ﻿using Cod3rsGrowth.Dominio;
-using Cod3rsGrowth.Infra;
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Cod3rsGrowth.Servico.Servicos
 {
