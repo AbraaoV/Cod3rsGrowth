@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System.Xaml;
 using Cod3rsGrowth.Servico.Servicos;
 using FluentValidation;
+using Cod3rsGrowth.Dominio.Migracoes;
 
 namespace Cod3rsGrowth.Forms
 {
@@ -45,7 +46,7 @@ namespace Cod3rsGrowth.Forms
                 .ConfigureRunner(rb => rb
                     .AddSqlServer()
                     .WithGlobalConnectionString(result)
-                    .ScanIn(typeof(AdicionarTabelas).Assembly).For.Migrations())
+                    .ScanIn(typeof(AtualizarTabela).Assembly).For.Migrations())
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 .BuildServiceProvider(false);
         }
