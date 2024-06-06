@@ -22,17 +22,17 @@ namespace Cod3rsGrowth.Forms
         {
             //To customize application configuration such as set high DPI settings or default font,
             //see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            var host = CreateHostBuilder().Build();
-            ServiceProvider = host.Services;
-
-            Application.Run(ServiceProvider.GetRequiredService<Form1>());
-
             using (var serviceProvider = CreateServices())
             using (var scope = serviceProvider.CreateScope())
             {
                 UpdateDatabase(scope.ServiceProvider);
             }
+
+            ApplicationConfiguration.Initialize();
+            var host = CreateHostBuilder().Build();
+            ServiceProvider = host.Services;
+
+            Application.Run(ServiceProvider.GetRequiredService<Form1>());
         }
         private static ServiceProvider CreateServices()
         {
