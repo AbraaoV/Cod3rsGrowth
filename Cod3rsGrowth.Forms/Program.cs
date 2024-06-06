@@ -6,6 +6,9 @@ using FluentMigrator.Runner.Initialization;
 using Microsoft.Extensions.DependencyInjection;
 using Cod3rsGrowth.Infra;
 using Cod3rsGrowth.Dominio;
+using Microsoft.Extensions.Hosting;
+using System.Xaml;
+using Cod3rsGrowth.Servico.Servicos;
 
 namespace Cod3rsGrowth.Forms
 {
@@ -17,11 +20,19 @@ namespace Cod3rsGrowth.Forms
         [STAThread]
         static void Main()
         {
+            //To customize application configuration such as set high DPI settings or default font,
+            //see https://aka.ms/applicationconfiguration.
             using (var serviceProvider = CreateServices())
             using (var scope = serviceProvider.CreateScope())
             {
                 UpdateDatabase(scope.ServiceProvider);
             }
+
+            ApplicationConfiguration.Initialize();
+            var host = CreateHostBuilder().Build();
+            ServiceProvider = host.Services;
+
+            Application.Run(ServiceProvider.GetRequiredService<Form1>());
         }
         private static ServiceProvider CreateServices()
         {
@@ -45,11 +56,18 @@ namespace Cod3rsGrowth.Forms
 
             runner.MigrateUp();
         }
-        //To customize application configuration such as set high DPI settings or default font,
-        //see https://aka.ms/applicationconfiguration.
-        //ApplicationConfiguration.Initialize();
-        //Application.Run(new Form1());
 
-        
+
+        public static IServiceProvider ServiceProvider { get; private set; }
+        static IHostBuilder CreateHostBuilder()
+        {
+            return Host.CreateDefaultBuilder()
+                .ConfigureServices((context, services) => {
+                    services.AddTransient<ServicoCliente>();
+                    services.AddTransient<ServicoPedido>();
+                    services.AddTransient<Form1>();
+                });
+        }
+
     }
 }
