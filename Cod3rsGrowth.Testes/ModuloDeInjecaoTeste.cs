@@ -2,6 +2,7 @@
 using Cod3rsGrowth.Dominio;
 using Cod3rsGrowth.Servico.Servicos;
 using FluentValidation;
+using Cod3rsGrowth.Infra;
 
 namespace Cod3rsGrowth.Testes
 {
