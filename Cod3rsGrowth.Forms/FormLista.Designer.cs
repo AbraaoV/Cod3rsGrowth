@@ -29,14 +29,22 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             label1 = new Label();
             clienteBindingSource = new BindingSource(components);
             dataGridView1 = new DataGridView();
+            nomeDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            cpfDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            cnpjDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            tipoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            clienteBindingSource1 = new BindingSource(components);
             button1 = new Button();
             button2 = new Button();
             button3 = new Button();
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)clienteBindingSource1).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -53,7 +61,10 @@
             // 
             // dataGridView1
             // 
+            dataGridView1.AutoGenerateColumns = false;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { nomeDataGridViewTextBoxColumn, idDataGridViewTextBoxColumn, cpfDataGridViewTextBoxColumn, cnpjDataGridViewTextBoxColumn, tipoDataGridViewTextBoxColumn });
+            dataGridView1.DataSource = clienteBindingSource1;
             dataGridView1.Location = new Point(12, 62);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
@@ -61,6 +72,53 @@
             dataGridView1.Size = new Size(776, 376);
             dataGridView1.TabIndex = 1;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick_1;
+            dataGridView1.CellFormatting += dataGridView1_CellFormatting;
+            // 
+            // nomeDataGridViewTextBoxColumn
+            // 
+            nomeDataGridViewTextBoxColumn.DataPropertyName = "Nome";
+            nomeDataGridViewTextBoxColumn.HeaderText = "Nome";
+            nomeDataGridViewTextBoxColumn.MinimumWidth = 6;
+            nomeDataGridViewTextBoxColumn.Name = "nomeDataGridViewTextBoxColumn";
+            nomeDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // idDataGridViewTextBoxColumn
+            // 
+            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
+            idDataGridViewTextBoxColumn.HeaderText = "Id";
+            idDataGridViewTextBoxColumn.MinimumWidth = 6;
+            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            idDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // cpfDataGridViewTextBoxColumn
+            // 
+            cpfDataGridViewTextBoxColumn.DataPropertyName = "Cpf";
+            dataGridViewCellStyle1.Format = "###\\.###\\.###-##";
+            cpfDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            cpfDataGridViewTextBoxColumn.HeaderText = "Cpf";
+            cpfDataGridViewTextBoxColumn.MinimumWidth = 6;
+            cpfDataGridViewTextBoxColumn.Name = "cpfDataGridViewTextBoxColumn";
+            cpfDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // cnpjDataGridViewTextBoxColumn
+            // 
+            cnpjDataGridViewTextBoxColumn.DataPropertyName = "Cnpj";
+            cnpjDataGridViewTextBoxColumn.HeaderText = "Cnpj";
+            cnpjDataGridViewTextBoxColumn.MinimumWidth = 6;
+            cnpjDataGridViewTextBoxColumn.Name = "cnpjDataGridViewTextBoxColumn";
+            cnpjDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // tipoDataGridViewTextBoxColumn
+            // 
+            tipoDataGridViewTextBoxColumn.DataPropertyName = "Tipo";
+            tipoDataGridViewTextBoxColumn.HeaderText = "Tipo";
+            tipoDataGridViewTextBoxColumn.MinimumWidth = 6;
+            tipoDataGridViewTextBoxColumn.Name = "tipoDataGridViewTextBoxColumn";
+            tipoDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // clienteBindingSource1
+            // 
+            clienteBindingSource1.DataSource = typeof(Dominio.Cliente);
             // 
             // button1
             // 
@@ -88,7 +146,7 @@
             button3.TabIndex = 0;
             button3.Text = "Adicionar";
             button3.UseVisualStyleBackColor = true;
-            button3.Click += this.button3_Click;
+            button3.Click += button3_Click;
             // 
             // FormLista
             // 
@@ -101,10 +159,11 @@
             Controls.Add(dataGridView1);
             Controls.Add(label1);
             Name = "FormLista";
-            Text = "Form1";
+            Text = "FormLista";
             Load += FormLista_Load;
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)clienteBindingSource1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -117,5 +176,11 @@
         private Button button1;
         private Button button2;
         private Button button3;
+        private BindingSource clienteBindingSource1;
+        private DataGridViewTextBoxColumn nomeDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn cpfDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn cnpjDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn tipoDataGridViewTextBoxColumn;
     }
 }
