@@ -7,11 +7,16 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using ValidationException = FluentValidation.ValidationException;
 using FluentValidation.Results;
+using Cod3rsGrowth.Infra;
+using LinqToDB.Data;
+using System.Configuration;
+using LinqToDB;
 namespace Cod3rsGrowth.Testes
 {
     public class TesteServicoCliente : TesteBase
     {
         private readonly ServicoCliente _servicosCliente;
+        private readonly DataConnection _dataConnection;
         public TesteServicoCliente()
         {
             _servicosCliente = ServiceProvider.GetService<ServicoCliente>();

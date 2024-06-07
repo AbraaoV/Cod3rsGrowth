@@ -9,6 +9,8 @@ using Cod3rsGrowth.Dominio;
 using Microsoft.Extensions.Hosting;
 using System.Xaml;
 using Cod3rsGrowth.Servico.Servicos;
+using FluentValidation;
+using Cod3rsGrowth.Dominio.Migracoes;
 
 namespace Cod3rsGrowth.Forms
 {
@@ -32,7 +34,7 @@ namespace Cod3rsGrowth.Forms
             var host = CreateHostBuilder().Build();
             ServiceProvider = host.Services;
 
-            Application.Run(ServiceProvider.GetRequiredService<Form1>());
+            Application.Run(ServiceProvider.GetRequiredService<FormLista>());
         }
         private static ServiceProvider CreateServices()
         {
@@ -44,7 +46,7 @@ namespace Cod3rsGrowth.Forms
                 .ConfigureRunner(rb => rb
                     .AddSqlServer()
                     .WithGlobalConnectionString(result)
-                    .ScanIn(typeof(AdicionarTabelas).Assembly).For.Migrations())
+                    .ScanIn(typeof(AtualizarTabela).Assembly).For.Migrations())
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 .BuildServiceProvider(false);
         }
@@ -65,7 +67,11 @@ namespace Cod3rsGrowth.Forms
                 .ConfigureServices((context, services) => {
                     services.AddTransient<ServicoCliente>();
                     services.AddTransient<ServicoPedido>();
-                    services.AddTransient<Form1>();
+                    services.AddTransient<IClienteRepositorio, ClienteRepositorio>();
+                    services.AddTransient<IPedidoRepositorio, PedidoRepositorio>();
+                    services.AddScoped<IValidator<Cliente>, ValidacaoCliente>();
+                    services.AddScoped<IValidator<Pedido>, ValidacaoPedido>();
+                    services.AddTransient<FormLista>();
                 });
         }
 
