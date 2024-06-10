@@ -18,19 +18,14 @@ namespace Cod3rsGrowth.Forms
             InitializeComponent();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void buttonAdicionar_Click(object sender, EventArgs e)
         {
-
+            var adicionarClienteForm = new Cadastro_de_Cliente_Form(_servicoCliente);
+            adicionarClienteForm.Show();
         }
 
         private void FormLista_Load(object sender, EventArgs e)
         {
-            //var Clientes = _servicoCliente.ObterTodos();
-            //foreach (ITable<Cliente> cliente in Clientes)
-            //{
-            //    cliente.Cpf = formatarCpf(cliente.Cpf);
-            //}
-
             dataGridView1.DataSource = _servicoCliente.ObterTodos();
         }
 
@@ -61,12 +56,5 @@ namespace Cod3rsGrowth.Forms
                 }
             }
         }
-
-        public string formatarCpf(String Cpf)
-        {
-            string formatarCpf = Cpf;
-            return formatarCpf.Substring(0, 3) + "." + formatarCpf.Substring(3, 3) + "." + formatarCpf.Substring(6, 3) + "-" + formatarCpf.Substring(9, 2).ToUpper();
-        }
-
     }
 }

@@ -43,25 +43,25 @@ namespace Cod3rsGrowth.Servico.Servicos
                 .WithMessage("CNPJ inválido");
 
             
-            RuleSet(ConstantesDoValidador.ATUALIZAR, () =>
-            {
-                RuleFor(cliente => cliente.Id)
-                .Must(id =>
-                {
-                    return ValidarId(id) == true;
-                })
-                .WithMessage("Esse Id não existe.");
-            });
+            //RuleSet(ConstantesDoValidador.ATUALIZAR, () =>
+            //{
+            //    RuleFor(cliente => cliente.Id)
+            //    .Must(id =>
+            //    {
+            //        return ValidarId(id) == true;
+            //    })
+            //    .WithMessage("Esse Id não existe.");
+            //});
 
-            RuleSet(ConstantesDoValidador.REMOVER, () =>
-            {
-                RuleFor(cliente => cliente.Id)
-                .Must(id =>
-                {
-                    return ValidarId(id) == true;
-                })
-                .WithMessage("Esse Id não existe.");
-            });
+            //RuleSet(ConstantesDoValidador.REMOVER, () =>
+            //{
+            //    RuleFor(cliente => cliente.Id)
+            //    .Must(id =>
+            //    {
+            //        return ValidarId(id) == true;
+            //    })
+            //    .WithMessage("Esse Id não existe.");
+            //});
 
 
         }

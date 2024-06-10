@@ -146,7 +146,7 @@
             button3.TabIndex = 0;
             button3.Text = "Adicionar";
             button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            button3.Click += buttonAdicionar_Click;
             // 
             // FormLista
             // 
