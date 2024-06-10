@@ -23,10 +23,9 @@ namespace Cod3rsGrowth.Servico.Servicos
 
             RuleFor(cliente => cliente.Cpf)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Fisica)
+                .NotEmpty().When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Fisica)
                 .WithMessage("Para pessoa física, o Cpf é obrigatório.")
-                .Length(ConstantesDoValidador.QUANTIDADE_DE_NUMEROS_PARA_CPF)
+                .Length(ConstantesDoValidador.QUANTIDADE_DE_NUMEROS_PARA_CPF).When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Fisica)
                 .WithMessage("CPF inválido");
 
             RuleFor(cliente => cliente.Cpf)
@@ -36,32 +35,31 @@ namespace Cod3rsGrowth.Servico.Servicos
 
             RuleFor(cliente => cliente.Cnpj)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Juridica)
+                .NotEmpty().When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Juridica)
                 .WithMessage("Para pessoa júridica, o Cnpj é obrigatório.")
-                .Length(ConstantesDoValidador.QUANTIDADE_DE_NUMEROS_PARA_CNPJ)
+                .Length(ConstantesDoValidador.QUANTIDADE_DE_NUMEROS_PARA_CNPJ).When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Juridica)
                 .WithMessage("CNPJ inválido");
 
-            
-            //RuleSet(ConstantesDoValidador.ATUALIZAR, () =>
-            //{
-            //    RuleFor(cliente => cliente.Id)
-            //    .Must(id =>
-            //    {
-            //        return ValidarId(id) == true;
-            //    })
-            //    .WithMessage("Esse Id não existe.");
-            //});
 
-            //RuleSet(ConstantesDoValidador.REMOVER, () =>
-            //{
-            //    RuleFor(cliente => cliente.Id)
-            //    .Must(id =>
-            //    {
-            //        return ValidarId(id) == true;
-            //    })
-            //    .WithMessage("Esse Id não existe.");
-            //});
+            RuleSet(ConstantesDoValidador.ATUALIZAR, () =>
+            {
+                RuleFor(cliente => cliente.Id)
+                .Must(id =>
+                {
+                    return ValidarId(id) == true;
+                })
+                .WithMessage("Esse Id não existe.");
+            });
+
+            RuleSet(ConstantesDoValidador.REMOVER, () =>
+            {
+                RuleFor(cliente => cliente.Id)
+                .Must(id =>
+                {
+                    return ValidarId(id) == true;
+                })
+                .WithMessage("Esse Id não existe.");
+            });
 
 
         }

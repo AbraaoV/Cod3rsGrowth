@@ -20,8 +20,14 @@ namespace Cod3rsGrowth.Forms
 
         private void buttonAdicionar_Click(object sender, EventArgs e)
         {
-            var adicionarClienteForm = new Cadastro_de_Cliente_Form(_servicoCliente);
-            adicionarClienteForm.Show();
+            using (FormCadastroDeCliente novoCliente = new FormCadastroDeCliente(_servicoCliente) { })
+            {
+                if(novoCliente.ShowDialog() == DialogResult.OK)
+                {
+                    dataGridView1.DataSource = _servicoCliente.ObterTodos();
+                }
+            }
+
         }
 
         private void FormLista_Load(object sender, EventArgs e)
@@ -38,7 +44,7 @@ namespace Cod3rsGrowth.Forms
         {
             if (e.ColumnIndex == 2)
             {
-                if(e.Value is string)
+                if (e.Value is string && e.Value != "")
                 {
                     string valor = (string)e.Value;
                     e.Value = valor.Substring(0, 3) + "." + valor.Substring(3, 3) + "." + valor.Substring(6, 3) + "-" + valor.Substring(9, 2).ToUpper();
@@ -48,10 +54,10 @@ namespace Cod3rsGrowth.Forms
 
             if (e.ColumnIndex == 3)
             {
-                if (e.Value is string)
+                if (e.Value is string && e.Value != "")
                 {
                     string valor = (string)e.Value;
-                    e.Value = valor.Substring(0, 2) + "." + valor.Substring(2, 3) + "." + valor.Substring(5, 3) + "/" + valor.Substring(8, 4) + "-" + valor.Substring(12, 2).ToUpper();
+                    e.Value = valor.Substring(0, 2) + "." + valor.Substring(2, 3) + "." + valor.Substring(5, 3) + "/" + valor.Substring(8, 4) + "-" + valor.Substring(12, 2).ToString();
                     e.FormattingApplied = true;
                 }
             }

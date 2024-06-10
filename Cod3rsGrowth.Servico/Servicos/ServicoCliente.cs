@@ -26,7 +26,7 @@ namespace Cod3rsGrowth.Servico.Servicos
         }
         public void Adicionar(Cliente cliente)
         {
-            //_validarCliente.ValidateAndThrow(cliente);
+            _validarCliente.ValidateAndThrow(cliente);
             _clienteRepositorio.Adicionar(cliente);
         }
         public void Atualizar(int id, Cliente cliente)
