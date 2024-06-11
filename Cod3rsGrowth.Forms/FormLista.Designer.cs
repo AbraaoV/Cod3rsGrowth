@@ -80,6 +80,7 @@
             nomeDataGridViewTextBoxColumn.HeaderText = "Nome";
             nomeDataGridViewTextBoxColumn.MinimumWidth = 6;
             nomeDataGridViewTextBoxColumn.Name = "nomeDataGridViewTextBoxColumn";
+            nomeDataGridViewTextBoxColumn.ReadOnly = true;
             nomeDataGridViewTextBoxColumn.Width = 125;
             // 
             // idDataGridViewTextBoxColumn
@@ -88,6 +89,7 @@
             idDataGridViewTextBoxColumn.HeaderText = "Id";
             idDataGridViewTextBoxColumn.MinimumWidth = 6;
             idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            idDataGridViewTextBoxColumn.ReadOnly = true;
             idDataGridViewTextBoxColumn.Width = 125;
             // 
             // cpfDataGridViewTextBoxColumn
@@ -98,6 +100,7 @@
             cpfDataGridViewTextBoxColumn.HeaderText = "Cpf";
             cpfDataGridViewTextBoxColumn.MinimumWidth = 6;
             cpfDataGridViewTextBoxColumn.Name = "cpfDataGridViewTextBoxColumn";
+            cpfDataGridViewTextBoxColumn.ReadOnly = true;
             cpfDataGridViewTextBoxColumn.Width = 125;
             // 
             // cnpjDataGridViewTextBoxColumn
@@ -106,6 +109,7 @@
             cnpjDataGridViewTextBoxColumn.HeaderText = "Cnpj";
             cnpjDataGridViewTextBoxColumn.MinimumWidth = 6;
             cnpjDataGridViewTextBoxColumn.Name = "cnpjDataGridViewTextBoxColumn";
+            cnpjDataGridViewTextBoxColumn.ReadOnly = true;
             cnpjDataGridViewTextBoxColumn.Width = 125;
             // 
             // tipoDataGridViewTextBoxColumn
@@ -114,6 +118,7 @@
             tipoDataGridViewTextBoxColumn.HeaderText = "Tipo";
             tipoDataGridViewTextBoxColumn.MinimumWidth = 6;
             tipoDataGridViewTextBoxColumn.Name = "tipoDataGridViewTextBoxColumn";
+            tipoDataGridViewTextBoxColumn.ReadOnly = true;
             tipoDataGridViewTextBoxColumn.Width = 125;
             // 
             // clienteBindingSource1

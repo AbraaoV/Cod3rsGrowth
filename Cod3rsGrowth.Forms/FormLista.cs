@@ -11,11 +11,14 @@ namespace Cod3rsGrowth.Forms
     public partial class FormLista : Form
     {
         private readonly ServicoCliente _servicoCliente;
-        public FormLista(ServicoCliente servicoCliente)
+        private readonly ServicoPedido _servicoPedido;
+        public FormLista(ServicoCliente servicoCliente, ServicoPedido servicoPedido)
         {
             _servicoCliente = servicoCliente;
+            _servicoPedido = servicoPedido;
 
             InitializeComponent();
+            dataGridView1.DataSource = _servicoCliente.ObterTodos();
         }
 
         private void buttonAdicionar_Click(object sender, EventArgs e)
@@ -32,13 +35,19 @@ namespace Cod3rsGrowth.Forms
 
         private void FormLista_Load(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = _servicoCliente.ObterTodos();
+  
         }
 
         private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow linha = this.dataGridView1.Rows[e.RowIndex];
+                int clienteId = (int)linha.Cells["idDataGridViewTextBoxColumn"].Value;
 
-
+                FormPedido formPedido = new FormPedido(_servicoPedido, clienteId);
+                formPedido.Show();
+            }
         }
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {

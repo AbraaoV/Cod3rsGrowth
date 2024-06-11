@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Cod3rsGrowth.Dominio;
 using FluentValidation.Results;
 using FluentValidation;
+using static Cod3rsGrowth.Dominio.Pedido;
 
 namespace Cod3rsGrowth.Servico.Servicos
 {
@@ -19,9 +20,9 @@ namespace Cod3rsGrowth.Servico.Servicos
             _pedidoRepositorio = pedidoRepositorio;
             _validarPedido = validator;
         }
-        public List<Pedido> ObterTodos()
+        public List<Pedido> ObterTodos(Pagamentos? FormaPagamento, int? clienteId)
         {
-            var pedidos = _pedidoRepositorio.ObterTodos();
+            var pedidos = _pedidoRepositorio.ObterTodos(FormaPagamento, clienteId);
             return pedidos;
         }
         public Pedido ObterPorId(int id)
