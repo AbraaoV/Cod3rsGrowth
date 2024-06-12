@@ -32,13 +32,13 @@
             labelCnpj = new Label();
             labelCpf = new Label();
             labelPessoa = new Label();
-            textBoxCpf = new TextBox();
-            textBoxCnpj = new TextBox();
             checkBoxTipoFisica = new CheckBox();
             checkBoxTipoJuridica = new CheckBox();
             textBoxNome = new TextBox();
             buttonAdicionar = new Button();
             buttonCancelar = new Button();
+            maskedTextBoxCpf = new MaskedTextBox();
+            maskedTextBoxCnpj = new MaskedTextBox();
             SuspendLayout();
             // 
             // labelNome
@@ -81,22 +81,6 @@
             labelPessoa.TabIndex = 3;
             labelPessoa.Text = "Pessoa";
             labelPessoa.Click += labelPessoa_Click;
-            // 
-            // textBoxCpf
-            // 
-            textBoxCpf.Location = new Point(12, 95);
-            textBoxCpf.Name = "textBoxCpf";
-            textBoxCpf.Size = new Size(360, 30);
-            textBoxCpf.TabIndex = 5;
-            textBoxCpf.TextChanged += textBoxCpf_TextChanged;
-            // 
-            // textBoxCnpj
-            // 
-            textBoxCnpj.Location = new Point(14, 154);
-            textBoxCnpj.Name = "textBoxCnpj";
-            textBoxCnpj.Size = new Size(360, 30);
-            textBoxCnpj.TabIndex = 6;
-            textBoxCnpj.TextChanged += textBoxCnpj_TextChanged;
             // 
             // checkBoxTipoFisica
             // 
@@ -147,6 +131,26 @@
             buttonCancelar.Text = "Cancelar";
             buttonCancelar.UseVisualStyleBackColor = true;
             // 
+            // maskedTextBoxCpf
+            // 
+            maskedTextBoxCpf.Location = new Point(12, 95);
+            maskedTextBoxCpf.Mask = "999,999,999-99";
+            maskedTextBoxCpf.Name = "maskedTextBoxCpf";
+            maskedTextBoxCpf.Size = new Size(356, 30);
+            maskedTextBoxCpf.TabIndex = 12;
+            maskedTextBoxCpf.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
+            maskedTextBoxCpf.MaskInputRejected += maskedTextBoxCpf_MaskInputRejected;
+            // 
+            // maskedTextBoxCnpj
+            // 
+            maskedTextBoxCnpj.Location = new Point(14, 154);
+            maskedTextBoxCnpj.Mask = "99,999,999/9999-99";
+            maskedTextBoxCnpj.Name = "maskedTextBoxCnpj";
+            maskedTextBoxCnpj.Size = new Size(354, 30);
+            maskedTextBoxCnpj.TabIndex = 13;
+            maskedTextBoxCnpj.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
+            maskedTextBoxCnpj.MaskInputRejected += maskedTextBoxCnpj_MaskInputRejected;
+            // 
             // FormCadastroDeCliente
             // 
             AcceptButton = buttonAdicionar;
@@ -154,13 +158,13 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = buttonCancelar;
             ClientSize = new Size(384, 412);
+            Controls.Add(maskedTextBoxCnpj);
+            Controls.Add(maskedTextBoxCpf);
             Controls.Add(buttonCancelar);
             Controls.Add(buttonAdicionar);
             Controls.Add(textBoxNome);
             Controls.Add(checkBoxTipoJuridica);
             Controls.Add(checkBoxTipoFisica);
-            Controls.Add(textBoxCnpj);
-            Controls.Add(textBoxCpf);
             Controls.Add(labelPessoa);
             Controls.Add(labelCpf);
             Controls.Add(labelCnpj);
@@ -179,12 +183,12 @@
         private Label labelCnpj;
         private Label labelCpf;
         private Label labelPessoa;
-        private TextBox textBoxCpf;
-        private TextBox textBoxCnpj;
         private CheckBox checkBoxTipoFisica;
         private CheckBox checkBoxTipoJuridica;
         private TextBox textBoxNome;
         private Button buttonAdicionar;
         private Button buttonCancelar;
+        private MaskedTextBox maskedTextBoxCpf;
+        private MaskedTextBox maskedTextBoxCnpj;
     }
 }

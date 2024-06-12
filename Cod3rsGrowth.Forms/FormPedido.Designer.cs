@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            dataGridView1 = new DataGridView();
+            dataGridViewPedido = new DataGridView();
             idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             clienteIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             dataDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
@@ -41,24 +41,25 @@
             buttonRemover = new Button();
             buttonEditar = new Button();
             buttonAdicionar = new Button();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewPedido).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pedidoBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).BeginInit();
             SuspendLayout();
             // 
-            // dataGridView1
+            // dataGridViewPedido
             // 
-            dataGridView1.AutoGenerateColumns = false;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, clienteIdDataGridViewTextBoxColumn, dataDataGridViewTextBoxColumn, numeroCartaoDataGridViewTextBoxColumn, valorDataGridViewTextBoxColumn, formaPagamentoDataGridViewTextBoxColumn });
-            dataGridView1.DataSource = pedidoBindingSource;
-            dataGridView1.Location = new Point(12, 61);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.RowTemplate.Height = 29;
-            dataGridView1.Size = new Size(776, 377);
-            dataGridView1.TabIndex = 0;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            dataGridViewPedido.AutoGenerateColumns = false;
+            dataGridViewPedido.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewPedido.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, clienteIdDataGridViewTextBoxColumn, dataDataGridViewTextBoxColumn, numeroCartaoDataGridViewTextBoxColumn, valorDataGridViewTextBoxColumn, formaPagamentoDataGridViewTextBoxColumn });
+            dataGridViewPedido.DataSource = pedidoBindingSource;
+            dataGridViewPedido.Location = new Point(12, 61);
+            dataGridViewPedido.Name = "dataGridViewPedido";
+            dataGridViewPedido.RowHeadersWidth = 51;
+            dataGridViewPedido.RowTemplate.Height = 29;
+            dataGridViewPedido.Size = new Size(776, 377);
+            dataGridViewPedido.TabIndex = 0;
+            dataGridViewPedido.CellContentClick += dataGridView1_CellContentClick;
+            dataGridViewPedido.CellFormatting += dataGridViewPedido_CellFormatting;
             // 
             // idDataGridViewTextBoxColumn
             // 
@@ -152,10 +153,10 @@
             Controls.Add(buttonAdicionar);
             Controls.Add(buttonEditar);
             Controls.Add(buttonRemover);
-            Controls.Add(dataGridView1);
+            Controls.Add(dataGridViewPedido);
             Name = "FormPedido";
             Text = "FormPedido";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewPedido).EndInit();
             ((System.ComponentModel.ISupportInitialize)pedidoBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).EndInit();
             ResumeLayout(false);
@@ -163,7 +164,7 @@
 
         #endregion
 
-        private DataGridView dataGridView1;
+        private DataGridView dataGridViewPedido;
         private BindingSource pedidoBindingSource;
         private BindingSource clienteBindingSource;
         private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;

@@ -35,7 +35,7 @@ namespace Cod3rsGrowth.Forms
 
         private void checkBoxFisica_CheckedChanged(object sender, EventArgs e)
         {
-       
+
         }
         private void checkBoxJuridica_CheckedChanged(object sender, EventArgs e)
         {
@@ -58,25 +58,25 @@ namespace Cod3rsGrowth.Forms
                 var clienteAdicionado = new Cliente()
                 {
                     Nome = textBoxNome.Text,
-                    Cpf = textBoxCpf.Text,
-                    Cnpj = textBoxCnpj.Text,
+                    Cpf = maskedTextBoxCpf.Text.Replace(".", "").Replace("-", ""),
+                    Cnpj = maskedTextBoxCnpj.Text.Replace(".", "").Replace("/", "").Replace("-", ""),
                     Tipo = tipo,
                 };
 
                 _servicoCliente.Adicionar(clienteAdicionado);
                 DialogResult = DialogResult.OK;
             }
-            catch(ValidationException ex)
+            catch (ValidationException ex)
             {
                 string mensagemErro = "";
 
-                foreach(var erro  in ex.Errors)
+                foreach (var erro in ex.Errors)
                 {
                     mensagemErro += erro.ErrorMessage + "\n";
                 }
                 MessageBox.Show(mensagemErro);
             }
-            
+
 
         }
 
@@ -96,6 +96,16 @@ namespace Cod3rsGrowth.Forms
         }
 
         private void labelCpf_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void maskedTextBoxCpf_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void maskedTextBoxCnpj_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
         {
 
         }

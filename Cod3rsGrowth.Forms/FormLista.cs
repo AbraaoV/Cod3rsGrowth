@@ -5,6 +5,7 @@ using LinqToDB;
 using System.Data;
 using System.Configuration;
 using Cod3rsGrowth.Servico.Servicos;
+using System.Windows.Forms;
 
 namespace Cod3rsGrowth.Forms
 {
@@ -12,22 +13,24 @@ namespace Cod3rsGrowth.Forms
     {
         private readonly ServicoCliente _servicoCliente;
         private readonly ServicoPedido _servicoPedido;
+        private int _clienteId;
         public FormLista(ServicoCliente servicoCliente, ServicoPedido servicoPedido)
         {
             _servicoCliente = servicoCliente;
             _servicoPedido = servicoPedido;
 
             InitializeComponent();
-            dataGridView1.DataSource = _servicoCliente.ObterTodos();
+
+            dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null);
         }
 
         private void buttonAdicionar_Click(object sender, EventArgs e)
         {
             using (FormCadastroDeCliente novoCliente = new FormCadastroDeCliente(_servicoCliente) { })
             {
-                if(novoCliente.ShowDialog() == DialogResult.OK)
+                if (novoCliente.ShowDialog() == DialogResult.OK)
                 {
-                    dataGridView1.DataSource = _servicoCliente.ObterTodos();
+                    dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null);
                 }
             }
 
@@ -35,19 +38,7 @@ namespace Cod3rsGrowth.Forms
 
         private void FormLista_Load(object sender, EventArgs e)
         {
-  
-        }
 
-        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                DataGridViewRow linha = this.dataGridView1.Rows[e.RowIndex];
-                int clienteId = (int)linha.Cells["idDataGridViewTextBoxColumn"].Value;
-
-                FormPedido formPedido = new FormPedido(_servicoPedido, clienteId);
-                formPedido.Show();
-            }
         }
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
@@ -71,5 +62,36 @@ namespace Cod3rsGrowth.Forms
                 }
             }
         }
+        public void AbrirPedidos(int clienteId)
+        {
+            FormPedido formPedido = new FormPedido(_servicoPedido, clienteId);
+            formPedido.Show();
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
+        private void dataGridViewCliente_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (e.RowIndex >= 0)
+                {
+                    DataGridViewRow linha = this.dataGridViewCliente.Rows[e.RowIndex];
+                    int clienteId = (int)linha.Cells["idDataGridViewTextBoxColumn"].Value;
+
+
+                    ContextMenuStrip contextMenu = new ContextMenuStrip();
+                    ToolStripMenuItem menuItem = new ToolStripMenuItem("Pedidos");
+                    menuItem.Click += (s, args) => AbrirPedidos(clienteId);
+                    contextMenu.Items.Add(menuItem);
+
+                    dataGridViewCliente.ContextMenuStrip = contextMenu;
+                }
+            }
+        }
+
     }
 }

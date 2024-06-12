@@ -131,6 +131,7 @@
             // 
             // numericUpDownValor
             // 
+            numericUpDownValor.DecimalPlaces = 2;
             numericUpDownValor.Location = new Point(12, 148);
             numericUpDownValor.Name = "numericUpDownValor";
             numericUpDownValor.Size = new Size(360, 27);

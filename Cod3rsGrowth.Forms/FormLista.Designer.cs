@@ -32,7 +32,7 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             label1 = new Label();
             clienteBindingSource = new BindingSource(components);
-            dataGridView1 = new DataGridView();
+            dataGridViewCliente = new DataGridView();
             nomeDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             cpfDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
@@ -42,9 +42,12 @@
             button1 = new Button();
             button2 = new Button();
             button3 = new Button();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            pedidosToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewCliente).BeginInit();
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource1).BeginInit();
+            contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -59,20 +62,20 @@
             // 
             clienteBindingSource.DataSource = typeof(Dominio.Cliente);
             // 
-            // dataGridView1
+            // dataGridViewCliente
             // 
-            dataGridView1.AutoGenerateColumns = false;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { nomeDataGridViewTextBoxColumn, idDataGridViewTextBoxColumn, cpfDataGridViewTextBoxColumn, cnpjDataGridViewTextBoxColumn, tipoDataGridViewTextBoxColumn });
-            dataGridView1.DataSource = clienteBindingSource1;
-            dataGridView1.Location = new Point(12, 62);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.RowTemplate.Height = 29;
-            dataGridView1.Size = new Size(776, 376);
-            dataGridView1.TabIndex = 1;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick_1;
-            dataGridView1.CellFormatting += dataGridView1_CellFormatting;
+            dataGridViewCliente.AutoGenerateColumns = false;
+            dataGridViewCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCliente.Columns.AddRange(new DataGridViewColumn[] { nomeDataGridViewTextBoxColumn, idDataGridViewTextBoxColumn, cpfDataGridViewTextBoxColumn, cnpjDataGridViewTextBoxColumn, tipoDataGridViewTextBoxColumn });
+            dataGridViewCliente.DataSource = clienteBindingSource1;
+            dataGridViewCliente.Location = new Point(12, 62);
+            dataGridViewCliente.Name = "dataGridViewCliente";
+            dataGridViewCliente.RowHeadersWidth = 51;
+            dataGridViewCliente.RowTemplate.Height = 29;
+            dataGridViewCliente.Size = new Size(776, 376);
+            dataGridViewCliente.TabIndex = 1;
+            dataGridViewCliente.CellFormatting += dataGridView1_CellFormatting;
+            dataGridViewCliente.CellMouseDown += dataGridViewCliente_CellMouseDown;
             // 
             // nomeDataGridViewTextBoxColumn
             // 
@@ -153,6 +156,20 @@
             button3.UseVisualStyleBackColor = true;
             button3.Click += buttonAdicionar_Click;
             // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.ImageScalingSize = new Size(20, 20);
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { pedidosToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(131, 28);
+            contextMenuStrip1.Opening += contextMenuStrip1_Opening;
+            // 
+            // pedidosToolStripMenuItem
+            // 
+            pedidosToolStripMenuItem.Name = "pedidosToolStripMenuItem";
+            pedidosToolStripMenuItem.Size = new Size(130, 24);
+            pedidosToolStripMenuItem.Text = "Pedidos";
+            // 
             // FormLista
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -161,14 +178,15 @@
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(button1);
-            Controls.Add(dataGridView1);
+            Controls.Add(dataGridViewCliente);
             Controls.Add(label1);
             Name = "FormLista";
             Text = "FormLista";
             Load += FormLista_Load;
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewCliente).EndInit();
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource1).EndInit();
+            contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -177,7 +195,7 @@
 
         private Label label1;
         private BindingSource clienteBindingSource;
-        private DataGridView dataGridView1;
+        private DataGridView dataGridViewCliente;
         private Button button1;
         private Button button2;
         private Button button3;
@@ -187,5 +205,7 @@
         private DataGridViewTextBoxColumn cpfDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn cnpjDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn tipoDataGridViewTextBoxColumn;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem pedidosToolStripMenuItem;
     }
 }

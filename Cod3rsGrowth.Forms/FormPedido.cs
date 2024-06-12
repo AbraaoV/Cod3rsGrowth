@@ -23,7 +23,7 @@ namespace Cod3rsGrowth.Forms
             _clienteId = clienteId;
 
             InitializeComponent();
-            dataGridView1.DataSource = _servicoPedido.ObterTodos(null, clienteId);
+            dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(null, clienteId);
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs idDataGridViewTextBoxColumn)
@@ -37,9 +37,14 @@ namespace Cod3rsGrowth.Forms
             {
                 if (novoPedido.ShowDialog() == DialogResult.OK)
                 {
-                    dataGridView1.DataSource = _servicoPedido.ObterTodos(null, _clienteId);
+                    dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(null, _clienteId);
                 }
             }
+        }
+
+        private void dataGridViewPedido_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            dataGridViewPedido.Columns["valorDataGridViewTextBoxColumn"].DefaultCellStyle.Format = "N2";
         }
     }
 }
