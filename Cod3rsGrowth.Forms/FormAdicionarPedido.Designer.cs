@@ -144,6 +144,7 @@
             maskedTextBoxCartao.Name = "maskedTextBoxCartao";
             maskedTextBoxCartao.Size = new Size(360, 27);
             maskedTextBoxCartao.TabIndex = 11;
+            maskedTextBoxCartao.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
             maskedTextBoxCartao.MaskInputRejected += maskedTextBoxCartao_MaskInputRejected;
             // 
             // FormAdicionarPedido
