@@ -117,7 +117,7 @@
             buttonAdicionar.TabIndex = 8;
             buttonAdicionar.Text = "Adicionar";
             buttonAdicionar.UseVisualStyleBackColor = true;
-            buttonAdicionar.Click += buttonAdicionar_Click;
+            buttonAdicionar.Click += AoClicarNoBotaoAdicionar;
             // 
             // buttonCancelar
             // 
@@ -165,7 +165,7 @@
             Controls.Add(labelCartao);
             Controls.Add(labelData);
             Name = "FormAdicionarPedido";
-            Text = "FormAdicionarPedido";
+            Text = "Adicionar Pedido";
             Load += FormAdicionarPedido_Load;
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownValor).EndInit();

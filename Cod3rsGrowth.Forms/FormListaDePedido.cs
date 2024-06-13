@@ -13,11 +13,11 @@ using System.Windows.Forms;
 namespace Cod3rsGrowth.Forms
 {
 
-    public partial class FormPedido : Form
+    public partial class FormListaDePedido : Form
     {
         private readonly ServicoPedido _servicoPedido;
         private readonly int _clienteId;
-        public FormPedido(ServicoPedido servicoPedido, int clienteId)
+        public FormListaDePedido(ServicoPedido servicoPedido, int clienteId)
         {
             _servicoPedido = servicoPedido;
             _clienteId = clienteId;
@@ -31,7 +31,7 @@ namespace Cod3rsGrowth.Forms
 
         }
 
-        private void buttonAdicionar_Click(object sender, EventArgs e)
+        private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
         {
             using (FormAdicionarPedido novoPedido = new FormAdicionarPedido(_servicoPedido, _clienteId) { })
             {
@@ -44,7 +44,7 @@ namespace Cod3rsGrowth.Forms
 
         private void dataGridViewPedido_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            dataGridViewPedido.Columns["valorDataGridViewTextBoxColumn"].DefaultCellStyle.Format = "N2";
+            dataGridViewPedido.Columns[Constantes.COLUNA_VALOR_TABELA_PEDIDO].DefaultCellStyle.Format = Constantes.DUAS_CASAS_APOS_VIRGULA;
         }
     }
 }

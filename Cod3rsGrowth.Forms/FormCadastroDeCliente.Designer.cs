@@ -120,7 +120,7 @@
             buttonAdicionar.TabIndex = 10;
             buttonAdicionar.Text = "Adicionar";
             buttonAdicionar.UseVisualStyleBackColor = true;
-            buttonAdicionar.Click += button1_Click;
+            buttonAdicionar.Click += AoClicarNoBotaoDeAdicionar;
             // 
             // buttonCancelar
             // 

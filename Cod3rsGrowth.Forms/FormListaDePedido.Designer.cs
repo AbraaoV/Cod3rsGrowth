@@ -1,6 +1,6 @@
 ﻿namespace Cod3rsGrowth.Forms
 {
-    partial class FormPedido
+    partial class FormListaDePedido
     {
         /// <summary>
         /// Required designer variable.
@@ -143,7 +143,7 @@
             buttonAdicionar.TabIndex = 3;
             buttonAdicionar.Text = "Adicionar";
             buttonAdicionar.UseVisualStyleBackColor = true;
-            buttonAdicionar.Click += buttonAdicionar_Click;
+            buttonAdicionar.Click += AoClicarNoBotaoAdicionar;
             // 
             // FormPedido
             // 
@@ -155,7 +155,7 @@
             Controls.Add(buttonRemover);
             Controls.Add(dataGridViewPedido);
             Name = "FormPedido";
-            Text = "FormPedido";
+            Text = "Pedidos";
             ((System.ComponentModel.ISupportInitialize)dataGridViewPedido).EndInit();
             ((System.ComponentModel.ISupportInitialize)pedidoBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).EndInit();

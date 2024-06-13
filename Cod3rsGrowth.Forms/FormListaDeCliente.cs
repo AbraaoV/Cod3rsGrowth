@@ -9,12 +9,12 @@ using System.Windows.Forms;
 
 namespace Cod3rsGrowth.Forms
 {
-    public partial class FormLista : Form
+    public partial class FormListaDeCliente : Form
     {
         private readonly ServicoCliente _servicoCliente;
         private readonly ServicoPedido _servicoPedido;
         private int _clienteId;
-        public FormLista(ServicoCliente servicoCliente, ServicoPedido servicoPedido)
+        public FormListaDeCliente(ServicoCliente servicoCliente, ServicoPedido servicoPedido)
         {
             _servicoCliente = servicoCliente;
             _servicoPedido = servicoPedido;
@@ -24,7 +24,7 @@ namespace Cod3rsGrowth.Forms
             dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null);
         }
 
-        private void buttonAdicionar_Click(object sender, EventArgs e)
+        private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
         {
             using (FormCadastroDeCliente novoCliente = new FormCadastroDeCliente(_servicoCliente) { })
             {
@@ -44,7 +44,7 @@ namespace Cod3rsGrowth.Forms
         {
             if (e.ColumnIndex == 2)
             {
-                if (e.Value is string && e.Value != "")
+                if (e.Value is string && e.Value != string.Empty)
                 {
                     string valor = (string)e.Value;
                     e.Value = valor.Substring(0, 3) + "." + valor.Substring(3, 3) + "." + valor.Substring(6, 3) + "-" + valor.Substring(9, 2).ToUpper();
@@ -54,7 +54,7 @@ namespace Cod3rsGrowth.Forms
 
             if (e.ColumnIndex == 3)
             {
-                if (e.Value is string && e.Value != "")
+                if (e.Value is string && e.Value != string.Empty)
                 {
                     string valor = (string)e.Value;
                     e.Value = valor.Substring(0, 2) + "." + valor.Substring(2, 3) + "." + valor.Substring(5, 3) + "/" + valor.Substring(8, 4) + "-" + valor.Substring(12, 2).ToString();
@@ -64,7 +64,7 @@ namespace Cod3rsGrowth.Forms
         }
         public void AbrirPedidos(int clienteId)
         {
-            FormPedido formPedido = new FormPedido(_servicoPedido, clienteId);
+            FormListaDePedido formPedido = new FormListaDePedido(_servicoPedido, clienteId);
             formPedido.Show();
         }
 
@@ -80,11 +80,11 @@ namespace Cod3rsGrowth.Forms
                 if (e.RowIndex >= 0)
                 {
                     DataGridViewRow linha = this.dataGridViewCliente.Rows[e.RowIndex];
-                    int clienteId = (int)linha.Cells["idDataGridViewTextBoxColumn"].Value;
+                    int clienteId = (int)linha.Cells[Constantes.COLUNA_ID_TABELA_CLIENTE].Value;
 
 
                     ContextMenuStrip contextMenu = new ContextMenuStrip();
-                    ToolStripMenuItem menuItem = new ToolStripMenuItem("Pedidos");
+                    ToolStripMenuItem menuItem = new ToolStripMenuItem(Constantes.OPCAO_DO_TOOL_STRIP_MENU);
                     menuItem.Click += (s, args) => AbrirPedidos(clienteId);
                     contextMenu.Items.Add(menuItem);
 
@@ -93,5 +93,9 @@ namespace Cod3rsGrowth.Forms
             }
         }
 
+        private void dataGridViewCliente_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+             
+        }
     }
 }

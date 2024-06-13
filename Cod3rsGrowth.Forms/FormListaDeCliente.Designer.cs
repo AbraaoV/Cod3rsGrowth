@@ -1,6 +1,6 @@
 ﻿namespace Cod3rsGrowth.Forms
 {
-    partial class FormLista
+    partial class FormListaDeCliente
     {
         /// <summary>
         ///  Required designer variable.
@@ -74,6 +74,7 @@
             dataGridViewCliente.RowTemplate.Height = 29;
             dataGridViewCliente.Size = new Size(776, 376);
             dataGridViewCliente.TabIndex = 1;
+            dataGridViewCliente.CellContentClick += dataGridViewCliente_CellContentClick;
             dataGridViewCliente.CellFormatting += dataGridView1_CellFormatting;
             dataGridViewCliente.CellMouseDown += dataGridViewCliente_CellMouseDown;
             // 
@@ -154,7 +155,7 @@
             button3.TabIndex = 0;
             button3.Text = "Adicionar";
             button3.UseVisualStyleBackColor = true;
-            button3.Click += buttonAdicionar_Click;
+            button3.Click += AoClicarNoBotaoAdicionar;
             // 
             // contextMenuStrip1
             // 
@@ -170,7 +171,7 @@
             pedidosToolStripMenuItem.Size = new Size(130, 24);
             pedidosToolStripMenuItem.Text = "Pedidos";
             // 
-            // FormLista
+            // FormListaDeCliente
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -180,8 +181,8 @@
             Controls.Add(button1);
             Controls.Add(dataGridViewCliente);
             Controls.Add(label1);
-            Name = "FormLista";
-            Text = "FormLista";
+            Name = "FormListaDeCliente";
+            Text = "Clientes";
             Load += FormLista_Load;
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewCliente).EndInit();

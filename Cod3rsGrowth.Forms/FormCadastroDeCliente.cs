@@ -41,11 +41,11 @@ namespace Cod3rsGrowth.Forms
         {
 
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void AoClicarNoBotaoDeAdicionar(object sender, EventArgs e)
         {
             try
             {
-                Cliente.TipoDeCliente tipo = 0;
+                Cliente.TipoDeCliente tipo = Constantes.ENUM_INDEFINIDO;
                 if (checkBoxTipoFisica.Checked)
                 {
                     tipo = Cliente.TipoDeCliente.Fisica;
@@ -58,8 +58,8 @@ namespace Cod3rsGrowth.Forms
                 var clienteAdicionado = new Cliente()
                 {
                     Nome = textBoxNome.Text,
-                    Cpf = maskedTextBoxCpf.Text.Replace(".", "").Replace("-", ""),
-                    Cnpj = maskedTextBoxCnpj.Text.Replace(".", "").Replace("/", "").Replace("-", ""),
+                    Cpf = maskedTextBoxCpf.Text.Replace(".", string.Empty).Replace("-", string.Empty),
+                    Cnpj = maskedTextBoxCnpj.Text.Replace(".", string.Empty).Replace("/", string.Empty).Replace("-", string.Empty),
                     Tipo = tipo,
                 };
 

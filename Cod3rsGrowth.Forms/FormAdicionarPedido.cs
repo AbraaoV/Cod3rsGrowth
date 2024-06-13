@@ -25,20 +25,20 @@ namespace Cod3rsGrowth.Forms
 
         }
 
-        private void buttonAdicionar_Click(object sender, EventArgs e)
+        private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
         {
             try
             {
-                Pedido.Pagamentos pagamento = 0l;
-                if (comboBoxFormaPagamento.SelectedIndex == 0)
+                Pedido.Pagamentos pagamento = Constantes.ENUM_INDEFINIDO;
+                if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDEX_CARTAO)
                 {
                     pagamento = Pedido.Pagamentos.Cartao;
                 }
-                else if (comboBoxFormaPagamento.SelectedIndex == 1)
+                else if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDEX_PIX)
                 {
                     pagamento = Pedido.Pagamentos.Pix;
                 }
-                else if (comboBoxFormaPagamento.SelectedIndex == 2)
+                else if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDEX_BOLETO)
                 {
                     pagamento = Pedido.Pagamentos.Boleto;
                 }
