@@ -14,17 +14,6 @@ namespace Cod3rsGrowth.Forms
             _clienteId = clienteId;
             InitializeComponent();
         }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBoxFormaPagamento_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
         {
             try
@@ -64,27 +53,6 @@ namespace Cod3rsGrowth.Forms
                 }
                 MessageBox.Show(mensagemErro);
             }
-
-        }
-
-        private void dateTimePickerPedido_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void FormAdicionarPedido_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void maskedTextBoxCartao_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
-        {
-
-        }
-
-        private void numericUpDownValor_ValueChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

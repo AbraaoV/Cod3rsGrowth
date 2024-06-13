@@ -58,7 +58,6 @@
             dataGridViewPedido.RowTemplate.Height = 29;
             dataGridViewPedido.Size = new Size(776, 377);
             dataGridViewPedido.TabIndex = 0;
-            dataGridViewPedido.CellContentClick += dataGridView1_CellContentClick;
             dataGridViewPedido.CellFormatting += dataGridViewPedido_CellFormatting;
             // 
             // idDataGridViewTextBoxColumn

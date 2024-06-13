@@ -12,27 +12,6 @@ namespace Cod3rsGrowth.Forms
             _servicoCliente = servicoCliente;
             InitializeComponent();
         }
-
-        private void Cadastro_De_Cliente_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelNome_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelCnpj_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelPessoa_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void checkBoxFisica_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxTipoFisica.Checked)
@@ -93,38 +72,6 @@ namespace Cod3rsGrowth.Forms
                 }
                 MessageBox.Show(mensagemErro);
             }
-
-
-        }
-
-        private void textBoxNome_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBoxCpf_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBoxCnpj_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelCpf_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void maskedTextBoxCpf_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
-        {
-
-        }
-
-        private void maskedTextBoxCnpj_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
-        {
-
         }
     }
 }

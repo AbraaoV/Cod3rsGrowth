@@ -74,9 +74,8 @@
             dataGridViewCliente.RowTemplate.Height = 29;
             dataGridViewCliente.Size = new Size(776, 376);
             dataGridViewCliente.TabIndex = 1;
-            dataGridViewCliente.CellContentClick += dataGridViewCliente_CellContentClick;
-            dataGridViewCliente.CellFormatting += dataGridView1_CellFormatting;
-            dataGridViewCliente.CellMouseDown += dataGridViewCliente_CellMouseDown;
+            dataGridViewCliente.CellFormatting += formatacaoListaCliente;
+            dataGridViewCliente.CellMouseDown += AoClicarComOBotaoDireitoNaListaPedido;
             // 
             // nomeDataGridViewTextBoxColumn
             // 
@@ -163,7 +162,6 @@
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { pedidosToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(131, 28);
-            contextMenuStrip1.Opening += contextMenuStrip1_Opening;
             // 
             // pedidosToolStripMenuItem
             // 
@@ -183,7 +181,6 @@
             Controls.Add(label1);
             Name = "FormListaDeCliente";
             Text = "Clientes";
-            Load += FormLista_Load;
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewCliente).EndInit();
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource1).EndInit();

@@ -26,11 +26,6 @@ namespace Cod3rsGrowth.Forms
             dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(null, clienteId);
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs idDataGridViewTextBoxColumn)
-        {
-
-        }
-
         private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
         {
             using (FormAdicionarPedido novoPedido = new FormAdicionarPedido(_servicoPedido, _clienteId) { })

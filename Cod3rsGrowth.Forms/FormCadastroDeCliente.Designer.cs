@@ -50,7 +50,6 @@
             labelNome.Size = new Size(57, 23);
             labelNome.TabIndex = 0;
             labelNome.Text = "Nome";
-            labelNome.Click += labelNome_Click;
             // 
             // labelCnpj
             // 
@@ -60,7 +59,6 @@
             labelCnpj.Size = new Size(45, 23);
             labelCnpj.TabIndex = 1;
             labelCnpj.Text = "Cnpj";
-            labelCnpj.Click += labelCnpj_Click;
             // 
             // labelCpf
             // 
@@ -70,7 +68,6 @@
             labelCpf.Size = new Size(36, 23);
             labelCpf.TabIndex = 2;
             labelCpf.Text = "Cpf";
-            labelCpf.Click += labelCpf_Click;
             // 
             // labelPessoa
             // 
@@ -80,7 +77,6 @@
             labelPessoa.Size = new Size(61, 23);
             labelPessoa.TabIndex = 3;
             labelPessoa.Text = "Pessoa";
-            labelPessoa.Click += labelPessoa_Click;
             // 
             // checkBoxTipoFisica
             // 
@@ -110,7 +106,6 @@
             textBoxNome.Name = "textBoxNome";
             textBoxNome.Size = new Size(358, 30);
             textBoxNome.TabIndex = 9;
-            textBoxNome.TextChanged += textBoxNome_TextChanged;
             // 
             // buttonAdicionar
             // 
@@ -139,7 +134,6 @@
             maskedTextBoxCpf.Size = new Size(356, 30);
             maskedTextBoxCpf.TabIndex = 12;
             maskedTextBoxCpf.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
-            maskedTextBoxCpf.MaskInputRejected += maskedTextBoxCpf_MaskInputRejected;
             // 
             // maskedTextBoxCnpj
             // 
@@ -149,7 +143,6 @@
             maskedTextBoxCnpj.Size = new Size(354, 30);
             maskedTextBoxCnpj.TabIndex = 13;
             maskedTextBoxCnpj.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
-            maskedTextBoxCnpj.MaskInputRejected += maskedTextBoxCnpj_MaskInputRejected;
             // 
             // FormCadastroDeCliente
             // 
@@ -172,7 +165,6 @@
             Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
             Name = "FormCadastroDeCliente";
             Text = "Cadastro de Cliente";
-            Load += Cadastro_De_Cliente_Load;
             ResumeLayout(false);
             PerformLayout();
         }

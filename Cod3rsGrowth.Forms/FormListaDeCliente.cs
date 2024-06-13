@@ -35,12 +35,7 @@ namespace Cod3rsGrowth.Forms
             }
 
         }
-
-        private void FormLista_Load(object sender, EventArgs e)
-        {
-
-        }
-        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void formatacaoListaCliente(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.ColumnIndex == 2)
             {
@@ -67,13 +62,7 @@ namespace Cod3rsGrowth.Forms
             FormListaDePedido formPedido = new FormListaDePedido(_servicoPedido, clienteId);
             formPedido.Show();
         }
-
-        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-
-        }
-
-        private void dataGridViewCliente_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        private void AoClicarComOBotaoDireitoNaListaPedido(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
@@ -91,11 +80,6 @@ namespace Cod3rsGrowth.Forms
                     dataGridViewCliente.ContextMenuStrip = contextMenu;
                 }
             }
-        }
-
-        private void dataGridViewCliente_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-             
         }
     }
 }

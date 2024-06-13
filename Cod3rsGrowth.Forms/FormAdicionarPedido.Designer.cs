@@ -55,7 +55,6 @@
             labelData.Size = new Size(46, 23);
             labelData.TabIndex = 0;
             labelData.Text = "Data";
-            labelData.Click += label1_Click;
             // 
             // labelCartao
             // 
@@ -94,7 +93,6 @@
             dateTimePickerPedido.Name = "dateTimePickerPedido";
             dateTimePickerPedido.Size = new Size(360, 27);
             dateTimePickerPedido.TabIndex = 4;
-            dateTimePickerPedido.ValueChanged += dateTimePickerPedido_ValueChanged;
             // 
             // comboBoxFormaPagamento
             // 
@@ -104,7 +102,6 @@
             comboBoxFormaPagamento.Name = "comboBoxFormaPagamento";
             comboBoxFormaPagamento.Size = new Size(360, 28);
             comboBoxFormaPagamento.TabIndex = 7;
-            comboBoxFormaPagamento.SelectedIndexChanged += comboBoxFormaPagamento_SelectedIndexChanged;
             // 
             // clienteBindingSource
             // 
@@ -138,7 +135,6 @@
             numericUpDownValor.Name = "numericUpDownValor";
             numericUpDownValor.Size = new Size(360, 27);
             numericUpDownValor.TabIndex = 10;
-            numericUpDownValor.ValueChanged += numericUpDownValor_ValueChanged;
             // 
             // maskedTextBoxCartao
             // 
@@ -148,7 +144,6 @@
             maskedTextBoxCartao.Size = new Size(360, 27);
             maskedTextBoxCartao.TabIndex = 11;
             maskedTextBoxCartao.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
-            maskedTextBoxCartao.MaskInputRejected += maskedTextBoxCartao_MaskInputRejected;
             // 
             // pedidoBindingSource
             // 
@@ -173,7 +168,6 @@
             Controls.Add(labelData);
             Name = "FormAdicionarPedido";
             Text = "Adicionar Pedido";
-            Load += FormAdicionarPedido_Load;
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownValor).EndInit();
             ((System.ComponentModel.ISupportInitialize)pedidoBindingSource).EndInit();
