@@ -45,6 +45,15 @@ namespace Cod3rsGrowth.Forms
         private void dataGridViewPedido_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             dataGridViewPedido.Columns[Constantes.COLUNA_VALOR_TABELA_PEDIDO].DefaultCellStyle.Format = Constantes.DUAS_CASAS_APOS_VIRGULA;
+            if (e.ColumnIndex == 3)
+            {
+                if (e.Value is string && e.Value != string.Empty)
+                {
+                    string valor = (string)e.Value;
+                    e.Value = valor.Substring(0, 4) + " " + valor.Substring(4, 4) + " " + valor.Substring(8, 4) + " " + valor.Substring(12, 4);
+                    e.FormattingApplied = true;
+                }
+            }
         }
     }
 }

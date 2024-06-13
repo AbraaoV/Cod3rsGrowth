@@ -13,8 +13,12 @@ namespace Cod3rsGrowth.Servico.Servicos
 
             RuleFor(pedido => pedido.Data).NotEmpty().WithMessage("O campo Data é obrigatório.").NotNull().WithMessage("O campo Data é obrigatório.");
 
-            RuleFor(pedido => pedido.NumeroCartao).Length(ConstantesDoValidador.QUANTIDADE_DE_NUMEROS_PARA_CARTAO).When(pedido => pedido.FormaPagamento == Pedido.Pagamentos.Cartao)
+            RuleFor(pedido => pedido.NumeroCartao)
+                .Length(ConstantesDoValidador.QUANTIDADE_DE_NUMEROS_PARA_CARTAO).When(pedido => pedido.FormaPagamento == Pedido.Pagamentos.Cartao)
                 .WithMessage("Cartão invalido.");
+            RuleFor(pedido => pedido.NumeroCartao)
+                .Empty().When(pedido => pedido.FormaPagamento != Pedido.Pagamentos.Cartao)
+                .WithMessage("O campo cartão deve estar vazio, casa o forma de pagamento não seja cartão");
 
             RuleFor(pedido => pedido.Valor).GreaterThan(ConstantesDoValidador.VALOR_MINIMO_PARA_PEDIDO).WithMessage("O valor do pedido deve ser maior que zero.");
 

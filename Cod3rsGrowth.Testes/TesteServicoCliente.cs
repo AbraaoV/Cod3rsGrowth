@@ -90,7 +90,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "",
                 Id = 100,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
 
@@ -105,7 +105,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 Id = 100,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
 
@@ -114,7 +114,7 @@ namespace Cod3rsGrowth.Testes
         }
 
         [Fact]
-        public void Ao_adicionar_cpf_que_nao_tenha_11_digitos_deve_retornar_erro()
+        public void Ao_adicionar_cpf_invalido_deve_retornar_erro()
         {
             var cliente1 = new Cliente
             {
@@ -129,7 +129,7 @@ namespace Cod3rsGrowth.Testes
         }
 
         [Fact]
-        public void Ao_adicionar_cnpj_que_nao_tenha_14_digitos_deve_retornar_erro()
+        public void Ao_adicionar_cnpj_invalido_deve_retornar_erro()
         {
             var cliente1 = new Cliente
             {
@@ -165,8 +165,8 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "Teste",
                 Id = 100,
-                Cnpj = "12345678000190",
-                Cpf = "12345678910",
+                Cnpj = "73193553000181",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
 
@@ -182,8 +182,8 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "Teste",
                 Id = 100,
-                Cnpj = "12345678000190",
-                Cpf = "12345678910",
+                Cnpj = "73193553000181",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Juridica
             };
 
@@ -230,7 +230,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "Teste",
                 Id = 100,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
 
@@ -246,7 +246,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "Teste",
                 Id = 100,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
 
@@ -265,7 +265,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "Teste",
                 Id = 100,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
             TabelaCliente.Instance.Add(cliente1);
@@ -274,7 +274,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "João",
                 Id = 102,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
 
@@ -289,7 +289,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "Teste",
                 Id = 100,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
             TabelaCliente.Instance.Add(cliente1);
@@ -298,7 +298,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "João",
                 Id = 100,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
 
@@ -306,7 +306,7 @@ namespace Cod3rsGrowth.Testes
 
             Assert.Equal("João", cliente1.Nome);
             Assert.Equal(100, cliente1.Id);
-            Assert.Equal("12345678910", cliente1.Cpf);
+            Assert.Equal("95518508077", cliente1.Cpf);
             Assert.Equal(Cliente.TipoDeCliente.Fisica, cliente1.Tipo);
         }
 
@@ -317,7 +317,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "Teste",
                 Id = 100,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
             TabelaCliente.Instance.Add(cliente1);
@@ -326,7 +326,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = null,
                 Id = 100,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
 
@@ -341,7 +341,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "Teste",
                 Id = 100,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
             TabelaCliente.Instance.Add(cliente1);
@@ -349,7 +349,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 Id = 100,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
 
@@ -382,7 +382,7 @@ namespace Cod3rsGrowth.Testes
         }
 
         [Fact]
-        public void Ao_atualizar_um_cnpj_que_nao_tenha_14_digitos_deve_retornar_erro()
+        public void Ao_atualizar_um_cnpj_invalido_deve_retornar_erro()
         {
             var cliente1 = new Cliente
             {
@@ -436,7 +436,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "Teste",
                 Id = 100,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
             TabelaCliente.Instance.Add(cliente1);
@@ -445,8 +445,8 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "Teste",
                 Id = 100,
-                Cnpj = "12345678000190",
-                Cpf = "12345678910",
+                Cnpj = "73193553000181",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
 
@@ -471,7 +471,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "Teste",
                 Id = 100,
-                Cnpj = "12345678000190",
+                Cnpj = "73193553000181",
                 Cpf = "12345678910",
                 Tipo = Cliente.TipoDeCliente.Juridica
             };
@@ -512,7 +512,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "Teste",
                 Id = 100,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
             TabelaCliente.Instance.Add(cliente1);
@@ -537,7 +537,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "Teste",
                 Id = 100,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
             TabelaCliente.Instance.Add(cliente1);
@@ -553,7 +553,7 @@ namespace Cod3rsGrowth.Testes
             {
                 Nome = "Teste",
                 Id = 100,
-                Cpf = "12345678910",
+                Cpf = "95518508077",
                 Tipo = Cliente.TipoDeCliente.Fisica
             };
             TabelaCliente.Instance.Add(cliente1);

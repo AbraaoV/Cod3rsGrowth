@@ -145,7 +145,7 @@
             buttonAdicionar.UseVisualStyleBackColor = true;
             buttonAdicionar.Click += AoClicarNoBotaoAdicionar;
             // 
-            // FormPedido
+            // FormListaDePedido
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -154,7 +154,7 @@
             Controls.Add(buttonEditar);
             Controls.Add(buttonRemover);
             Controls.Add(dataGridViewPedido);
-            Name = "FormPedido";
+            Name = "FormListaDePedido";
             Text = "Pedidos";
             ((System.ComponentModel.ISupportInitialize)dataGridViewPedido).EndInit();
             ((System.ComponentModel.ISupportInitialize)pedidoBindingSource).EndInit();
