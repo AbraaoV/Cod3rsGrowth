@@ -87,7 +87,7 @@
             checkBoxTipoFisica.TabIndex = 7;
             checkBoxTipoFisica.Text = "Física";
             checkBoxTipoFisica.UseVisualStyleBackColor = true;
-            checkBoxTipoFisica.CheckedChanged += checkBoxFisica_CheckedChanged;
+            checkBoxTipoFisica.CheckedChanged += AoChecarACaixaFisica;
             // 
             // checkBoxTipoJuridica
             // 
@@ -98,7 +98,7 @@
             checkBoxTipoJuridica.TabIndex = 8;
             checkBoxTipoJuridica.Text = "Jurídica";
             checkBoxTipoJuridica.UseVisualStyleBackColor = true;
-            checkBoxTipoJuridica.CheckedChanged += checkBoxJuridica_CheckedChanged;
+            checkBoxTipoJuridica.CheckedChanged += AoChecarACaixaJuridica;
             // 
             // textBoxNome
             // 
@@ -149,7 +149,6 @@
             AcceptButton = buttonAdicionar;
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
-            CancelButton = buttonCancelar;
             ClientSize = new Size(384, 412);
             Controls.Add(maskedTextBoxCnpj);
             Controls.Add(maskedTextBoxCpf);

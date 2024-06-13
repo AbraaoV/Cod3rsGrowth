@@ -74,7 +74,7 @@
             dataGridViewCliente.RowTemplate.Height = 29;
             dataGridViewCliente.Size = new Size(776, 376);
             dataGridViewCliente.TabIndex = 1;
-            dataGridViewCliente.CellFormatting += formatacaoListaCliente;
+            dataGridViewCliente.CellFormatting += formatacaoExibicaoListaCliente;
             dataGridViewCliente.CellMouseDown += AoClicarComOBotaoDireitoNaListaPedido;
             // 
             // nomeDataGridViewTextBoxColumn

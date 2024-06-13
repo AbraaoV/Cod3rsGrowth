@@ -19,15 +19,15 @@ namespace Cod3rsGrowth.Forms
             try
             {
                 Pedido.Pagamentos pagamento = Constantes.ENUM_INDEFINIDO;
-                if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDEX_CARTAO)
+                if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDICE_CARTAO)
                 {
                     pagamento = Pedido.Pagamentos.Cartao;
                 }
-                else if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDEX_PIX)
+                else if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDICE_PIX)
                 {
                     pagamento = Pedido.Pagamentos.Pix;
                 }
-                else if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDEX_BOLETO)
+                else if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDICE_BOLETO)
                 {
                     pagamento = Pedido.Pagamentos.Boleto;
                 }

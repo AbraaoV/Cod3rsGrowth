@@ -12,7 +12,6 @@ using System.Windows.Forms;
 
 namespace Cod3rsGrowth.Forms
 {
-
     public partial class FormListaDePedido : Form
     {
         private readonly ServicoPedido _servicoPedido;
@@ -37,10 +36,10 @@ namespace Cod3rsGrowth.Forms
             }
         }
 
-        private void dataGridViewPedido_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void formatacaoExibicaoListaPedido(object sender, DataGridViewCellFormattingEventArgs e)
         {
             dataGridViewPedido.Columns[Constantes.COLUNA_VALOR_TABELA_PEDIDO].DefaultCellStyle.Format = Constantes.DUAS_CASAS_APOS_VIRGULA;
-            if (e.ColumnIndex == 3)
+            if (e.ColumnIndex == Constantes.INDICE_COLUNA_CARTAO)
             {
                 if (e.Value is string && e.Value != string.Empty)
                 {

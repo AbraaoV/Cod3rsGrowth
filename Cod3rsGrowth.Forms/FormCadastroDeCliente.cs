@@ -12,7 +12,7 @@ namespace Cod3rsGrowth.Forms
             _servicoCliente = servicoCliente;
             InitializeComponent();
         }
-        private void checkBoxFisica_CheckedChanged(object sender, EventArgs e)
+        private void AoChecarACaixaFisica(object sender, EventArgs e)
         {
             if (checkBoxTipoFisica.Checked)
             {
@@ -24,7 +24,7 @@ namespace Cod3rsGrowth.Forms
             }
 
         }
-        private void checkBoxJuridica_CheckedChanged(object sender, EventArgs e)
+        private void AoChecarACaixaJuridica(object sender, EventArgs e)
         {
             if (checkBoxTipoJuridica.Checked)
             {

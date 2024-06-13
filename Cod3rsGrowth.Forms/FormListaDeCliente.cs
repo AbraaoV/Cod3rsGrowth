@@ -35,9 +35,9 @@ namespace Cod3rsGrowth.Forms
             }
 
         }
-        private void formatacaoListaCliente(object sender, DataGridViewCellFormattingEventArgs e)
+        private void formatacaoExibicaoListaCliente(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.ColumnIndex == 2)
+            if (e.ColumnIndex == Constantes.INDICE_COLUNA_CPF)
             {
                 if (e.Value is string && e.Value != string.Empty)
                 {
@@ -47,7 +47,7 @@ namespace Cod3rsGrowth.Forms
                 }
             }
 
-            if (e.ColumnIndex == 3)
+            if (e.ColumnIndex == Constantes.INDICE_COLUNA_CNPJ)
             {
                 if (e.Value is string && e.Value != string.Empty)
                 {
@@ -66,7 +66,7 @@ namespace Cod3rsGrowth.Forms
         {
             if (e.Button == MouseButtons.Right)
             {
-                if (e.RowIndex >= 0)
+                if (e.RowIndex >= Constantes.INDICE_PRIMEIRA_LINHA)
                 {
                     DataGridViewRow linha = this.dataGridViewCliente.Rows[e.RowIndex];
                     int clienteId = (int)linha.Cells[Constantes.COLUNA_ID_TABELA_CLIENTE].Value;

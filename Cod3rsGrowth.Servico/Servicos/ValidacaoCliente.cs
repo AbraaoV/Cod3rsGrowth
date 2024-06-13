@@ -27,7 +27,7 @@ namespace Cod3rsGrowth.Servico.Servicos
                 .WithMessage("Para pessoa física, o Cpf é obrigatório.")
                 .Must(cpf =>
                 {
-                    return ValidarCpf(cpf) == true;
+                    return ValidarCpf(cpf);
                 })
                 .When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Fisica)
                 .WithMessage("CPF inválido");
@@ -43,7 +43,7 @@ namespace Cod3rsGrowth.Servico.Servicos
                 .WithMessage("Para pessoa júridica, o Cnpj é obrigatório.")
                 .Must(cnpj =>
                 {
-                    return ValidarCnpj(cnpj) == true;
+                    return ValidarCnpj(cnpj);
                 })
                 .When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Juridica)
                 .WithMessage("CNPJ inválido");
