@@ -48,13 +48,13 @@ namespace Cod3rsGrowth.Forms
                     Data = dateTimePickerPedido.Value,
                     NumeroCartao = maskedTextBoxCartao.Text,
                     Valor = numericUpDownValor.Value,
-                    FormaPagamento = pagamento
+                    FormaPagamento = pagamento,
                 };
 
                 _servicoPedido.Adicionar(pedidoAdicionado);
                 DialogResult = DialogResult.OK;
             }
-            catch(ValidationException ex)
+            catch (ValidationException ex)
             {
                 string mensagemErro = "";
 
@@ -64,7 +64,7 @@ namespace Cod3rsGrowth.Forms
                 }
                 MessageBox.Show(mensagemErro);
             }
-            
+
         }
 
         private void dateTimePickerPedido_ValueChanged(object sender, EventArgs e)
@@ -78,6 +78,11 @@ namespace Cod3rsGrowth.Forms
         }
 
         private void maskedTextBoxCartao_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void numericUpDownValor_ValueChanged(object sender, EventArgs e)
         {
 
         }

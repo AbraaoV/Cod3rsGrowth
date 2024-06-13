@@ -40,8 +40,10 @@
             buttonCancelar = new Button();
             numericUpDownValor = new NumericUpDown();
             maskedTextBoxCartao = new MaskedTextBox();
+            pedidoBindingSource = new BindingSource(components);
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownValor).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pedidoBindingSource).BeginInit();
             SuspendLayout();
             // 
             // labelData
@@ -97,7 +99,7 @@
             // comboBoxFormaPagamento
             // 
             comboBoxFormaPagamento.FormattingEnabled = true;
-            comboBoxFormaPagamento.Items.AddRange(new object[] { "Cartão de Credito", "Pix", "Boleto" });
+            comboBoxFormaPagamento.Items.AddRange(new object[] { "Cartão", "Pix", "Boleto" });
             comboBoxFormaPagamento.Location = new Point(12, 204);
             comboBoxFormaPagamento.Name = "comboBoxFormaPagamento";
             comboBoxFormaPagamento.Size = new Size(360, 28);
@@ -136,6 +138,7 @@
             numericUpDownValor.Name = "numericUpDownValor";
             numericUpDownValor.Size = new Size(360, 27);
             numericUpDownValor.TabIndex = 10;
+            numericUpDownValor.ValueChanged += numericUpDownValor_ValueChanged;
             // 
             // maskedTextBoxCartao
             // 
@@ -146,6 +149,10 @@
             maskedTextBoxCartao.TabIndex = 11;
             maskedTextBoxCartao.TextMaskFormat = MaskFormat.ExcludePromptAndLiterals;
             maskedTextBoxCartao.MaskInputRejected += maskedTextBoxCartao_MaskInputRejected;
+            // 
+            // pedidoBindingSource
+            // 
+            pedidoBindingSource.DataSource = typeof(Dominio.Pedido);
             // 
             // FormAdicionarPedido
             // 
@@ -169,6 +176,7 @@
             Load += FormAdicionarPedido_Load;
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownValor).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pedidoBindingSource).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -186,5 +194,6 @@
         private Button buttonCancelar;
         private NumericUpDown numericUpDownValor;
         private MaskedTextBox maskedTextBoxCartao;
+        private BindingSource pedidoBindingSource;
     }
 }
