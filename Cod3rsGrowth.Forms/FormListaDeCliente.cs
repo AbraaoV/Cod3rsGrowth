@@ -6,6 +6,8 @@ using System.Data;
 using System.Configuration;
 using Cod3rsGrowth.Servico.Servicos;
 using System.Windows.Forms;
+using FluentValidation;
+using Microsoft.Data.SqlClient;
 
 namespace Cod3rsGrowth.Forms
 {
@@ -69,8 +71,7 @@ namespace Cod3rsGrowth.Forms
                 if (e.RowIndex >= Constantes.INDICE_PRIMEIRA_LINHA)
                 {
                     DataGridViewRow linha = this.dataGridViewCliente.Rows[e.RowIndex];
-                    int clienteId = (int)linha.Cells[Constantes.COLUNA_ID_TABELA_CLIENTE].Value;
-
+                    int clienteId = (int)linha.Cells[Constantes.COLUNA_ID].Value;
 
                     ContextMenuStrip contextMenu = new ContextMenuStrip();
                     ToolStripMenuItem menuItem = new ToolStripMenuItem(Constantes.OPCAO_DO_TOOL_STRIP_MENU);
@@ -80,6 +81,50 @@ namespace Cod3rsGrowth.Forms
                     dataGridViewCliente.ContextMenuStrip = contextMenu;
                 }
             }
+        }
+        private void AoClicarNoBotaoRemover(object sender, EventArgs e)
+        {
+            if (dataGridViewCliente.SelectedRows.Count > Constantes.INDICE_PRIMEIRA_LINHA)
+            {
+                if (MessageBox.Show(Constantes.MENSAGEM_CONFIRMACAO_REMOCAO_CLIENTE, Constantes.MENSAGEM_CONFIRMACAO, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    DataGridViewRow linhaSelecionada = dataGridViewCliente.SelectedRows[0];
+                    int clienteId = (int)linhaSelecionada.Cells[Constantes.COLUNA_ID].Value;
+
+                    try
+                    {
+                        _servicoCliente.Deletar(clienteId);
+                        dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null);
+                    }
+                    catch (ValidationException ex)
+                    {
+                        string mensagemErro = "";
+
+                        foreach (var erro in ex.Errors)
+                        {
+                            mensagemErro += erro.ErrorMessage + "\n";
+                        }
+                        MessageBox.Show(mensagemErro);
+                    }
+                    catch(SqlException sqlex)
+                    {
+                        if(sqlex.Message.StartsWith(Constantes.COMECO_MENSAGEM_ERRO_SQL))
+                        {
+                            MessageBox.Show(Constantes.MENSAGEM_ERRO_AO_DELETAR_CLIENTE_COM_PEDIDO);
+                        }
+                        
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show(Constantes.MENSAGEM_ERRO_AO_REMOVER_NENHUM_CLIENTE, Constantes.AVISO, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -29,84 +29,22 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            dataGridViewPedido = new DataGridView();
-            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            clienteIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            dataDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            numeroCartaoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            valorDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            formaPagamentoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             pedidoBindingSource = new BindingSource(components);
             clienteBindingSource = new BindingSource(components);
             buttonRemover = new Button();
             buttonEditar = new Button();
             buttonAdicionar = new Button();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewPedido).BeginInit();
+            formaPagamentoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            valorDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            numeroCartaoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            dataDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            clienteIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            dataGridViewPedido = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)pedidoBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewPedido).BeginInit();
             SuspendLayout();
-            // 
-            // dataGridViewPedido
-            // 
-            dataGridViewPedido.AutoGenerateColumns = false;
-            dataGridViewPedido.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewPedido.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, clienteIdDataGridViewTextBoxColumn, dataDataGridViewTextBoxColumn, numeroCartaoDataGridViewTextBoxColumn, valorDataGridViewTextBoxColumn, formaPagamentoDataGridViewTextBoxColumn });
-            dataGridViewPedido.DataSource = pedidoBindingSource;
-            dataGridViewPedido.Location = new Point(12, 61);
-            dataGridViewPedido.Name = "dataGridViewPedido";
-            dataGridViewPedido.RowHeadersWidth = 51;
-            dataGridViewPedido.RowTemplate.Height = 29;
-            dataGridViewPedido.Size = new Size(776, 377);
-            dataGridViewPedido.TabIndex = 0;
-            dataGridViewPedido.CellFormatting += formatacaoExibicaoListaPedido;
-            // 
-            // idDataGridViewTextBoxColumn
-            // 
-            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-            idDataGridViewTextBoxColumn.HeaderText = "Id";
-            idDataGridViewTextBoxColumn.MinimumWidth = 6;
-            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-            idDataGridViewTextBoxColumn.Width = 121;
-            // 
-            // clienteIdDataGridViewTextBoxColumn
-            // 
-            clienteIdDataGridViewTextBoxColumn.DataPropertyName = "ClienteId";
-            clienteIdDataGridViewTextBoxColumn.HeaderText = "ClienteId";
-            clienteIdDataGridViewTextBoxColumn.MinimumWidth = 6;
-            clienteIdDataGridViewTextBoxColumn.Name = "clienteIdDataGridViewTextBoxColumn";
-            clienteIdDataGridViewTextBoxColumn.Width = 120;
-            // 
-            // dataDataGridViewTextBoxColumn
-            // 
-            dataDataGridViewTextBoxColumn.DataPropertyName = "Data";
-            dataDataGridViewTextBoxColumn.HeaderText = "Data";
-            dataDataGridViewTextBoxColumn.MinimumWidth = 6;
-            dataDataGridViewTextBoxColumn.Name = "dataDataGridViewTextBoxColumn";
-            dataDataGridViewTextBoxColumn.Width = 121;
-            // 
-            // numeroCartaoDataGridViewTextBoxColumn
-            // 
-            numeroCartaoDataGridViewTextBoxColumn.DataPropertyName = "NumeroCartao";
-            numeroCartaoDataGridViewTextBoxColumn.HeaderText = "Numero do Cartao";
-            numeroCartaoDataGridViewTextBoxColumn.MinimumWidth = 6;
-            numeroCartaoDataGridViewTextBoxColumn.Name = "numeroCartaoDataGridViewTextBoxColumn";
-            numeroCartaoDataGridViewTextBoxColumn.Width = 120;
-            // 
-            // valorDataGridViewTextBoxColumn
-            // 
-            valorDataGridViewTextBoxColumn.DataPropertyName = "Valor";
-            valorDataGridViewTextBoxColumn.HeaderText = "Valor";
-            valorDataGridViewTextBoxColumn.MinimumWidth = 6;
-            valorDataGridViewTextBoxColumn.Name = "valorDataGridViewTextBoxColumn";
-            valorDataGridViewTextBoxColumn.Width = 121;
-            // 
-            // formaPagamentoDataGridViewTextBoxColumn
-            // 
-            formaPagamentoDataGridViewTextBoxColumn.DataPropertyName = "FormaPagamento";
-            formaPagamentoDataGridViewTextBoxColumn.HeaderText = "Forma de Pagamento";
-            formaPagamentoDataGridViewTextBoxColumn.MinimumWidth = 6;
-            formaPagamentoDataGridViewTextBoxColumn.Name = "formaPagamentoDataGridViewTextBoxColumn";
-            formaPagamentoDataGridViewTextBoxColumn.Width = 120;
             // 
             // pedidoBindingSource
             // 
@@ -124,6 +62,7 @@
             buttonRemover.TabIndex = 1;
             buttonRemover.Text = "Remover";
             buttonRemover.UseVisualStyleBackColor = true;
+            buttonRemover.Click += AoClicarNoBotaoRemover;
             // 
             // buttonEditar
             // 
@@ -144,6 +83,68 @@
             buttonAdicionar.UseVisualStyleBackColor = true;
             buttonAdicionar.Click += AoClicarNoBotaoAdicionar;
             // 
+            // formaPagamentoDataGridViewTextBoxColumn
+            // 
+            formaPagamentoDataGridViewTextBoxColumn.DataPropertyName = "FormaPagamento";
+            formaPagamentoDataGridViewTextBoxColumn.HeaderText = "Forma de Pagamento";
+            formaPagamentoDataGridViewTextBoxColumn.MinimumWidth = 6;
+            formaPagamentoDataGridViewTextBoxColumn.Name = "formaPagamentoDataGridViewTextBoxColumn";
+            formaPagamentoDataGridViewTextBoxColumn.Width = 120;
+            // 
+            // valorDataGridViewTextBoxColumn
+            // 
+            valorDataGridViewTextBoxColumn.DataPropertyName = "Valor";
+            valorDataGridViewTextBoxColumn.HeaderText = "Valor";
+            valorDataGridViewTextBoxColumn.MinimumWidth = 6;
+            valorDataGridViewTextBoxColumn.Name = "valorDataGridViewTextBoxColumn";
+            valorDataGridViewTextBoxColumn.Width = 121;
+            // 
+            // numeroCartaoDataGridViewTextBoxColumn
+            // 
+            numeroCartaoDataGridViewTextBoxColumn.DataPropertyName = "NumeroCartao";
+            numeroCartaoDataGridViewTextBoxColumn.HeaderText = "Numero do Cartao";
+            numeroCartaoDataGridViewTextBoxColumn.MinimumWidth = 6;
+            numeroCartaoDataGridViewTextBoxColumn.Name = "numeroCartaoDataGridViewTextBoxColumn";
+            numeroCartaoDataGridViewTextBoxColumn.Width = 120;
+            // 
+            // dataDataGridViewTextBoxColumn
+            // 
+            dataDataGridViewTextBoxColumn.DataPropertyName = "Data";
+            dataDataGridViewTextBoxColumn.HeaderText = "Data";
+            dataDataGridViewTextBoxColumn.MinimumWidth = 6;
+            dataDataGridViewTextBoxColumn.Name = "dataDataGridViewTextBoxColumn";
+            dataDataGridViewTextBoxColumn.Width = 121;
+            // 
+            // clienteIdDataGridViewTextBoxColumn
+            // 
+            clienteIdDataGridViewTextBoxColumn.DataPropertyName = "ClienteId";
+            clienteIdDataGridViewTextBoxColumn.HeaderText = "ClienteId";
+            clienteIdDataGridViewTextBoxColumn.MinimumWidth = 6;
+            clienteIdDataGridViewTextBoxColumn.Name = "clienteIdDataGridViewTextBoxColumn";
+            clienteIdDataGridViewTextBoxColumn.Width = 120;
+            // 
+            // idDataGridViewTextBoxColumn
+            // 
+            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
+            idDataGridViewTextBoxColumn.HeaderText = "Id";
+            idDataGridViewTextBoxColumn.MinimumWidth = 6;
+            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            idDataGridViewTextBoxColumn.Width = 121;
+            // 
+            // dataGridViewPedido
+            // 
+            dataGridViewPedido.AutoGenerateColumns = false;
+            dataGridViewPedido.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewPedido.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, clienteIdDataGridViewTextBoxColumn, dataDataGridViewTextBoxColumn, numeroCartaoDataGridViewTextBoxColumn, valorDataGridViewTextBoxColumn, formaPagamentoDataGridViewTextBoxColumn });
+            dataGridViewPedido.DataSource = pedidoBindingSource;
+            dataGridViewPedido.Location = new Point(12, 61);
+            dataGridViewPedido.Name = "dataGridViewPedido";
+            dataGridViewPedido.RowHeadersWidth = 51;
+            dataGridViewPedido.RowTemplate.Height = 29;
+            dataGridViewPedido.Size = new Size(776, 377);
+            dataGridViewPedido.TabIndex = 0;
+            dataGridViewPedido.CellFormatting += formatacaoExibicaoListaPedido;
+            // 
             // FormListaDePedido
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -155,25 +156,24 @@
             Controls.Add(dataGridViewPedido);
             Name = "FormListaDePedido";
             Text = "Pedidos";
-            ((System.ComponentModel.ISupportInitialize)dataGridViewPedido).EndInit();
             ((System.ComponentModel.ISupportInitialize)pedidoBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewPedido).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private DataGridView dataGridViewPedido;
         private BindingSource pedidoBindingSource;
         private BindingSource clienteBindingSource;
-        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn clienteIdDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn dataDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn numeroCartaoDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn valorDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn formaPagamentoDataGridViewTextBoxColumn;
         private Button buttonRemover;
         private Button buttonEditar;
         private Button buttonAdicionar;
+        private DataGridViewTextBoxColumn formaPagamentoDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn valorDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn numeroCartaoDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn dataDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn clienteIdDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
+        private DataGridView dataGridViewPedido;
     }
 }
