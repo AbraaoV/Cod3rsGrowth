@@ -1,14 +1,6 @@
-﻿using Cod3rsGrowth.Dominio;
-using Cod3rsGrowth.Servico.Servicos;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using Cod3rsGrowth.Servico.Servicos;
+using FluentValidation;
+using Microsoft.Data.SqlClient;
 
 namespace Cod3rsGrowth.Forms
 {
@@ -16,6 +8,7 @@ namespace Cod3rsGrowth.Forms
     {
         private readonly ServicoPedido _servicoPedido;
         private readonly int _clienteId;
+        public int _pedidoId;
         public FormListaDePedido(ServicoPedido servicoPedido, int clienteId)
         {
             _servicoPedido = servicoPedido;
@@ -47,6 +40,37 @@ namespace Cod3rsGrowth.Forms
                     e.Value = valor.Substring(0, 4) + " " + valor.Substring(4, 4) + " " + valor.Substring(8, 4) + " " + valor.Substring(12, 4);
                     e.FormattingApplied = true;
                 }
+            }
+        }
+
+        private void AoClicarNoBotaoRemover(object sender, EventArgs e)
+        {
+            if (dataGridViewPedido.SelectedRows.Count > Constantes.INDICE_PRIMEIRA_LINHA)
+            {
+                if (MessageBox.Show(Constantes.MENSAGEM_CONFIRMACAO_REMOCAO_PEDIDO, Constantes.MENSAGEM_CONFIRMACAO, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    DataGridViewRow linhaSelecionada = dataGridViewPedido.SelectedRows[0];
+                    int pedidoId = (int)linhaSelecionada.Cells[Constantes.COLUNA_ID].Value;
+                    try
+                    {
+                        _servicoPedido.Deletar(pedidoId);
+                        dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(null, null);
+                    }
+                    catch (ValidationException ex)
+                    {
+                        string mensagemErro = "";
+
+                        foreach (var erro in ex.Errors)
+                        {
+                            mensagemErro += erro.ErrorMessage + "\n";
+                        }
+                        MessageBox.Show(mensagemErro);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show(Constantes.MENSAGEM_ERRO_AO_REMOVER_NENHUM_PEDIDO, Constantes.AVISO, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

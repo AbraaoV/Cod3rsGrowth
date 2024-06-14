@@ -136,6 +136,7 @@
             button1.TabIndex = 0;
             button1.Text = "Remover";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += AoClicarNoBotaoRemover;
             // 
             // button2
             // 

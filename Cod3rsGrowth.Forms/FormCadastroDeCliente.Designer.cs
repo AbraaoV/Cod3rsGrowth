@@ -149,6 +149,7 @@
             AcceptButton = buttonAdicionar;
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = buttonCancelar;
             ClientSize = new Size(384, 412);
             Controls.Add(maskedTextBoxCnpj);
             Controls.Add(maskedTextBoxCpf);
