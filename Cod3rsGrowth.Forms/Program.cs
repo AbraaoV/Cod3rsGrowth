@@ -34,7 +34,7 @@ namespace Cod3rsGrowth.Forms
             var host = CreateHostBuilder().Build();
             ServiceProvider = host.Services;
 
-            Application.Run(ServiceProvider.GetRequiredService<FormLista>());
+            Application.Run(ServiceProvider.GetRequiredService<FormListaDeCliente>());
         }
         private static ServiceProvider CreateServices()
         {
@@ -71,7 +71,7 @@ namespace Cod3rsGrowth.Forms
                     services.AddTransient<IPedidoRepositorio, PedidoRepositorio>();
                     services.AddScoped<IValidator<Cliente>, ValidacaoCliente>();
                     services.AddScoped<IValidator<Pedido>, ValidacaoPedido>();
-                    services.AddTransient<FormLista>();
+                    services.AddTransient<FormListaDeCliente>();
                 });
         }
 

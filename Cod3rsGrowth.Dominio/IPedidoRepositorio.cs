@@ -10,7 +10,7 @@ namespace Cod3rsGrowth.Dominio
 {
     public interface IPedidoRepositorio
     {
-        List<Pedido> ObterTodos(Pagamentos? FormaPagamento = null);
+        List<Pedido> ObterTodos(Pagamentos? FormaPagamento, int? clienteId);
         Pedido ObterPorId(int id);
         void Atualizar(int id, Pedido pedido);
         void Deletar(int id);

@@ -25,16 +25,23 @@ namespace Cod3rsGrowth.Infra
                .UseSqlServer(result));
         }
 
-        public virtual List<Pedido> ObterTodos(Pagamentos? FormaPagamento = null)
+        public virtual List<Pedido> ObterTodos(Pagamentos? FormaPagamento, int? clienteId)
         {
-            var pedidos = _dataConnection.GetTable<Pedido>();
+            var pedidosTabela = _dataConnection.GetTable<Pedido>();
+            List<Pedido> pedidos = pedidosTabela.ToList();
 
-            if (FormaPagamento.HasValue)
+            if (FormaPagamento != null)
             {
-                pedidos = (ITable<Pedido>)pedidos.Where(c => c.FormaPagamento == FormaPagamento.Value);
+                pedidos = pedidosTabela.Where(c => c.FormaPagamento == FormaPagamento.Value).ToList();
             }
 
-            return pedidos.ToList();
+           
+            if (clienteId != null)
+            {
+                pedidos = pedidosTabela.Where(c => c.ClienteId == clienteId).ToList();
+            }
+
+            return pedidos;
         }
         public virtual Pedido ObterPorId(int id)
         {

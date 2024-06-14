@@ -1,6 +1,7 @@
 ﻿using Cod3rsGrowth.Dominio;
 using FluentValidation;
 using FluentValidation.Results;
+using static Cod3rsGrowth.Dominio.Cliente;
 
 namespace Cod3rsGrowth.Servico.Servicos
 {
@@ -14,9 +15,9 @@ namespace Cod3rsGrowth.Servico.Servicos
             _clienteRepositorio = clienteRepositorio;   
             _validarCliente = validator;
         }
-        public List<Cliente> ObterTodos()
+        public List<Cliente> ObterTodos(TipoDeCliente? tipo)
         {
-            var clientes = _clienteRepositorio.ObterTodos();
+            var clientes = _clienteRepositorio.ObterTodos(tipo);
             return clientes;
         }
         public Cliente ObterPorId(int id)
