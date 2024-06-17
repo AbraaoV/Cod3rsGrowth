@@ -1,6 +1,7 @@
 ﻿using Cod3rsGrowth.Dominio;
 using LinqToDB;
 using LinqToDB.Data;
+using Microsoft.IdentityModel.Tokens;
 using System.Configuration;
 using static Cod3rsGrowth.Dominio.Cliente;
 
@@ -19,14 +20,18 @@ namespace Cod3rsGrowth.Infra
                .UseSqlServer(result));
         }
 
-        public virtual List<Cliente> ObterTodos(TipoDeCliente? tipo)
+        public virtual List<Cliente> ObterTodos(TipoDeCliente? tipo, string nome)
         {
             var clientesTabela = _dataConnection.GetTable<Cliente>();
             List<Cliente> clientes = clientesTabela.ToList();
 
             if (tipo != null)
             {
-                clientes = clientesTabela.Where(c => c.Tipo == tipo.Value).ToList();
+                clientes = clientes.Where(c => c.Tipo == tipo.Value).ToList();
+            }
+            if(!nome.IsNullOrEmpty())
+            {
+                clientes = clientes.Where(c => c.Nome.Contains(nome)).ToList();
             }
 
             return clientes;

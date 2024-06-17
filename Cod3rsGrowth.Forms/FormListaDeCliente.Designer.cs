@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             label1 = new Label();
             clienteBindingSource = new BindingSource(components);
             dataGridViewCliente = new DataGridView();
@@ -44,6 +44,8 @@
             button3 = new Button();
             contextMenuStrip1 = new ContextMenuStrip(components);
             pedidosToolStripMenuItem = new ToolStripMenuItem();
+            textBoxFiltroNome = new TextBox();
+            comboBoxFiltroTipo = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewCliente).BeginInit();
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource1).BeginInit();
@@ -65,10 +67,11 @@
             // dataGridViewCliente
             // 
             dataGridViewCliente.AutoGenerateColumns = false;
+            dataGridViewCliente.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCliente.Columns.AddRange(new DataGridViewColumn[] { nomeDataGridViewTextBoxColumn, idDataGridViewTextBoxColumn, cpfDataGridViewTextBoxColumn, cnpjDataGridViewTextBoxColumn, tipoDataGridViewTextBoxColumn });
             dataGridViewCliente.DataSource = clienteBindingSource1;
-            dataGridViewCliente.Location = new Point(12, 62);
+            dataGridViewCliente.Location = new Point(12, 60);
             dataGridViewCliente.Name = "dataGridViewCliente";
             dataGridViewCliente.RowHeadersWidth = 51;
             dataGridViewCliente.RowTemplate.Height = 29;
@@ -84,7 +87,6 @@
             nomeDataGridViewTextBoxColumn.MinimumWidth = 6;
             nomeDataGridViewTextBoxColumn.Name = "nomeDataGridViewTextBoxColumn";
             nomeDataGridViewTextBoxColumn.ReadOnly = true;
-            nomeDataGridViewTextBoxColumn.Width = 125;
             // 
             // idDataGridViewTextBoxColumn
             // 
@@ -93,18 +95,16 @@
             idDataGridViewTextBoxColumn.MinimumWidth = 6;
             idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
             idDataGridViewTextBoxColumn.ReadOnly = true;
-            idDataGridViewTextBoxColumn.Width = 125;
             // 
             // cpfDataGridViewTextBoxColumn
             // 
             cpfDataGridViewTextBoxColumn.DataPropertyName = "Cpf";
-            dataGridViewCellStyle1.Format = "###\\.###\\.###-##";
-            cpfDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Format = "###\\.###\\.###-##";
+            cpfDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle2;
             cpfDataGridViewTextBoxColumn.HeaderText = "Cpf";
             cpfDataGridViewTextBoxColumn.MinimumWidth = 6;
             cpfDataGridViewTextBoxColumn.Name = "cpfDataGridViewTextBoxColumn";
             cpfDataGridViewTextBoxColumn.ReadOnly = true;
-            cpfDataGridViewTextBoxColumn.Width = 125;
             // 
             // cnpjDataGridViewTextBoxColumn
             // 
@@ -113,7 +113,6 @@
             cnpjDataGridViewTextBoxColumn.MinimumWidth = 6;
             cnpjDataGridViewTextBoxColumn.Name = "cnpjDataGridViewTextBoxColumn";
             cnpjDataGridViewTextBoxColumn.ReadOnly = true;
-            cnpjDataGridViewTextBoxColumn.Width = 125;
             // 
             // tipoDataGridViewTextBoxColumn
             // 
@@ -122,7 +121,6 @@
             tipoDataGridViewTextBoxColumn.MinimumWidth = 6;
             tipoDataGridViewTextBoxColumn.Name = "tipoDataGridViewTextBoxColumn";
             tipoDataGridViewTextBoxColumn.ReadOnly = true;
-            tipoDataGridViewTextBoxColumn.Width = 125;
             // 
             // clienteBindingSource1
             // 
@@ -146,6 +144,7 @@
             button2.TabIndex = 0;
             button2.Text = "Editar";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += AoClicarNoBotaoEditar;
             // 
             // button3
             // 
@@ -170,11 +169,32 @@
             pedidosToolStripMenuItem.Size = new Size(130, 24);
             pedidosToolStripMenuItem.Text = "Pedidos";
             // 
+            // textBoxFiltroNome
+            // 
+            textBoxFiltroNome.Location = new Point(12, 14);
+            textBoxFiltroNome.Name = "textBoxFiltroNome";
+            textBoxFiltroNome.PlaceholderText = "Pesquisar por nome";
+            textBoxFiltroNome.Size = new Size(259, 27);
+            textBoxFiltroNome.TabIndex = 2;
+            textBoxFiltroNome.TextChanged += AoFiltrarPorNome;
+            // 
+            // comboBoxFiltroTipo
+            // 
+            comboBoxFiltroTipo.FormattingEnabled = true;
+            comboBoxFiltroTipo.Items.AddRange(new object[] { "Todos Clientes", "Pessoa Física", "Pessoa Jurídica" });
+            comboBoxFiltroTipo.Location = new Point(286, 14);
+            comboBoxFiltroTipo.Name = "comboBoxFiltroTipo";
+            comboBoxFiltroTipo.Size = new Size(193, 28);
+            comboBoxFiltroTipo.TabIndex = 3;
+            comboBoxFiltroTipo.SelectedIndexChanged += AoFiltrarPelaComboBox;
+            // 
             // FormListaDeCliente
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 448);
+            Controls.Add(comboBoxFiltroTipo);
+            Controls.Add(textBoxFiltroNome);
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(button1);
@@ -182,6 +202,7 @@
             Controls.Add(label1);
             Name = "FormListaDeCliente";
             Text = "Clientes";
+            Load += FormListaDeCliente_Load;
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewCliente).EndInit();
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource1).EndInit();
@@ -206,5 +227,7 @@
         private DataGridViewTextBoxColumn tipoDataGridViewTextBoxColumn;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem pedidosToolStripMenuItem;
+        private TextBox textBoxFiltroNome;
+        private ComboBox comboBoxFiltroTipo;
     }
 }

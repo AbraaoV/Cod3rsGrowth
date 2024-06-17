@@ -25,23 +25,38 @@ namespace Cod3rsGrowth.Infra
                .UseSqlServer(result));
         }
 
-        public virtual List<Pedido> ObterTodos(Pagamentos? FormaPagamento, int? clienteId)
+        public virtual List<Pedido> ObterTodos(Pagamentos? FormaPagamento, int? clienteId, DateTime dataPedido, decimal? valorMin, decimal? valorMax)
         {
             var pedidosTabela = _dataConnection.GetTable<Pedido>();
-            List<Pedido> pedidos = pedidosTabela.ToList();
+            var pedidos = pedidosTabela.AsQueryable();
 
             if (FormaPagamento != null)
             {
-                pedidos = pedidosTabela.Where(c => c.FormaPagamento == FormaPagamento.Value).ToList();
+                pedidos = pedidos.Where(c => c.FormaPagamento == FormaPagamento.Value);
             }
-
-           
             if (clienteId != null)
             {
-                pedidos = pedidosTabela.Where(c => c.ClienteId == clienteId).ToList();
+                pedidos = pedidos.Where(c => c.ClienteId == clienteId);
+            }
+            if(dataPedido != default)
+            {
+                pedidos = pedidos.Where(c => c.Data.Date == dataPedido.Date);
             }
 
-            return pedidos;
+            if(valorMin != 0 && valorMax != 0 && valorMin != null && valorMax != null)
+            {
+                pedidos = pedidos.Where(c => c.Valor >= valorMin && c.Valor <= valorMax);
+            }
+            if(valorMin != 0 && valorMin != null)
+            {
+                pedidos = pedidos.Where(c => c.Valor >= valorMin);
+            }
+            if(valorMax  != 0 && valorMax != null)
+            {
+                pedidos = pedidos.Where(c => c.Valor <= valorMax);
+            }
+
+            return pedidos.ToList();
         }
         public virtual Pedido ObterPorId(int id)
         {

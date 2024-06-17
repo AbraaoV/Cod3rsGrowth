@@ -1,13 +1,9 @@
-using System;
 using System.Configuration;
-using System.Linq;
 using FluentMigrator.Runner;
-using FluentMigrator.Runner.Initialization;
 using Microsoft.Extensions.DependencyInjection;
 using Cod3rsGrowth.Infra;
 using Cod3rsGrowth.Dominio;
 using Microsoft.Extensions.Hosting;
-using System.Xaml;
 using Cod3rsGrowth.Servico.Servicos;
 using FluentValidation;
 using Cod3rsGrowth.Dominio.Migracoes;
@@ -29,7 +25,6 @@ namespace Cod3rsGrowth.Forms
             {
                 UpdateDatabase(scope.ServiceProvider);
             }
-
             ApplicationConfiguration.Initialize();
             var host = CreateHostBuilder().Build();
             ServiceProvider = host.Services;

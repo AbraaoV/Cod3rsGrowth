@@ -16,6 +16,10 @@ namespace Cod3rsGrowth.Forms
         public const int INDICE_CARTAO = 0;
         public const int INDICE_PIX = 1;
         public const int INDICE_BOLETO = 2;
+        public const int INDICE_PESSOA_FISICA = 1;
+        public const int INDICE_PESSOA_JURIDICA = 2;
+        public const int INDICE_TODOS_TIPOS = 0;
+        public const int INDICE_TODOS_PAGAMENTOS = 3;
         public const string COLUNA_VALOR_TABELA_PEDIDO = "valorDataGridViewTextBoxColumn";
         public const string DUAS_CASAS_APOS_VIRGULA = "N2";
         public const string COLUNA_ID = "idDataGridViewTextBoxColumn";
