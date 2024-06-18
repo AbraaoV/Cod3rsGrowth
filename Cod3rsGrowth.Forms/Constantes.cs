@@ -16,6 +16,10 @@ namespace Cod3rsGrowth.Forms
         public const int INDICE_CARTAO = 0;
         public const int INDICE_PIX = 1;
         public const int INDICE_BOLETO = 2;
+        public const int INDICE_PESSOA_FISICA = 1;
+        public const int INDICE_PESSOA_JURIDICA = 2;
+        public const int INDICE_TODOS_TIPOS = 0;
+        public const int INDICE_TODOS_PAGAMENTOS = 3;
         public const string COLUNA_VALOR_TABELA_PEDIDO = "valorDataGridViewTextBoxColumn";
         public const string DUAS_CASAS_APOS_VIRGULA = "N2";
         public const string COLUNA_ID = "idDataGridViewTextBoxColumn";
@@ -28,5 +32,7 @@ namespace Cod3rsGrowth.Forms
         public const string AVISO = "Aviso";
         public const string MENSAGEM_CONFIRMACAO_REMOCAO_PEDIDO = "Tem certeza de que deseja remover este pedido?";
         public const string MENSAGEM_ERRO_AO_REMOVER_NENHUM_PEDIDO = "Por favor, selecione um pedido para remover.";
+        public const string FORMATACAO_DATA = "dd-MM-yyyy";
+        public const int VALOR_INICIAL = 0;
     }
 }

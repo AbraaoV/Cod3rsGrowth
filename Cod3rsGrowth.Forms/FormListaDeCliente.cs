@@ -8,6 +8,8 @@ using Cod3rsGrowth.Servico.Servicos;
 using System.Windows.Forms;
 using FluentValidation;
 using Microsoft.Data.SqlClient;
+using static Cod3rsGrowth.Dominio.Cliente;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Cod3rsGrowth.Forms
 {
@@ -88,7 +90,7 @@ namespace Cod3rsGrowth.Forms
             {
                 if (MessageBox.Show(Constantes.MENSAGEM_CONFIRMACAO_REMOCAO_CLIENTE, Constantes.MENSAGEM_CONFIRMACAO, MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    DataGridViewRow linhaSelecionada = dataGridViewCliente.SelectedRows[0];
+                    DataGridViewRow linhaSelecionada = dataGridViewCliente.SelectedRows[Constantes.INDICE_PRIMEIRA_LINHA];
                     int clienteId = (int)linhaSelecionada.Cells[Constantes.COLUNA_ID].Value;
 
                     try
@@ -106,13 +108,13 @@ namespace Cod3rsGrowth.Forms
                         }
                         MessageBox.Show(mensagemErro);
                     }
-                    catch(SqlException sqlex)
+                    catch (SqlException sqlex)
                     {
-                        if(sqlex.Message.StartsWith(Constantes.COMECO_MENSAGEM_ERRO_SQL))
+                        if (sqlex.Message.StartsWith(Constantes.COMECO_MENSAGEM_ERRO_SQL))
                         {
                             MessageBox.Show(Constantes.MENSAGEM_ERRO_AO_DELETAR_CLIENTE_COM_PEDIDO);
                         }
-                        
+
                     }
                 }
             }
@@ -122,9 +124,62 @@ namespace Cod3rsGrowth.Forms
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void AoClicarNoBotaoEditar(object sender, EventArgs e)
         {
+            if (dataGridViewCliente.SelectedRows.Count > Constantes.INDICE_PRIMEIRA_LINHA)
+            {
+                DataGridViewRow linhaSelecionada = dataGridViewCliente.SelectedRows[Constantes.INDICE_PRIMEIRA_LINHA];
+                int clienteId = (int)linhaSelecionada.Cells[Constantes.COLUNA_ID].Value;
 
+                using (FormEditarCliente novoCliente = new FormEditarCliente(_servicoCliente, clienteId) { })
+                {
+                    if (novoCliente.ShowDialog() == DialogResult.OK)
+                    {
+                        dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null);
+                    }
+                }
+            }
         }
+
+        private void AoFiltrarPorNome(object sender, EventArgs e)
+        {
+            string nomeCliente = textBoxFiltroNome.Text.Trim();
+            if(comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_FISICA)
+            {
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente { Tipo = TipoDeCliente.Fisica, Nome = nomeCliente });
+            }
+            else if(comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_JURIDICA)
+            {
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente {Tipo = TipoDeCliente.Juridica, Nome = nomeCliente });
+            }
+            else
+            {
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente {Nome = nomeCliente});
+            }
+        }
+
+        private void AoFiltrarPelaComboBox(object sender, EventArgs e)
+        {
+            if (comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_TODOS_TIPOS)
+            {
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null);
+            }
+            else if (comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_FISICA)
+            {
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente { Tipo = TipoDeCliente.Fisica});
+            }
+            else if (comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_JURIDICA)
+            {
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente { Tipo = TipoDeCliente.Juridica });
+            }
+           
+        }
+
+        private void FormListaDeCliente_Load(object sender, EventArgs e)
+        {
+            comboBoxFiltroTipo.SelectedIndex = Constantes.INDICE_TODOS_TIPOS;
+        }
+
     }
 }
+

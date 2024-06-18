@@ -15,9 +15,9 @@ namespace Cod3rsGrowth.Servico.Servicos
             _clienteRepositorio = clienteRepositorio;   
             _validarCliente = validator;
         }
-        public List<Cliente> ObterTodos(TipoDeCliente? tipo)
+        public List<Cliente> ObterTodos(FiltroCliente filtro)
         {
-            var clientes = _clienteRepositorio.ObterTodos(tipo);
+            var clientes = _clienteRepositorio.ObterTodos(filtro);
             return clientes;
         }
         public Cliente ObterPorId(int id)
@@ -32,6 +32,7 @@ namespace Cod3rsGrowth.Servico.Servicos
         }
         public void Atualizar(int id, Cliente cliente)
         {
+            cliente.Id = id;
             ValidationResult result = _validarCliente.Validate(cliente, options => options.IncludeRuleSets(ConstantesDoValidador.ATUALIZAR, "default"));
             if (result.IsValid)
             {

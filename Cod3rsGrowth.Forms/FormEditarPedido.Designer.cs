@@ -1,6 +1,6 @@
 ﻿namespace Cod3rsGrowth.Forms
 {
-    partial class FormAdicionarPedido
+    partial class FormEditarPedido
     {
         /// <summary>
         /// Required designer variable.
@@ -114,7 +114,7 @@
             buttonAdicionar.Name = "buttonAdicionar";
             buttonAdicionar.Size = new Size(94, 29);
             buttonAdicionar.TabIndex = 8;
-            buttonAdicionar.Text = "Adicionar";
+            buttonAdicionar.Text = "Atualizar";
             buttonAdicionar.UseVisualStyleBackColor = true;
             buttonAdicionar.Click += AoClicarNoBotaoAdicionar;
             // 
@@ -150,7 +150,7 @@
             // 
             pedidoBindingSource.DataSource = typeof(Dominio.Pedido);
             // 
-            // FormAdicionarPedido
+            // FormEditarPedido
             // 
             AcceptButton = buttonAdicionar;
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -167,8 +167,9 @@
             Controls.Add(label3);
             Controls.Add(labelCartao);
             Controls.Add(labelData);
-            Name = "FormAdicionarPedido";
-            Text = "Adicionar Pedido";
+            Name = "FormEditarPedido";
+            Text = "Editar Pedido";
+            Load += FormEditarPedido_Load;
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownValor).EndInit();
             ((System.ComponentModel.ISupportInitialize)pedidoBindingSource).EndInit();

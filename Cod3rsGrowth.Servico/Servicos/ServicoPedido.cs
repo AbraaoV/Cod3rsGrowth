@@ -20,9 +20,9 @@ namespace Cod3rsGrowth.Servico.Servicos
             _pedidoRepositorio = pedidoRepositorio;
             _validarPedido = validator;
         }
-        public List<Pedido> ObterTodos(Pagamentos? FormaPagamento, int? clienteId)
+        public List<Pedido> ObterTodos(FiltroPedido filtro)
         {
-            var pedidos = _pedidoRepositorio.ObterTodos(FormaPagamento, clienteId);
+            var pedidos = _pedidoRepositorio.ObterTodos(filtro);
             return pedidos;
         }
         public Pedido ObterPorId(int id)
@@ -37,6 +37,7 @@ namespace Cod3rsGrowth.Servico.Servicos
         }
         public void Atualizar(int id, Pedido pedido)
         {
+            pedido.Id = id;
             ValidationResult result = _validarPedido.Validate(pedido, options => options.IncludeRuleSets(ConstantesDoValidador.ATUALIZAR, "default"));
             if (result.IsValid)
             {

@@ -25,23 +25,43 @@ namespace Cod3rsGrowth.Infra
                .UseSqlServer(result));
         }
 
-        public virtual List<Pedido> ObterTodos(Pagamentos? FormaPagamento, int? clienteId)
+        public virtual List<Pedido> ObterTodos(FiltroPedido? filtro)
         {
             var pedidosTabela = _dataConnection.GetTable<Pedido>();
-            List<Pedido> pedidos = pedidosTabela.ToList();
+            var pedidos = pedidosTabela.AsQueryable();
 
-            if (FormaPagamento != null)
+            if (filtro == null)
             {
-                pedidos = pedidosTabela.Where(c => c.FormaPagamento == FormaPagamento.Value).ToList();
+                return pedidos.ToList();
             }
 
-           
-            if (clienteId != null)
+            if (filtro.FormaPagamento != null)
             {
-                pedidos = pedidosTabela.Where(c => c.ClienteId == clienteId).ToList();
+                pedidos = pedidos.Where(c => c.FormaPagamento == filtro.FormaPagamento);
+            }
+            if (filtro.ClienteId != null)
+            {
+                pedidos = pedidos.Where(c => c.ClienteId == filtro.ClienteId);
+            }
+            if(filtro.DataPedido != default)
+            {
+                pedidos = pedidos.Where(c => c.Data.Date == filtro.DataPedido.Date);
             }
 
-            return pedidos;
+            if(filtro.ValorMin != ConstantesDosRepositorios.VALOR_INICIAL && filtro.ValorMax != ConstantesDosRepositorios.VALOR_INICIAL && filtro.ValorMin != null && filtro.ValorMax != null)
+            {
+                pedidos = pedidos.Where(c => c.Valor >= filtro.ValorMin && c.Valor <= filtro.ValorMax);
+            }
+            if(filtro.ValorMin != ConstantesDosRepositorios.VALOR_INICIAL && filtro.ValorMin != null)
+            {
+                pedidos = pedidos.Where(c => c.Valor >= filtro.ValorMin);
+            }
+            if(filtro.ValorMax != ConstantesDosRepositorios.VALOR_INICIAL && filtro.ValorMax != null)
+            {
+                pedidos = pedidos.Where(c => c.Valor <= filtro.ValorMax);
+            }
+
+            return pedidos.ToList();
         }
         public virtual Pedido ObterPorId(int id)
         {
