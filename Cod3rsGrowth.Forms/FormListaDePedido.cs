@@ -93,6 +93,7 @@ namespace Cod3rsGrowth.Forms
         private void AoFiltrarPelaData(object sender, EventArgs e)
         {
             dateTimePickerDataFiltro.CustomFormat = "dd-MM-yyyy";
+            
         }
 
         private void FormListaDePedido_Load(object sender, EventArgs e)
@@ -103,6 +104,7 @@ namespace Cod3rsGrowth.Forms
         private void AoApertarOBotaoFiltrar(object sender, EventArgs e)
         {
             Dominio.Pedido.Pagamentos? pagamentoSelecionado = new Dominio.Pedido.Pagamentos();
+            DateTime dataPedido = dateTimePickerDataFiltro.Value.Date;
             if (FiltroFormaPagamento.SelectedIndex == Constantes.INDICE_CARTAO)
             {
                 pagamentoSelecionado = Dominio.Pedido.Pagamentos.Cartao;
@@ -119,8 +121,12 @@ namespace Cod3rsGrowth.Forms
             {
                 pagamentoSelecionado = null;
             }
+            if (dateTimePickerDataFiltro.CustomFormat == " ")
+            {
+                dataPedido = default;
+            }
 
-            dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(pagamentoSelecionado, _clienteId, dateTimePickerDataFiltro.Value.Date, valorMinFiltro.Value, valorMaxFiltro.Value);
+            dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(pagamentoSelecionado, _clienteId, dataPedido, valorMinFiltro.Value, valorMaxFiltro.Value);
 
         }
 
@@ -129,12 +135,14 @@ namespace Cod3rsGrowth.Forms
             if (e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete)
             {
                 dateTimePickerDataFiltro.CustomFormat = " ";
+                dateTimePickerDataFiltro.Value = DateTime.MinValue;
             }
         }
 
         private void AoApertarOBotaoLimpar(object sender, EventArgs e)
         {
             dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(null, _clienteId, default, null, null);
+            dateTimePickerDataFiltro.CustomFormat = " ";
         }
     }
 }
