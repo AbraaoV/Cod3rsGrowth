@@ -120,7 +120,7 @@ namespace Cod3rsGrowth.Forms
                 pagamentoSelecionado = null;
             }
 
-            dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(pagamentoSelecionado, _clienteId, default, valorMinFiltro.Value, valorMaxFiltro.Value);
+            dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(pagamentoSelecionado, _clienteId, dateTimePickerDataFiltro.Value.Date, valorMinFiltro.Value, valorMaxFiltro.Value);
 
         }
 

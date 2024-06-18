@@ -44,7 +44,7 @@ namespace Cod3rsGrowth.Testes
             TabelaPedido.Instance.Add(pedido1);
             TabelaPedido.Instance.Add(pedido2);
 
-            var pedidos = _servicoPedido.ObterTodos(null, null);
+            var pedidos = _servicoPedido.ObterTodos(null, null, default, null, null);
 
             Assert.NotEmpty(pedidos);
             TabelaPedido.Instance.Remove(pedido1);
