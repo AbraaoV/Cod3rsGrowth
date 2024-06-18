@@ -23,23 +23,23 @@ namespace Cod3rsGrowth.Infra
         public virtual List<Cliente> ObterTodos(FiltroCliente? filtro)
         {
             var clientesTabela = _dataConnection.GetTable<Cliente>();
-            List<Cliente> clientes = clientesTabela.ToList();
+            var clientes = clientesTabela.AsQueryable();
 
             if(filtro == null)
             {
-                return clientes;
+                return clientes.ToList();
             }
 
             if (filtro.Tipo != null)
             {
-                clientes = clientes.Where(c => c.Tipo == filtro.Tipo).ToList();
+                clientes = clientes.Where(c => c.Tipo == filtro.Tipo);
             }
             if(!filtro.Nome.IsNullOrEmpty())
             {
-                clientes = clientes.Where(c => c.Nome.Contains(filtro.Nome)).ToList();
+                clientes = clientes.Where(c => c.Nome.Contains(filtro.Nome));
             }
 
-            return clientes;
+            return clientes.ToList();
         }
         public virtual Cliente ObterPorId(int id)
         {
