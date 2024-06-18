@@ -32,5 +32,7 @@ namespace Cod3rsGrowth.Forms
         public const string AVISO = "Aviso";
         public const string MENSAGEM_CONFIRMACAO_REMOCAO_PEDIDO = "Tem certeza de que deseja remover este pedido?";
         public const string MENSAGEM_ERRO_AO_REMOVER_NENHUM_PEDIDO = "Por favor, selecione um pedido para remover.";
+        public const string FORMATACAO_DATA = "dd-MM-yyyy";
+        public const int VALOR_INICIAL = 0;
     }
 }

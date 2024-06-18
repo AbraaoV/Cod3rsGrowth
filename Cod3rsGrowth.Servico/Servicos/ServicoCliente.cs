@@ -15,9 +15,9 @@ namespace Cod3rsGrowth.Servico.Servicos
             _clienteRepositorio = clienteRepositorio;   
             _validarCliente = validator;
         }
-        public List<Cliente> ObterTodos(TipoDeCliente? tipo, string nome)
+        public List<Cliente> ObterTodos(FiltroCliente filtro)
         {
-            var clientes = _clienteRepositorio.ObterTodos(tipo, nome);
+            var clientes = _clienteRepositorio.ObterTodos(filtro);
             return clientes;
         }
         public Cliente ObterPorId(int id)

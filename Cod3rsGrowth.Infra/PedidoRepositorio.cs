@@ -25,35 +25,40 @@ namespace Cod3rsGrowth.Infra
                .UseSqlServer(result));
         }
 
-        public virtual List<Pedido> ObterTodos(Pagamentos? FormaPagamento, int? clienteId, DateTime dataPedido, decimal? valorMin, decimal? valorMax)
+        public virtual List<Pedido> ObterTodos(FiltroPedido? filtro)
         {
             var pedidosTabela = _dataConnection.GetTable<Pedido>();
             var pedidos = pedidosTabela.AsQueryable();
 
-            if (FormaPagamento != null)
+            if (filtro == null)
             {
-                pedidos = pedidos.Where(c => c.FormaPagamento == FormaPagamento.Value);
-            }
-            if (clienteId != null)
-            {
-                pedidos = pedidos.Where(c => c.ClienteId == clienteId);
-            }
-            if(dataPedido != default)
-            {
-                pedidos = pedidos.Where(c => c.Data.Date == dataPedido.Date);
+                return pedidos.ToList();
             }
 
-            if(valorMin != 0 && valorMax != 0 && valorMin != null && valorMax != null)
+            if (filtro.FormaPagamento != null)
             {
-                pedidos = pedidos.Where(c => c.Valor >= valorMin && c.Valor <= valorMax);
+                pedidos = pedidos.Where(c => c.FormaPagamento == filtro.FormaPagamento);
             }
-            if(valorMin != 0 && valorMin != null)
+            if (filtro.ClienteId != null)
             {
-                pedidos = pedidos.Where(c => c.Valor >= valorMin);
+                pedidos = pedidos.Where(c => c.ClienteId == filtro.ClienteId);
             }
-            if(valorMax  != 0 && valorMax != null)
+            if(filtro.DataPedido != default)
             {
-                pedidos = pedidos.Where(c => c.Valor <= valorMax);
+                pedidos = pedidos.Where(c => c.Data.Date == filtro.DataPedido.Date);
+            }
+
+            if(filtro.ValorMin != ConstantesDosRepositorios.VALOR_INICIAL && filtro.ValorMax != ConstantesDosRepositorios.VALOR_INICIAL && filtro.ValorMin != null && filtro.ValorMax != null)
+            {
+                pedidos = pedidos.Where(c => c.Valor >= filtro.ValorMin && c.Valor <= filtro.ValorMax);
+            }
+            if(filtro.ValorMin != ConstantesDosRepositorios.VALOR_INICIAL && filtro.ValorMin != null)
+            {
+                pedidos = pedidos.Where(c => c.Valor >= filtro.ValorMin);
+            }
+            if(filtro.ValorMax != ConstantesDosRepositorios.VALOR_INICIAL && filtro.ValorMax != null)
+            {
+                pedidos = pedidos.Where(c => c.Valor <= filtro.ValorMax);
             }
 
             return pedidos.ToList();

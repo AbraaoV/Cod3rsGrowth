@@ -20,18 +20,23 @@ namespace Cod3rsGrowth.Infra
                .UseSqlServer(result));
         }
 
-        public virtual List<Cliente> ObterTodos(TipoDeCliente? tipo, string nome)
+        public virtual List<Cliente> ObterTodos(FiltroCliente? filtro)
         {
             var clientesTabela = _dataConnection.GetTable<Cliente>();
             List<Cliente> clientes = clientesTabela.ToList();
 
-            if (tipo != null)
+            if(filtro == null)
             {
-                clientes = clientes.Where(c => c.Tipo == tipo.Value).ToList();
+                return clientes;
             }
-            if(!nome.IsNullOrEmpty())
+
+            if (filtro.Tipo != null)
             {
-                clientes = clientes.Where(c => c.Nome.Contains(nome)).ToList();
+                clientes = clientes.Where(c => c.Tipo == filtro.Tipo).ToList();
+            }
+            if(!filtro.Nome.IsNullOrEmpty())
+            {
+                clientes = clientes.Where(c => c.Nome.Contains(filtro.Nome)).ToList();
             }
 
             return clientes;

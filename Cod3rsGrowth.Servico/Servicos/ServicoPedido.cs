@@ -20,9 +20,9 @@ namespace Cod3rsGrowth.Servico.Servicos
             _pedidoRepositorio = pedidoRepositorio;
             _validarPedido = validator;
         }
-        public List<Pedido> ObterTodos(Pagamentos? FormaPagamento, int? clienteId, DateTime dataPedido, decimal? valorMin, decimal? valorMax)
+        public List<Pedido> ObterTodos(FiltroPedido filtro)
         {
-            var pedidos = _pedidoRepositorio.ObterTodos(FormaPagamento, clienteId, dataPedido, valorMin, valorMax);
+            var pedidos = _pedidoRepositorio.ObterTodos(filtro);
             return pedidos;
         }
         public Pedido ObterPorId(int id)

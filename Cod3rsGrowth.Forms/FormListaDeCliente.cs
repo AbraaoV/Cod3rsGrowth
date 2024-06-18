@@ -25,7 +25,7 @@ namespace Cod3rsGrowth.Forms
 
             InitializeComponent();
 
-            dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null, null);
+            dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null);
         }
 
         private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
@@ -34,7 +34,7 @@ namespace Cod3rsGrowth.Forms
             {
                 if (novoCliente.ShowDialog() == DialogResult.OK)
                 {
-                    dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null, null);
+                    dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null);
                 }
             }
 
@@ -96,7 +96,7 @@ namespace Cod3rsGrowth.Forms
                     try
                     {
                         _servicoCliente.Deletar(clienteId);
-                        dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null, null);
+                        dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null);
                     }
                     catch (ValidationException ex)
                     {
@@ -135,7 +135,7 @@ namespace Cod3rsGrowth.Forms
                 {
                     if (novoCliente.ShowDialog() == DialogResult.OK)
                     {
-                        dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null, null);
+                        dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null);
                     }
                 }
             }
@@ -146,15 +146,15 @@ namespace Cod3rsGrowth.Forms
             string nomeCliente = textBoxFiltroNome.Text.Trim();
             if(comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_FISICA)
             {
-                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(TipoDeCliente.Fisica, nomeCliente);
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente { Tipo = TipoDeCliente.Fisica, Nome = nomeCliente });
             }
             else if(comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_JURIDICA)
             {
-                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(TipoDeCliente.Juridica, nomeCliente);
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente {Tipo = TipoDeCliente.Juridica, Nome = nomeCliente });
             }
             else
             {
-                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null, nomeCliente);
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente {Nome = nomeCliente});
             }
         }
 
@@ -162,15 +162,15 @@ namespace Cod3rsGrowth.Forms
         {
             if (comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_TODOS_TIPOS)
             {
-                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null, null);
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null);
             }
             else if (comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_FISICA)
             {
-                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(TipoDeCliente.Fisica, null);
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente { Tipo = TipoDeCliente.Fisica});
             }
             else if (comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_JURIDICA)
             {
-                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(TipoDeCliente.Juridica, null);
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente { Tipo = TipoDeCliente.Juridica });
             }
            
         }

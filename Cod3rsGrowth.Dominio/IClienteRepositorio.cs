@@ -10,7 +10,7 @@ namespace Cod3rsGrowth.Dominio
 {
     public interface IClienteRepositorio
     {
-        List<Cliente> ObterTodos(TipoDeCliente? tipo, string nome);
+        List<Cliente> ObterTodos(FiltroCliente filtro);
         Cliente ObterPorId (int id);
         void Atualizar(int id,Cliente cliente);
         void Deletar(int id);

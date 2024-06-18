@@ -1,4 +1,5 @@
-﻿using Cod3rsGrowth.Servico.Servicos;
+﻿using Cod3rsGrowth.Dominio;
+using Cod3rsGrowth.Servico.Servicos;
 using FluentValidation;
 using Microsoft.Data.SqlClient;
 using static Cod3rsGrowth.Dominio.Cliente;
@@ -15,7 +16,7 @@ namespace Cod3rsGrowth.Forms
             _clienteId = clienteId;
 
             InitializeComponent();
-            dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(null, clienteId, default, null, null);
+            dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(new FiltroPedido { ClienteId = _clienteId }); ;
         }
 
         private void AoClicarNoBotaoAdicionar(object sender, EventArgs e)
@@ -24,7 +25,7 @@ namespace Cod3rsGrowth.Forms
             {
                 if (novoPedido.ShowDialog() == DialogResult.OK)
                 {
-                    dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(null, _clienteId, default, null, null);
+                    dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(new FiltroPedido { ClienteId = _clienteId });
                 }
             }
         }
@@ -54,7 +55,7 @@ namespace Cod3rsGrowth.Forms
                     try
                     {
                         _servicoPedido.Deletar(pedidoId);
-                        dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(null, _clienteId, default, null, null);
+                        dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(new FiltroPedido { ClienteId = _clienteId });
                     }
                     catch (ValidationException ex)
                     {
@@ -84,7 +85,7 @@ namespace Cod3rsGrowth.Forms
                 {
                     if (novoPedido.ShowDialog() == DialogResult.OK)
                     {
-                        dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(null, _clienteId, default, null, null);
+                        dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(new FiltroPedido { ClienteId = _clienteId });
                     }
                 }
             }
@@ -92,7 +93,7 @@ namespace Cod3rsGrowth.Forms
 
         private void AoFiltrarPelaData(object sender, EventArgs e)
         {
-            dateTimePickerDataFiltro.CustomFormat = "dd-MM-yyyy";
+            dateTimePickerDataFiltro.CustomFormat = Constantes.FORMATACAO_DATA;
             
         }
 
@@ -103,19 +104,19 @@ namespace Cod3rsGrowth.Forms
 
         private void AoApertarOBotaoFiltrar(object sender, EventArgs e)
         {
-            Dominio.Pedido.Pagamentos? pagamentoSelecionado = new Dominio.Pedido.Pagamentos();
+            Pedido.Pagamentos? pagamentoSelecionado = new Pedido.Pagamentos();
             DateTime dataPedido = dateTimePickerDataFiltro.Value.Date;
             if (FiltroFormaPagamento.SelectedIndex == Constantes.INDICE_CARTAO)
             {
-                pagamentoSelecionado = Dominio.Pedido.Pagamentos.Cartao;
+                pagamentoSelecionado = Pedido.Pagamentos.Cartao;
             }
             else if (FiltroFormaPagamento.SelectedIndex == Constantes.INDICE_PIX)
             {
-                pagamentoSelecionado = Dominio.Pedido.Pagamentos.Pix;
+                pagamentoSelecionado = Pedido.Pagamentos.Pix;
             }
             else if (FiltroFormaPagamento.SelectedIndex == Constantes.INDICE_BOLETO)
             {
-                pagamentoSelecionado = Dominio.Pedido.Pagamentos.Boleto;
+                pagamentoSelecionado = Pedido.Pagamentos.Boleto;
             }
             else
             {
@@ -126,7 +127,7 @@ namespace Cod3rsGrowth.Forms
                 dataPedido = default;
             }
 
-            dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(pagamentoSelecionado, _clienteId, dataPedido, valorMinFiltro.Value, valorMaxFiltro.Value);
+            dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(new FiltroPedido { FormaPagamento = pagamentoSelecionado, ClienteId = _clienteId, DataPedido = dataPedido, ValorMin = valorMinFiltro.Value, ValorMax = valorMaxFiltro.Value });
 
         }
 
@@ -141,8 +142,11 @@ namespace Cod3rsGrowth.Forms
 
         private void AoApertarOBotaoLimpar(object sender, EventArgs e)
         {
-            dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(null, _clienteId, default, null, null);
+            dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(new FiltroPedido { ClienteId  = _clienteId});
             dateTimePickerDataFiltro.CustomFormat = " ";
+            FiltroFormaPagamento.SelectedIndex = Constantes.INDICE_TODOS_PAGAMENTOS;
+            valorMaxFiltro.Value = Constantes.VALOR_INICIAL;
+            valorMinFiltro.Value = Constantes.VALOR_INICIAL;
         }
     }
 }

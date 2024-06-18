@@ -46,7 +46,7 @@ namespace Cod3rsGrowth.Testes
             TabelaCliente.Instance.Add(cliente1);
             TabelaCliente.Instance.Add(cliente2);
 
-            var clientes = _servicosCliente.ObterTodos(null, null);
+            var clientes = _servicosCliente.ObterTodos(null);
 
             Assert.NotEmpty(clientes);
             TabelaCliente.Instance.Remove(cliente1);
