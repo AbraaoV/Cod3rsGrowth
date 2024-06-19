@@ -1,11 +1,29 @@
+using Cod3rsGrowth.Dominio;
+using Cod3rsGrowth.Dominio.Migracoes;
+using Cod3rsGrowth.Infra;
+using Cod3rsGrowth.Servico.Servicos;
+using FluentMigrator.Runner;
+using FluentValidation;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
+    .AddSqlServer()
+    .WithGlobalConnectionString(builder.Configuration.GetConnectionString("ConnectionString"))
+    .ScanIn(typeof(AtualizarTabela).Assembly).For.Migrations()
+).AddLogging(lb => lb.AddFluentMigratorConsole());
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ServicoCliente>();
+builder.Services.AddScoped<ServicoPedido>();
+builder.Services.AddScoped<IClienteRepositorio, ClienteRepositorio>();
+builder.Services.AddScoped<IPedidoRepositorio, PedidoRepositorio>();
+builder.Services.AddScoped<IValidator<Cliente>, ValidacaoCliente>();
+builder.Services.AddScoped<IValidator<Pedido>, ValidacaoPedido>();
 
 var app = builder.Build();
 
@@ -16,6 +34,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+using(var scope = app.Services.CreateScope())
+{
+    var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
+    runner.MigrateUp();
+}
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
