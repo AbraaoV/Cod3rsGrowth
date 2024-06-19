@@ -11,7 +11,7 @@ namespace Cod3rsGrowth.Testes
 {
     public class ClienteRepositorioMock : IClienteRepositorio
     {
-        public List<Cliente> ObterTodos(TipoDeCliente? tipo = null)
+        public List<Cliente> ObterTodos(FiltroCliente filtro)
         {
             return TabelaCliente.Instance;
         }

@@ -1,6 +1,7 @@
 ﻿using Cod3rsGrowth.Dominio;
 using LinqToDB;
 using LinqToDB.Data;
+using Microsoft.IdentityModel.Tokens;
 using System.Configuration;
 using static Cod3rsGrowth.Dominio.Cliente;
 
@@ -15,17 +16,27 @@ namespace Cod3rsGrowth.Infra
             var appSettings = ConfigurationManager.AppSettings;
             string result = appSettings[ConstantesDosRepositorios.CONNECTION_STRING];
             _dataConnection = new DataConnection(
-           new DataOptions()
+            new DataOptions()
                .UseSqlServer(result));
         }
 
-        public virtual List<Cliente> ObterTodos(TipoDeCliente? tipo = null)
+        public virtual List<Cliente> ObterTodos(FiltroCliente? filtro)
         {
-            var clientes = _dataConnection.GetTable<Cliente>();
+            var clientesTabela = _dataConnection.GetTable<Cliente>();
+            var clientes = clientesTabela.AsQueryable();
 
-            if (tipo.HasValue)
+            if(filtro == null)
             {
-                clientes = (ITable<Cliente>)clientes.Where(c => c.Tipo == tipo.Value);
+                return clientes.ToList();
+            }
+
+            if (filtro.Tipo != null)
+            {
+                clientes = clientes.Where(c => c.Tipo == filtro.Tipo);
+            }
+            if(!filtro.Nome.IsNullOrEmpty())
+            {
+                clientes = clientes.Where(c => c.Nome.Contains(filtro.Nome));
             }
 
             return clientes.ToList();
@@ -53,7 +64,8 @@ namespace Cod3rsGrowth.Infra
         }
         public virtual void Adicionar(Cliente cliente)
         {
-            _dataConnection.Insert(cliente);
+            _dataConnection.InsertWithInt32Identity(cliente);
         }
+
     }
 }
