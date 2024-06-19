@@ -28,10 +28,10 @@ namespace Cod3rsGrowth.Forms
         public const string MENSAGEM_CONFIRMACAO = "Confirmação de Remoção";
         public const string COMECO_MENSAGEM_ERRO_SQL = "A instrução DELETE conflitou com a restrição do REFERENCE";
         public const string MENSAGEM_ERRO_AO_DELETAR_CLIENTE_COM_PEDIDO = "Para remover um cliente, primeiro remova todos seus pedidos";
-        public const string MENSAGEM_ERRO_AO_REMOVER_NENHUM_CLIENTE = "Por favor, selecione um cliente para remover.";
+        public const string MENSAGEM_ERRO_AO_SELECIONAR_NENHUM_CLIENTE = "Por favor, selecione um cliente.";
         public const string AVISO = "Aviso";
         public const string MENSAGEM_CONFIRMACAO_REMOCAO_PEDIDO = "Tem certeza de que deseja remover este pedido?";
-        public const string MENSAGEM_ERRO_AO_REMOVER_NENHUM_PEDIDO = "Por favor, selecione um pedido para remover.";
+        public const string MENSAGEM_ERRO_AO_SELECIONAR_NENHUM_PEDIDO = "Por favor, selecione um pedido.";
         public const string FORMATACAO_DATA = "dd-MM-yyyy";
         public const int VALOR_INICIAL = 0;
     }

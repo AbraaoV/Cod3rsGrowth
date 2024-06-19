@@ -8,6 +8,7 @@ namespace Cod3rsGrowth.Forms
     {
         private readonly ServicoPedido _servicoPedido;
         private readonly int _clienteId;
+        private Pedido.Pagamentos _formaPagamento;
         public FormAdicionarPedido(ServicoPedido servicoPedido, int clienteId)
         {
             _servicoPedido = servicoPedido;
@@ -18,26 +19,16 @@ namespace Cod3rsGrowth.Forms
         {
             try
             {
-                Pedido.Pagamentos pagamento = Constantes.ENUM_INDEFINIDO;
-                if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDICE_CARTAO)
-                {
-                    pagamento = Pedido.Pagamentos.Cartao;
-                }
-                else if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDICE_PIX)
-                {
-                    pagamento = Pedido.Pagamentos.Pix;
-                }
-                else if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDICE_BOLETO)
-                {
-                    pagamento = Pedido.Pagamentos.Boleto;
-                }
+                
+                ObterFormaDePagamentoSelecionado();
+
                 var pedidoAdicionado = new Pedido()
                 {
                     ClienteId = _clienteId,
                     Data = dateTimePickerPedido.Value,
                     NumeroCartao = maskedTextBoxCartao.Text,
                     Valor = numericUpDownValor.Value,
-                    FormaPagamento = pagamento,
+                    FormaPagamento = _formaPagamento,
                 };
 
                 _servicoPedido.Adicionar(pedidoAdicionado);
@@ -52,6 +43,22 @@ namespace Cod3rsGrowth.Forms
                     mensagemErro += erro.ErrorMessage + "\n";
                 }
                 MessageBox.Show(mensagemErro);
+            }
+        }
+        private void ObterFormaDePagamentoSelecionado()
+        {
+            _formaPagamento = Constantes.ENUM_INDEFINIDO;
+            if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDICE_CARTAO)
+            {
+                _formaPagamento = Pedido.Pagamentos.Cartao;
+            }
+            else if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDICE_PIX)
+            {
+                _formaPagamento = Pedido.Pagamentos.Pix;
+            }
+            else if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDICE_BOLETO)
+            {
+                _formaPagamento = Pedido.Pagamentos.Boleto;
             }
         }
     }

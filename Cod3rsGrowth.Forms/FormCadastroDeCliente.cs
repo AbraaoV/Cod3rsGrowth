@@ -7,6 +7,7 @@ namespace Cod3rsGrowth.Forms
     public partial class FormCadastroDeCliente : Form
     {
         private readonly ServicoCliente _servicoCliente;
+        private Cliente.TipoDeCliente _tipoCliente;
         public FormCadastroDeCliente(ServicoCliente servicoCliente)
         {
             _servicoCliente = servicoCliente;
@@ -14,49 +15,25 @@ namespace Cod3rsGrowth.Forms
         }
         private void AoChecarACaixaFisica(object sender, EventArgs e)
         {
-            if (checkBoxTipoFisica.Checked)
-            {
-                checkBoxTipoJuridica.Visible = false;
-            }
-            else if (checkBoxTipoFisica.Checked == false)
-            {
-                checkBoxTipoJuridica.Visible = true;
-            }
+            DeixarCheckBoxDesmarcadaInvisivel();
 
         }
         private void AoChecarACaixaJuridica(object sender, EventArgs e)
         {
-            if (checkBoxTipoJuridica.Checked)
-            {
-                checkBoxTipoFisica.Visible = false;
-            }
-            if (checkBoxTipoJuridica.Checked == false)
-            {
-                checkBoxTipoFisica.Visible = true;
-            }
+            DeixarCheckBoxDesmarcadaInvisivel();
         }
         private void AoClicarNoBotaoDeAdicionar(object sender, EventArgs e)
         {
             try
             {
-                Cliente.TipoDeCliente tipo = Constantes.ENUM_INDEFINIDO;
-                if (checkBoxTipoFisica.Checked)
-                {
-                    tipo = Cliente.TipoDeCliente.Fisica;
-                    checkBoxTipoJuridica.Visible = false;
-                }
-                else if (checkBoxTipoJuridica.Checked)
-                {
-                    tipo = Cliente.TipoDeCliente.Juridica;
-                    checkBoxTipoFisica.Visible = false;
-                }
+                ObterTipoDeCliente();
 
                 var clienteAdicionado = new Cliente()
                 {
                     Nome = textBoxNome.Text,
                     Cpf = maskedTextBoxCpf.Text.Replace(".", string.Empty).Replace("-", string.Empty),
                     Cnpj = maskedTextBoxCnpj.Text.Replace(".", string.Empty).Replace("/", string.Empty).Replace("-", string.Empty),
-                    Tipo = tipo,
+                    Tipo = _tipoCliente,
                 };
 
                 _servicoCliente.Adicionar(clienteAdicionado);
@@ -71,6 +48,39 @@ namespace Cod3rsGrowth.Forms
                     mensagemErro += erro.ErrorMessage + "\n";
                 }
                 MessageBox.Show(mensagemErro);
+            }
+        }
+        private void ObterTipoDeCliente()
+        {
+            _tipoCliente = Constantes.ENUM_INDEFINIDO;
+            if (checkBoxTipoFisica.Checked)
+            {
+                _tipoCliente = Cliente.TipoDeCliente.Fisica;
+                checkBoxTipoJuridica.Visible = false;
+            }
+            else if (checkBoxTipoJuridica.Checked)
+            {
+                _tipoCliente = Cliente.TipoDeCliente.Juridica;
+                checkBoxTipoFisica.Visible = false;
+            }
+        }
+        private void DeixarCheckBoxDesmarcadaInvisivel()
+        {
+            if (checkBoxTipoFisica.Checked)
+            {
+                checkBoxTipoJuridica.Visible = false;
+            }
+            else if (checkBoxTipoFisica.Checked == false)
+            {
+                checkBoxTipoJuridica.Visible = true;
+            }
+            if (checkBoxTipoJuridica.Checked)
+            {
+                checkBoxTipoFisica.Visible = false;
+            }
+            else if (checkBoxTipoJuridica.Checked == false)
+            {
+                checkBoxTipoFisica.Visible = true;
             }
         }
     }

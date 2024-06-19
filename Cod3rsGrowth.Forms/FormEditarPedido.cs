@@ -9,6 +9,8 @@ namespace Cod3rsGrowth.Forms
         private readonly ServicoPedido _servicoPedido;
         private readonly int _clienteId;
         private readonly int _pedidoId;
+        private Pedido.Pagamentos _formaPagamento;
+        private Pedido _pedido;
         public FormEditarPedido(ServicoPedido servicoPedido, int clienteId, int pedidoId)
         {
             _servicoPedido = servicoPedido;
@@ -20,26 +22,14 @@ namespace Cod3rsGrowth.Forms
         {
             try
             {
-                Pedido.Pagamentos pagamento = Constantes.ENUM_INDEFINIDO;
-                if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDICE_CARTAO)
-                {
-                    pagamento = Pedido.Pagamentos.Cartao;
-                }
-                else if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDICE_PIX)
-                {
-                    pagamento = Pedido.Pagamentos.Pix;
-                }
-                else if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDICE_BOLETO)
-                {
-                    pagamento = Pedido.Pagamentos.Boleto;
-                }
+                ObterFormaDePagamentoSelecionado();
                 var pedidoAtualizado = new Pedido()
                 {
                     ClienteId = _clienteId,
                     Data = dateTimePickerPedido.Value,
                     NumeroCartao = maskedTextBoxCartao.Text,
                     Valor = numericUpDownValor.Value,
-                    FormaPagamento = pagamento,
+                    FormaPagamento = _formaPagamento,
                 };
 
                 _servicoPedido.Atualizar(_pedidoId, pedidoAtualizado);
@@ -58,20 +48,39 @@ namespace Cod3rsGrowth.Forms
         }
         private void FormEditarPedido_Load(object sender, EventArgs e)
         {
-            Pedido pedido = new Pedido();
-            pedido = _servicoPedido.ObterPorId(_pedidoId);
-            dateTimePickerPedido.Value = pedido.Data;
-            maskedTextBoxCartao.Text = pedido.NumeroCartao;
-            numericUpDownValor.Value = pedido.Valor;
-            if (pedido.FormaPagamento == Pedido.Pagamentos.Cartao)
+            _pedido = _servicoPedido.ObterPorId(_pedidoId);
+            dateTimePickerPedido.Value = _pedido.Data;
+            maskedTextBoxCartao.Text = _pedido.NumeroCartao;
+            numericUpDownValor.Value = _pedido.Valor;
+            ComboBoxIndiceSelecionado();
+        }
+        private void ObterFormaDePagamentoSelecionado()
+        {
+            _formaPagamento = Constantes.ENUM_INDEFINIDO;
+            if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDICE_CARTAO)
+            {
+                _formaPagamento = Pedido.Pagamentos.Cartao;
+            }
+            else if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDICE_PIX)
+            {
+                _formaPagamento = Pedido.Pagamentos.Pix;
+            }
+            else if (comboBoxFormaPagamento.SelectedIndex == Constantes.INDICE_BOLETO)
+            {
+                _formaPagamento = Pedido.Pagamentos.Boleto;
+            }
+        }
+        private void ComboBoxIndiceSelecionado()
+        {
+            if (_pedido.FormaPagamento == Pedido.Pagamentos.Cartao)
             {
                 comboBoxFormaPagamento.SelectedIndex = Constantes.INDICE_CARTAO;
             }
-            else if (pedido.FormaPagamento == Pedido.Pagamentos.Pix)
+            else if (_pedido.FormaPagamento == Pedido.Pagamentos.Pix)
             {
                 comboBoxFormaPagamento.SelectedIndex = Constantes.INDICE_PIX;
             }
-            else if (pedido.FormaPagamento == Pedido.Pagamentos.Boleto)
+            else if (_pedido.FormaPagamento == Pedido.Pagamentos.Boleto)
             {
                 comboBoxFormaPagamento.SelectedIndex = Constantes.INDICE_BOLETO;
             }

@@ -120,7 +120,7 @@ namespace Cod3rsGrowth.Forms
             }
             else
             {
-                MessageBox.Show(Constantes.MENSAGEM_ERRO_AO_REMOVER_NENHUM_CLIENTE, Constantes.AVISO, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Constantes.MENSAGEM_ERRO_AO_SELECIONAR_NENHUM_CLIENTE, Constantes.AVISO, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -139,40 +139,20 @@ namespace Cod3rsGrowth.Forms
                     }
                 }
             }
+            else
+            {
+                MessageBox.Show(Constantes.MENSAGEM_ERRO_AO_SELECIONAR_NENHUM_CLIENTE, Constantes.AVISO, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void AoFiltrarPorNome(object sender, EventArgs e)
         {
-            string nomeCliente = textBoxFiltroNome.Text.Trim();
-            if(comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_FISICA)
-            {
-                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente { Tipo = TipoDeCliente.Fisica, Nome = nomeCliente });
-            }
-            else if(comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_JURIDICA)
-            {
-                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente {Tipo = TipoDeCliente.Juridica, Nome = nomeCliente });
-            }
-            else
-            {
-                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente {Nome = nomeCliente});
-            }
+            FiltroNome();
         }
 
         private void AoFiltrarPelaComboBox(object sender, EventArgs e)
         {
-            if (comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_TODOS_TIPOS)
-            {
-                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null);
-            }
-            else if (comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_FISICA)
-            {
-                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente { Tipo = TipoDeCliente.Fisica});
-            }
-            else if (comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_JURIDICA)
-            {
-                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente { Tipo = TipoDeCliente.Juridica });
-            }
-           
+            FiltroComboBox();
         }
 
         private void FormListaDeCliente_Load(object sender, EventArgs e)
@@ -180,6 +160,37 @@ namespace Cod3rsGrowth.Forms
             comboBoxFiltroTipo.SelectedIndex = Constantes.INDICE_TODOS_TIPOS;
         }
 
+        private void FiltroComboBox()
+        {
+            if (comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_TODOS_TIPOS)
+            {
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(null);
+            }
+            else if (comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_FISICA)
+            {
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente { Tipo = TipoDeCliente.Fisica });
+            }
+            else if (comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_JURIDICA)
+            {
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente { Tipo = TipoDeCliente.Juridica });
+            }
+        }
+        private void FiltroNome()
+        {
+            string nomeCliente = textBoxFiltroNome.Text.Trim();
+            if (comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_FISICA)
+            {
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente { Tipo = TipoDeCliente.Fisica, Nome = nomeCliente });
+            }
+            else if (comboBoxFiltroTipo.SelectedIndex == Constantes.INDICE_PESSOA_JURIDICA)
+            {
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente { Tipo = TipoDeCliente.Juridica, Nome = nomeCliente });
+            }
+            else
+            {
+                dataGridViewCliente.DataSource = _servicoCliente.ObterTodos(new FiltroCliente { Nome = nomeCliente });
+            }
+        }
     }
 }
 

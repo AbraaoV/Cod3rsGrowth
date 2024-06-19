@@ -10,6 +10,8 @@ namespace Cod3rsGrowth.Forms
     {
         private readonly ServicoPedido _servicoPedido;
         private readonly int _clienteId;
+        private DateTime _dataPedido;
+        private Pedido.Pagamentos? _pagamentoSelecionado;
         public FormListaDePedido(ServicoPedido servicoPedido, int clienteId)
         {
             _servicoPedido = servicoPedido;
@@ -71,7 +73,7 @@ namespace Cod3rsGrowth.Forms
             }
             else
             {
-                MessageBox.Show(Constantes.MENSAGEM_ERRO_AO_REMOVER_NENHUM_PEDIDO, Constantes.AVISO, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Constantes.MENSAGEM_ERRO_AO_SELECIONAR_NENHUM_PEDIDO, Constantes.AVISO, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
         public void AoClicarNoBotaoEditar(object sender, EventArgs e)
@@ -89,6 +91,10 @@ namespace Cod3rsGrowth.Forms
                     }
                 }
             }
+            else
+            {
+                MessageBox.Show(Constantes.MENSAGEM_ERRO_AO_SELECIONAR_NENHUM_PEDIDO, Constantes.AVISO, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void AoFiltrarPelaData(object sender, EventArgs e)
@@ -104,30 +110,10 @@ namespace Cod3rsGrowth.Forms
 
         private void AoApertarOBotaoFiltrar(object sender, EventArgs e)
         {
-            Pedido.Pagamentos? pagamentoSelecionado = new Pedido.Pagamentos();
-            DateTime dataPedido = dateTimePickerDataFiltro.Value.Date;
-            if (FiltroFormaPagamento.SelectedIndex == Constantes.INDICE_CARTAO)
-            {
-                pagamentoSelecionado = Pedido.Pagamentos.Cartao;
-            }
-            else if (FiltroFormaPagamento.SelectedIndex == Constantes.INDICE_PIX)
-            {
-                pagamentoSelecionado = Pedido.Pagamentos.Pix;
-            }
-            else if (FiltroFormaPagamento.SelectedIndex == Constantes.INDICE_BOLETO)
-            {
-                pagamentoSelecionado = Pedido.Pagamentos.Boleto;
-            }
-            else
-            {
-                pagamentoSelecionado = null;
-            }
-            if (dateTimePickerDataFiltro.CustomFormat == " ")
-            {
-                dataPedido = default;
-            }
+            ObterValorParaFiltroPagamento();
+            ObterFiltroDaData();
 
-            dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(new FiltroPedido { FormaPagamento = pagamentoSelecionado, ClienteId = _clienteId, DataPedido = dataPedido, ValorMin = valorMinFiltro.Value, ValorMax = valorMaxFiltro.Value });
+            dataGridViewPedido.DataSource = _servicoPedido.ObterTodos(new FiltroPedido { FormaPagamento = _pagamentoSelecionado, ClienteId = _clienteId, DataPedido = _dataPedido, ValorMin = valorMinFiltro.Value, ValorMax = valorMaxFiltro.Value });
 
         }
 
@@ -147,6 +133,36 @@ namespace Cod3rsGrowth.Forms
             FiltroFormaPagamento.SelectedIndex = Constantes.INDICE_TODOS_PAGAMENTOS;
             valorMaxFiltro.Value = Constantes.VALOR_INICIAL;
             valorMinFiltro.Value = Constantes.VALOR_INICIAL;
+        }
+        private void ObterValorParaFiltroPagamento()
+        {
+            _pagamentoSelecionado = new Pedido.Pagamentos();
+            
+            if (FiltroFormaPagamento.SelectedIndex == Constantes.INDICE_CARTAO)
+            {
+                _pagamentoSelecionado = Pedido.Pagamentos.Cartao;
+            }
+            else if (FiltroFormaPagamento.SelectedIndex == Constantes.INDICE_PIX)
+            {
+                _pagamentoSelecionado = Pedido.Pagamentos.Pix;
+            }
+            else if (FiltroFormaPagamento.SelectedIndex == Constantes.INDICE_BOLETO)
+            {
+                _pagamentoSelecionado = Pedido.Pagamentos.Boleto;
+            }
+            else
+            {
+                _pagamentoSelecionado = null;
+            }
+            
+        }
+        private void ObterFiltroDaData()
+        {
+            _dataPedido = dateTimePickerDataFiltro.Value.Date;
+            if (dateTimePickerDataFiltro.CustomFormat == " ")
+            {
+                _dataPedido = default;
+            }
         }
     }
 }
