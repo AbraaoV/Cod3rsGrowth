@@ -10,7 +10,7 @@ namespace Cod3rsGrowth.Testes
 {
     public class PedidoRepositorioMock : IPedidoRepositorio
     {
-        public List<Pedido> ObterTodos(Pagamentos? FormaPagamento = null)
+        public List<Pedido> ObterTodos(FiltroPedido filtro)
         {
             return TabelaPedido.Instance;
         }

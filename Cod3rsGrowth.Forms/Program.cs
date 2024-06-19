@@ -1,11 +1,12 @@
-using System;
 using System.Configuration;
-using System.Linq;
 using FluentMigrator.Runner;
-using FluentMigrator.Runner.Initialization;
 using Microsoft.Extensions.DependencyInjection;
 using Cod3rsGrowth.Infra;
 using Cod3rsGrowth.Dominio;
+using Microsoft.Extensions.Hosting;
+using Cod3rsGrowth.Servico.Servicos;
+using FluentValidation;
+using Cod3rsGrowth.Dominio.Migracoes;
 
 namespace Cod3rsGrowth.Forms
 {
@@ -17,11 +18,18 @@ namespace Cod3rsGrowth.Forms
         [STAThread]
         static void Main()
         {
+            //To customize application configuration such as set high DPI settings or default font,
+            //see https://aka.ms/applicationconfiguration.
             using (var serviceProvider = CreateServices())
             using (var scope = serviceProvider.CreateScope())
             {
                 UpdateDatabase(scope.ServiceProvider);
             }
+            ApplicationConfiguration.Initialize();
+            var host = CreateHostBuilder().Build();
+            ServiceProvider = host.Services;
+
+            Application.Run(ServiceProvider.GetRequiredService<FormListaDeCliente>());
         }
         private static ServiceProvider CreateServices()
         {
@@ -33,7 +41,7 @@ namespace Cod3rsGrowth.Forms
                 .ConfigureRunner(rb => rb
                     .AddSqlServer()
                     .WithGlobalConnectionString(result)
-                    .ScanIn(typeof(AdicionarTabelas).Assembly).For.Migrations())
+                    .ScanIn(typeof(AtualizarTabela).Assembly).For.Migrations())
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 .BuildServiceProvider(false);
         }
@@ -45,11 +53,22 @@ namespace Cod3rsGrowth.Forms
 
             runner.MigrateUp();
         }
-        //To customize application configuration such as set high DPI settings or default font,
-        //see https://aka.ms/applicationconfiguration.
-        //ApplicationConfiguration.Initialize();
-        //Application.Run(new Form1());
 
-        
+
+        public static IServiceProvider ServiceProvider { get; private set; }
+        static IHostBuilder CreateHostBuilder()
+        {
+            return Host.CreateDefaultBuilder()
+                .ConfigureServices((context, services) => {
+                    services.AddTransient<ServicoCliente>();
+                    services.AddTransient<ServicoPedido>();
+                    services.AddTransient<IClienteRepositorio, ClienteRepositorio>();
+                    services.AddTransient<IPedidoRepositorio, PedidoRepositorio>();
+                    services.AddScoped<IValidator<Cliente>, ValidacaoCliente>();
+                    services.AddScoped<IValidator<Pedido>, ValidacaoPedido>();
+                    services.AddTransient<FormListaDeCliente>();
+                });
+        }
+
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Cod3rsGrowth.Dominio;
 using FluentValidation.Results;
 using FluentValidation;
+using static Cod3rsGrowth.Dominio.Pedido;
 
 namespace Cod3rsGrowth.Servico.Servicos
 {
@@ -19,9 +20,9 @@ namespace Cod3rsGrowth.Servico.Servicos
             _pedidoRepositorio = pedidoRepositorio;
             _validarPedido = validator;
         }
-        public List<Pedido> ObterTodos()
+        public List<Pedido> ObterTodos(FiltroPedido filtro)
         {
-            var pedidos = _pedidoRepositorio.ObterTodos();
+            var pedidos = _pedidoRepositorio.ObterTodos(filtro);
             return pedidos;
         }
         public Pedido ObterPorId(int id)
@@ -36,6 +37,7 @@ namespace Cod3rsGrowth.Servico.Servicos
         }
         public void Atualizar(int id, Pedido pedido)
         {
+            pedido.Id = id;
             ValidationResult result = _validarPedido.Validate(pedido, options => options.IncludeRuleSets(ConstantesDoValidador.ATUALIZAR, "default"));
             if (result.IsValid)
             {

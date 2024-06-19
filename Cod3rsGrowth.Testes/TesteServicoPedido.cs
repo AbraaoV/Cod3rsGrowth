@@ -44,7 +44,7 @@ namespace Cod3rsGrowth.Testes
             TabelaPedido.Instance.Add(pedido1);
             TabelaPedido.Instance.Add(pedido2);
 
-            var pedidos = _servicoPedido.ObterTodos();
+            var pedidos = _servicoPedido.ObterTodos(null);
 
             Assert.NotEmpty(pedidos);
             TabelaPedido.Instance.Remove(pedido1);
@@ -128,7 +128,7 @@ namespace Cod3rsGrowth.Testes
                 Id = 2,
                 ClienteId = 200,
                 Data = new DateTime(2024, 05, 15),
-                NumeroCartao = "000011112222333312",
+                NumeroCartao = "00001111222233331211",
                 Valor = 540.50m,
                 FormaPagamento = Pedido.Pagamentos.Cartao,
             };
@@ -162,7 +162,7 @@ namespace Cod3rsGrowth.Testes
                 Id = 2,
                 ClienteId = 200,
                 Data = new DateTime(2024, 05, 15),
-                NumeroCartao = "0000111122223333",
+                NumeroCartao = "",
                 Valor = 2,
             };
 
@@ -170,6 +170,22 @@ namespace Cod3rsGrowth.Testes
             Assert.Equal("O campo FormaPagamento é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
         }
 
+        [Fact]
+        public void Ao_adicionar_pedido_com_cartao__e_o_enum_nao_sendo_cartao_deve_retornar_erro()
+        {
+            var pedido1 = new Pedido
+            {
+                Id = 2,
+                ClienteId = 200,
+                Data = new DateTime(2024, 05, 15),
+                NumeroCartao = "0000111122223333",
+                Valor = 2,
+                FormaPagamento = Pedido.Pagamentos.Pix,
+            };
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicoPedido.Adicionar(pedido1));
+            Assert.Equal("O campo cartão deve estar vazio, casa o forma de pagamento não seja cartão", mensagemErro.Errors.Single().ErrorMessage);
+        }
         [Fact]
         public void Ao_adicionar_cliente_que_atende_todas_as_regras_deve_ser_adicionado_normalmente()
         {
@@ -364,7 +380,7 @@ namespace Cod3rsGrowth.Testes
                 Id = 2,
                 ClienteId = 200,
                 Data = new DateTime(2024, 05, 15),
-                NumeroCartao = "0000111122223333",
+                NumeroCartao = "",
                 Valor = 150.45m,
                 FormaPagamento = Pedido.Pagamentos.Cartao,
             };
@@ -375,7 +391,7 @@ namespace Cod3rsGrowth.Testes
                 Id = 2,
                 ClienteId = 200,
                 Data = new DateTime(2024, 05, 15),
-                NumeroCartao = "0000111122223333",
+                NumeroCartao = "",
                 Valor = 2,
             };
 
