@@ -8,11 +8,15 @@ using Cod3rsGrowth.Servico.Servicos;
 
 namespace Cod3rsGrowth.Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(Constantes.ROTA)]
     [ApiController]
     public class ControllerCliente : ControllerBase
     {
         private readonly ServicoCliente _servicoCliente;
+        public ControllerCliente(ServicoCliente servicoCliente)
+        {
+            _servicoCliente = servicoCliente;
+        }
 
         [HttpGet]
         public IActionResult ObterTodos()
@@ -20,19 +24,19 @@ namespace Cod3rsGrowth.Web.Controllers
             return Ok(_servicoCliente.ObterTodos(null));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet(Constantes.ID)]
         public IActionResult ObterPorId(int id)
         {
             return Ok(_servicoCliente.ObterPorId(id));
         }
-        [HttpPost("{id}")]
+        [HttpPost]
         public IActionResult Adicionar(Cliente cliente)
         {
             if (cliente == null) { return BadRequest(); }
             _servicoCliente.Adicionar(cliente);
             return Created("Cliente", cliente);
         }
-        [HttpPut]
+        [HttpPut(Constantes.ID)]
         public IActionResult Atualizar(int id, Cliente cliente)
         {
             if (cliente == null) { return BadRequest(); }

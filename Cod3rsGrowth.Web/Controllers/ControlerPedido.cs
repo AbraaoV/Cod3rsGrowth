@@ -5,11 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cod3rsGrowth.Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(Constantes.ROTA)]
     [ApiController]
-    public class ControlerPedido : ControllerBase
+    public class ControllerPedido : ControllerBase
     {
         private readonly ServicoPedido _servicoPedido;
+        public ControllerPedido(ServicoPedido servicoPedido)
+        {
+            _servicoPedido = servicoPedido;
+        }
 
         [HttpGet]
         public IActionResult ObterTodos()
@@ -17,19 +21,19 @@ namespace Cod3rsGrowth.Web.Controllers
             return Ok(_servicoPedido.ObterTodos(null));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet(Constantes.ID)]
         public IActionResult ObterPorId(int id)
         {
             return Ok(_servicoPedido.ObterPorId(id));
         }
-        [HttpPost("{id}")]
+        [HttpPost]
         public IActionResult Adicionar(Pedido pedido)
         {
             if (pedido == null) { return BadRequest(); }
             _servicoPedido.Adicionar(pedido);
             return Created("Pedido", pedido);
         }
-        [HttpPut]
+        [HttpPut(Constantes.ID)]
         public IActionResult Atualizar(int id, Pedido pedido)
         {
             if (pedido == null) { return BadRequest(); }

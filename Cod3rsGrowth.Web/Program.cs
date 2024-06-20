@@ -4,13 +4,17 @@ using Cod3rsGrowth.Infra;
 using Cod3rsGrowth.Servico.Servicos;
 using FluentMigrator.Runner;
 using FluentValidation;
+using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var appSettings = ConfigurationManager.AppSettings;
+string result = appSettings[ConstantesDosRepositorios.CONNECTION_STRING];
+
 builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
     .AddSqlServer()
-    .WithGlobalConnectionString(builder.Configuration.GetConnectionString("ConnectionString"))
+    .WithGlobalConnectionString(result)
     .ScanIn(typeof(AtualizarTabela).Assembly).For.Migrations()
 ).AddLogging(lb => lb.AddFluentMigratorConsole());
 
