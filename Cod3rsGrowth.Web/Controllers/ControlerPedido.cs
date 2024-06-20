@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cod3rsGrowth.Web.Controllers
 {
-    [Route(Constantes.ROTA)]
+    [Route(ConstantesDaController.ROTA)]
     [ApiController]
     public class ControllerPedido : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace Cod3rsGrowth.Web.Controllers
             return Ok(_servicoPedido.ObterTodos(null));
         }
 
-        [HttpGet(Constantes.ID)]
+        [HttpGet(ConstantesDaController.PARAMETRO_ID)]
         public IActionResult ObterPorId(int id)
         {
             return Ok(_servicoPedido.ObterPorId(id));
@@ -33,7 +33,7 @@ namespace Cod3rsGrowth.Web.Controllers
             _servicoPedido.Adicionar(pedido);
             return Created("Pedido", pedido);
         }
-        [HttpPut(Constantes.ID)]
+        [HttpPut(ConstantesDaController.PARAMETRO_ID)]
         public IActionResult Atualizar(int id, Pedido pedido)
         {
             if (pedido == null) { return BadRequest(); }

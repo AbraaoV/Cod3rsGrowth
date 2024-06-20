@@ -8,7 +8,7 @@ using Cod3rsGrowth.Servico.Servicos;
 
 namespace Cod3rsGrowth.Web.Controllers
 {
-    [Route(Constantes.ROTA)]
+    [Route(ConstantesDaController.ROTA)]
     [ApiController]
     public class ControllerCliente : ControllerBase
     {
@@ -24,7 +24,7 @@ namespace Cod3rsGrowth.Web.Controllers
             return Ok(_servicoCliente.ObterTodos(null));
         }
 
-        [HttpGet(Constantes.ID)]
+        [HttpGet(ConstantesDaController.PARAMETRO_ID)]
         public IActionResult ObterPorId(int id)
         {
             return Ok(_servicoCliente.ObterPorId(id));
@@ -36,7 +36,7 @@ namespace Cod3rsGrowth.Web.Controllers
             _servicoCliente.Adicionar(cliente);
             return Created("Cliente", cliente);
         }
-        [HttpPut(Constantes.ID)]
+        [HttpPut(ConstantesDaController.PARAMETRO_ID)]
         public IActionResult Atualizar(int id, Cliente cliente)
         {
             if (cliente == null) { return BadRequest(); }

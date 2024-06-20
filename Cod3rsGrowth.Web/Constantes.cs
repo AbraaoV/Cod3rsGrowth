@@ -1,8 +1,8 @@
 ﻿namespace Cod3rsGrowth.Web
 {
-    public static class Constantes
+    public static class ConstantesDaController
     {
         public const string ROTA = "api/[controller]";
-        public const string ID = "{id}";
+        public const string PARAMETRO_ID = "{id}";
     }
 }
