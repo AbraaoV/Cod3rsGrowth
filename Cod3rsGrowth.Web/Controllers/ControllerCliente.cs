@@ -21,7 +21,9 @@ namespace Cod3rsGrowth.Web.Controllers
         [HttpGet]
         public IActionResult ObterTodos()
         {
-            return Ok(_servicoCliente.ObterTodos(null));
+            var todosClientes = _servicoCliente.ObterTodos(null);
+            if (todosClientes == null) { return  BadRequest(); }
+            return Ok(todosClientes);
         }
 
         [HttpGet(ConstantesDaController.PARAMETRO_ID)]
