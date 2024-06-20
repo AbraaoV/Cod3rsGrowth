@@ -5,6 +5,7 @@ using Cod3rsGrowth.Servico.Servicos;
 using FluentMigrator.Runner;
 using FluentValidation;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
+using Microsoft.AspNetCore.Mvc.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
