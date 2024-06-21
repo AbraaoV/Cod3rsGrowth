@@ -19,13 +19,15 @@ namespace Cod3rsGrowth.Web.Controllers
         public IActionResult ObterTodos()
         {
             var todosPedidos = _servicoPedido.ObterTodos(null);
-            if (todosPedidos == null) { return BadRequest(); }
+            if (todosPedidos == null || todosPedidos.Count == 0) { return BadRequest(todosPedidos); }
             return Ok(todosPedidos);
         }
 
         [HttpGet(ConstantesDaController.PARAMETRO_ID)]
         public IActionResult ObterPorId(int id)
         {
+            var pedido = _servicoPedido.ObterPorId(id);
+            if(pedido == null ) { return NotFound(id); }
             return Ok(_servicoPedido.ObterPorId(id));
         }
         [HttpPost]

@@ -6,6 +6,9 @@ using FluentMigrator.Runner;
 using FluentValidation;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
 using Microsoft.AspNetCore.Mvc.Core;
+using Microsoft.AspNetCore.Mvc;
+using Cod3rsGrowth.Web;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +22,8 @@ builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
     .ScanIn(typeof(AtualizarTabela).Assembly).For.Migrations()
 ).AddLogging(lb => lb.AddFluentMigratorConsole());
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddFluentValidation();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

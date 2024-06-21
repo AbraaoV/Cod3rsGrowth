@@ -22,14 +22,16 @@ namespace Cod3rsGrowth.Web.Controllers
         public IActionResult ObterTodos()
         {
             var todosClientes = _servicoCliente.ObterTodos(null);
-            if (todosClientes == null) { return  BadRequest(); }
+            if (todosClientes == null || todosClientes.Count == 0) { return  BadRequest(); }
             return Ok(todosClientes);
         }
 
         [HttpGet(ConstantesDaController.PARAMETRO_ID)]
         public IActionResult ObterPorId(int id)
         {
-            return Ok(_servicoCliente.ObterPorId(id));
+            var cliente = _servicoCliente.ObterPorId(id);
+            if(cliente == null) {  return NotFound(id); }
+            return Ok(cliente);
         }
         [HttpPost]
         public IActionResult Adicionar(Cliente cliente)
