@@ -1,5 +1,6 @@
 ﻿using Cod3rsGrowth.Dominio;
 using Cod3rsGrowth.Servico.Servicos;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,9 @@ namespace Cod3rsGrowth.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult ObterTodos()
+        public IActionResult ObterTodos([FromQuery] FiltroPedido filtroPedido)
         {
-            var todosPedidos = _servicoPedido.ObterTodos(null);
+            var todosPedidos = _servicoPedido.ObterTodos(filtroPedido);
             if (todosPedidos == null || todosPedidos.Count == 0) { return BadRequest(); }
             return Ok(todosPedidos);
         }
