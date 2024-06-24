@@ -19,7 +19,7 @@ namespace Cod3rsGrowth.Web.Controllers
         public IActionResult ObterTodos()
         {
             var todosPedidos = _servicoPedido.ObterTodos(null);
-            if (todosPedidos == null || todosPedidos.Count == 0) { return BadRequest(todosPedidos); }
+            if (todosPedidos == null || todosPedidos.Count == 0) { return BadRequest(); }
             return Ok(todosPedidos);
         }
 
@@ -27,7 +27,7 @@ namespace Cod3rsGrowth.Web.Controllers
         public IActionResult ObterPorId(int id)
         {
             var pedido = _servicoPedido.ObterPorId(id);
-            if(pedido == null ) { return NotFound(id); }
+            if(pedido == null ) { return NotFound(); }
             return Ok(_servicoPedido.ObterPorId(id));
         }
         [HttpPost]
@@ -42,9 +42,9 @@ namespace Cod3rsGrowth.Web.Controllers
         {
             if (pedido == null) { return BadRequest(); }
             _servicoPedido.Atualizar(id, pedido);
-            return Ok(pedido);
+            return Ok();
         }
-        [HttpDelete]
+        [HttpDelete(ConstantesDaController.PARAMETRO_ID)]
         public IActionResult Deletar(int id)
         {
             _servicoPedido.Deletar(id);

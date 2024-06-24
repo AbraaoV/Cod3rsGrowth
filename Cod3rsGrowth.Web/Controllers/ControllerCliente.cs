@@ -30,7 +30,7 @@ namespace Cod3rsGrowth.Web.Controllers
         public IActionResult ObterPorId(int id)
         {
             var cliente = _servicoCliente.ObterPorId(id);
-            if(cliente == null) {  return NotFound(id); }
+            if(cliente == null) {  return NotFound(); }
             return Ok(cliente);
         }
         [HttpPost]
@@ -45,9 +45,9 @@ namespace Cod3rsGrowth.Web.Controllers
         {
             if (cliente == null) { return BadRequest(); }
             _servicoCliente.Atualizar(id, cliente);
-            return Ok(cliente);
+            return Ok();
         }
-        [HttpDelete]
+        [HttpDelete(ConstantesDaController.PARAMETRO_ID)]
         public IActionResult Deletar(int id)
         {
             _servicoCliente.Deletar(id);
