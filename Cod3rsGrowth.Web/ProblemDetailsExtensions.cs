@@ -21,13 +21,14 @@ public static class ProblemDetailsExtensions
                     var exception = exceptionHandlerFeature.Error;
                     var problemDetails = new ProblemDetails
                     {
-                        Instance = context.Request.HttpContext.Request.Path
+                        Instance = context.Request.HttpContext.Request.Path,
+                        Title = ConstantesDaController.TITULO,
+                        Detail = ConstantesDaController.DETALHE,
+                        Type = ConstantesDaController.TIPO,
+                        Status = StatusCodes.Status400BadRequest
                     };
 
-                    problemDetails.Title = ConstantesDaController.TITULO;
-                    problemDetails.Detail = ConstantesDaController.DETALHE;
-                    problemDetails.Type = ConstantesDaController.TIPO;
-                    problemDetails.Status = StatusCodes.Status400BadRequest;
+                  
 
                     if (exception is ValidationException validationException)
                     {
