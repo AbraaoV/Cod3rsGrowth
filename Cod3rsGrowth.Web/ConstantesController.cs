@@ -12,6 +12,7 @@ namespace Cod3rsGrowth.Web
         public const string NOME_EXTENCAO = "errors";
         public const string COMECO_MENSAGEM_ERRO_SQL = "A instrução DELETE conflitou com a restrição do REFERENCE";
         public const string MENSAGEM_ERRO_AO_DELETAR_CLIENTE_COM_PEDIDO = "Para remover um cliente, primeiro remova todos seus pedidos";
-
+        public const string NOME_LOG = "GlobalExceptionHandler";
+        public const string TIPO_CONTEUDO = "application/problem+json";
     }
 }
