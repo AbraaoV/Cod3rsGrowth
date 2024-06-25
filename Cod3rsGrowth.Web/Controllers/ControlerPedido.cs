@@ -20,7 +20,6 @@ namespace Cod3rsGrowth.Web.Controllers
         public IActionResult ObterTodos([FromQuery] FiltroPedido filtroPedido)
         {
             var todosPedidos = _servicoPedido.ObterTodos(filtroPedido);
-            if (todosPedidos == null || todosPedidos.Count == 0) { return BadRequest(); }
             return Ok(todosPedidos);
         }
 
