@@ -20,7 +20,7 @@ namespace Cod3rsGrowth.Dominio
         [Column]
         public DateTime Data { get; set; }
         [Column(Length = 16)]
-        public string NumeroCartao { get; set; }
+        public string? NumeroCartao { get; set; }
         [Column]
         public decimal Valor {  get; set; }
         [Column]

@@ -5,10 +5,7 @@ using Cod3rsGrowth.Servico.Servicos;
 using FluentMigrator.Runner;
 using FluentValidation;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
-using Microsoft.AspNetCore.Mvc.Core;
-using Microsoft.AspNetCore.Mvc;
-using Cod3rsGrowth.Web;
-using FluentValidation.AspNetCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +18,7 @@ builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
     .ScanIn(typeof(AtualizarTabela).Assembly).For.Migrations()
 ).AddLogging(lb => lb.AddFluentMigratorConsole());
 
-builder.Services.AddControllers().AddFluentValidation();
+builder.Services.AddMvc();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ServicoCliente>();
@@ -30,6 +27,7 @@ builder.Services.AddScoped<IClienteRepositorio, ClienteRepositorio>();
 builder.Services.AddScoped<IPedidoRepositorio, PedidoRepositorio>();
 builder.Services.AddScoped<IValidator<Cliente>, ValidacaoCliente>();
 builder.Services.AddScoped<IValidator<Pedido>, ValidacaoPedido>();
+
 
 var app = builder.Build();
 
@@ -45,6 +43,8 @@ using(var scope = app.Services.CreateScope())
     runner.MigrateUp();
 }
 app.UseHttpsRedirection();
+
+app.UseProblemDetailsExceptionHandler(app.Services.GetRequiredService<ILoggerFactory>());
 
 app.UseAuthorization();
 

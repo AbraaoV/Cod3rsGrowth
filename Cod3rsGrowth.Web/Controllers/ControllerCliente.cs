@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Cod3rsGrowth.Dominio;
 using System.Data;
 using Cod3rsGrowth.Servico.Servicos;
+using System.ComponentModel.DataAnnotations;
 
 namespace Cod3rsGrowth.Web.Controllers
 {
@@ -35,14 +36,12 @@ namespace Cod3rsGrowth.Web.Controllers
         [HttpPost]
         public IActionResult Adicionar(Cliente cliente)
         {
-            if (cliente == null) { return BadRequest(); }
             _servicoCliente.Adicionar(cliente);
             return Created("Cliente", cliente);
         }
         [HttpPut(ConstantesDaController.PARAMETRO_ID)]
         public IActionResult Atualizar(int id, Cliente cliente)
         {
-            if (cliente == null) { return BadRequest(); }
             _servicoCliente.Atualizar(id, cliente);
             return Ok();
         }

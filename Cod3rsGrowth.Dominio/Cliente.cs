@@ -11,7 +11,7 @@ namespace Cod3rsGrowth.Dominio
     public class Cliente
     {
         [Column(Length = 250)]
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
         [PrimaryKey, Identity]
         public int Id { get; set; }
         [Column(Length = 11)]
