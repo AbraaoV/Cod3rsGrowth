@@ -1,8 +1,10 @@
 ﻿using Cod3rsGrowth.Dominio;
 using Cod3rsGrowth.Servico.Servicos;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace Cod3rsGrowth.Web.Controllers
 {
@@ -33,14 +35,12 @@ namespace Cod3rsGrowth.Web.Controllers
         [HttpPost]
         public IActionResult Adicionar(Pedido pedido)
         {
-            if (pedido == null) { return BadRequest(); }
             _servicoPedido.Adicionar(pedido);
             return Created("Pedido", pedido);
         }
         [HttpPut(ConstantesDaController.PARAMETRO_ID)]
         public IActionResult Atualizar(int id, Pedido pedido)
         {
-            if (pedido == null) { return BadRequest(); }
             _servicoPedido.Atualizar(id, pedido);
             return Ok();
         }
