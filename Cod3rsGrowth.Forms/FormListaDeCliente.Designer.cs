@@ -29,15 +29,10 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             label1 = new Label();
             clienteBindingSource = new BindingSource(components);
             dataGridViewCliente = new DataGridView();
-            nomeDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            cpfDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            cnpjDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            tipoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             clienteBindingSource1 = new BindingSource(components);
             button1 = new Button();
             button2 = new Button();
@@ -46,6 +41,11 @@
             pedidosToolStripMenuItem = new ToolStripMenuItem();
             textBoxFiltroNome = new TextBox();
             comboBoxFiltroTipo = new ComboBox();
+            tipoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            cnpjDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            cpfDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            nomeDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewCliente).BeginInit();
             ((System.ComponentModel.ISupportInitialize)clienteBindingSource1).BeginInit();
@@ -79,48 +79,6 @@
             dataGridViewCliente.TabIndex = 1;
             dataGridViewCliente.CellFormatting += formatacaoExibicaoListaCliente;
             dataGridViewCliente.CellMouseDown += AoClicarComOBotaoDireitoNaListaPedido;
-            // 
-            // nomeDataGridViewTextBoxColumn
-            // 
-            nomeDataGridViewTextBoxColumn.DataPropertyName = "Nome";
-            nomeDataGridViewTextBoxColumn.HeaderText = "Nome";
-            nomeDataGridViewTextBoxColumn.MinimumWidth = 6;
-            nomeDataGridViewTextBoxColumn.Name = "nomeDataGridViewTextBoxColumn";
-            nomeDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // idDataGridViewTextBoxColumn
-            // 
-            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-            idDataGridViewTextBoxColumn.HeaderText = "Id";
-            idDataGridViewTextBoxColumn.MinimumWidth = 6;
-            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-            idDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // cpfDataGridViewTextBoxColumn
-            // 
-            cpfDataGridViewTextBoxColumn.DataPropertyName = "Cpf";
-            dataGridViewCellStyle2.Format = "###\\.###\\.###-##";
-            cpfDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle2;
-            cpfDataGridViewTextBoxColumn.HeaderText = "Cpf";
-            cpfDataGridViewTextBoxColumn.MinimumWidth = 6;
-            cpfDataGridViewTextBoxColumn.Name = "cpfDataGridViewTextBoxColumn";
-            cpfDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // cnpjDataGridViewTextBoxColumn
-            // 
-            cnpjDataGridViewTextBoxColumn.DataPropertyName = "Cnpj";
-            cnpjDataGridViewTextBoxColumn.HeaderText = "Cnpj";
-            cnpjDataGridViewTextBoxColumn.MinimumWidth = 6;
-            cnpjDataGridViewTextBoxColumn.Name = "cnpjDataGridViewTextBoxColumn";
-            cnpjDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // tipoDataGridViewTextBoxColumn
-            // 
-            tipoDataGridViewTextBoxColumn.DataPropertyName = "Tipo";
-            tipoDataGridViewTextBoxColumn.HeaderText = "Tipo";
-            tipoDataGridViewTextBoxColumn.MinimumWidth = 6;
-            tipoDataGridViewTextBoxColumn.Name = "tipoDataGridViewTextBoxColumn";
-            tipoDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // clienteBindingSource1
             // 
@@ -188,6 +146,48 @@
             comboBoxFiltroTipo.TabIndex = 3;
             comboBoxFiltroTipo.SelectedIndexChanged += AoFiltrarPelaComboBox;
             // 
+            // tipoDataGridViewTextBoxColumn
+            // 
+            tipoDataGridViewTextBoxColumn.DataPropertyName = "Tipo";
+            tipoDataGridViewTextBoxColumn.HeaderText = "Tipo";
+            tipoDataGridViewTextBoxColumn.MinimumWidth = 6;
+            tipoDataGridViewTextBoxColumn.Name = "tipoDataGridViewTextBoxColumn";
+            tipoDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // cnpjDataGridViewTextBoxColumn
+            // 
+            cnpjDataGridViewTextBoxColumn.DataPropertyName = "Cnpj";
+            cnpjDataGridViewTextBoxColumn.HeaderText = "Cnpj";
+            cnpjDataGridViewTextBoxColumn.MinimumWidth = 6;
+            cnpjDataGridViewTextBoxColumn.Name = "cnpjDataGridViewTextBoxColumn";
+            cnpjDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // cpfDataGridViewTextBoxColumn
+            // 
+            cpfDataGridViewTextBoxColumn.DataPropertyName = "Cpf";
+            dataGridViewCellStyle1.Format = "###\\.###\\.###-##";
+            cpfDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            cpfDataGridViewTextBoxColumn.HeaderText = "Cpf";
+            cpfDataGridViewTextBoxColumn.MinimumWidth = 6;
+            cpfDataGridViewTextBoxColumn.Name = "cpfDataGridViewTextBoxColumn";
+            cpfDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // idDataGridViewTextBoxColumn
+            // 
+            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
+            idDataGridViewTextBoxColumn.HeaderText = "Id";
+            idDataGridViewTextBoxColumn.MinimumWidth = 6;
+            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            idDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // nomeDataGridViewTextBoxColumn
+            // 
+            nomeDataGridViewTextBoxColumn.DataPropertyName = "Nome";
+            nomeDataGridViewTextBoxColumn.HeaderText = "Nome";
+            nomeDataGridViewTextBoxColumn.MinimumWidth = 6;
+            nomeDataGridViewTextBoxColumn.Name = "nomeDataGridViewTextBoxColumn";
+            nomeDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
             // FormListaDeCliente
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -220,14 +220,14 @@
         private Button button2;
         private Button button3;
         private BindingSource clienteBindingSource1;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem pedidosToolStripMenuItem;
+        private TextBox textBoxFiltroNome;
+        private ComboBox comboBoxFiltroTipo;
         private DataGridViewTextBoxColumn nomeDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn cpfDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn cnpjDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn tipoDataGridViewTextBoxColumn;
-        private ContextMenuStrip contextMenuStrip1;
-        private ToolStripMenuItem pedidosToolStripMenuItem;
-        private TextBox textBoxFiltroNome;
-        private ComboBox comboBoxFiltroTipo;
     }
 }

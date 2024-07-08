@@ -15,6 +15,7 @@ namespace Cod3rsGrowth.Infra
         {
             var appSettings = ConfigurationManager.AppSettings;
             string result = appSettings[ConstantesDosRepositorios.CONNECTION_STRING];
+
             _dataConnection = new DataConnection(
             new DataOptions()
                .UseSqlServer(result));
@@ -62,9 +63,9 @@ namespace Cod3rsGrowth.Infra
                 .Where(p => p.Id == id)
                 .Delete();
         }
-        public virtual void Adicionar(Cliente cliente)
+        public virtual int Adicionar(Cliente cliente)
         {
-            _dataConnection.InsertWithInt32Identity(cliente);
+           return _dataConnection.InsertWithInt32Identity(cliente);
         }
 
     }

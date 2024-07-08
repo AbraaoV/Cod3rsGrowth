@@ -1,15 +1,8 @@
 using Cod3rsGrowth.Dominio;
-using Cod3rsGrowth.Infra;
-using LinqToDB.Data;
-using LinqToDB;
-using System.Data;
-using System.Configuration;
 using Cod3rsGrowth.Servico.Servicos;
-using System.Windows.Forms;
 using FluentValidation;
 using Microsoft.Data.SqlClient;
 using static Cod3rsGrowth.Dominio.Cliente;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Cod3rsGrowth.Forms
 {

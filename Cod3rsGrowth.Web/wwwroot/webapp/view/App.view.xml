@@ -1,0 +1,9 @@
+<mvc:View
+   controllerName="ui5.codersgrowth.controller.App"
+   xmlns="sap.m"
+   xmlns:mvc="sap.ui.core.mvc">
+   <Button
+   id="bntMostrarAqui"
+   text="{i18n>botaoMostrarAqui}"
+   press=".noMostrarAqui"/>
+</mvc:View>

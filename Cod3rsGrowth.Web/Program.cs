@@ -44,6 +44,8 @@ using(var scope = app.Services.CreateScope())
 }
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
 app.UseProblemDetailsExceptionHandler(app.Services.GetRequiredService<ILoggerFactory>());
 
 app.UseAuthorization();
