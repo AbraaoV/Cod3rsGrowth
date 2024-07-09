@@ -51,6 +51,10 @@ app.UseFileServer(new FileServerOptions()
 {
     EnableDirectoryBrowsing = true
 });
+app.UseStaticFiles(new StaticFileOptions() 
+{ 
+    ServeUnknownFileTypes = true 
+});
 
 app.UseProblemDetailsExceptionHandler(app.Services.GetRequiredService<ILoggerFactory>());
 
