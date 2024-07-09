@@ -4,7 +4,7 @@ sap.ui.define([
  ], (Controller, MessageToast) => {
     "use strict";
  
-    return Controller.extend("ui5.codersgrowth.appcontrollerview.App", {
+    return Controller.extend("ui5.codersgrowth.app.App", {
         noMostrarAqui() {
             const oBundle = this.getView().getModel("i18n").getResourceBundle();
             const sMsg = oBundle.getText("aquiMsg")

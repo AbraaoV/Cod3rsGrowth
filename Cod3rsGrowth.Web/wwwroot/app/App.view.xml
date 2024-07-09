@@ -1,5 +1,5 @@
 <mvc:View
-   controllerName="ui5.codersgrowth.appcontrollerview.App"
+   controllerName="ui5.codersgrowth.app.App"
    xmlns="sap.m"
    xmlns:mvc="sap.ui.core.mvc">
    <Button

@@ -37,7 +37,7 @@
 	  }
 	},
 	"rootView": {
-		"viewName": "ui5.codersgrowth.appcontrollerview.App",
+		"viewName": "ui5.codersgrowth.app.App",
 		"type": "XML",
 		"id": "app"
 	}
