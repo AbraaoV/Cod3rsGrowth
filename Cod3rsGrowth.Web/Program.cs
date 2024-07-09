@@ -4,6 +4,7 @@ using Cod3rsGrowth.Infra;
 using Cod3rsGrowth.Servico.Servicos;
 using FluentMigrator.Runner;
 using FluentValidation;
+using Microsoft.Extensions.FileProviders;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 
@@ -20,13 +21,15 @@ builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
 
 builder.Services.AddMvc();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddDirectoryBrowser();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<ServicoCliente>();
+builder.Services.AddScoped<ServicoCliente>();   
 builder.Services.AddScoped<ServicoPedido>();
 builder.Services.AddScoped<IClienteRepositorio, ClienteRepositorio>();
 builder.Services.AddScoped<IPedidoRepositorio, PedidoRepositorio>();
 builder.Services.AddScoped<IValidator<Cliente>, ValidacaoCliente>();
 builder.Services.AddScoped<IValidator<Pedido>, ValidacaoPedido>();
+
 
 
 var app = builder.Build();
@@ -43,6 +46,15 @@ using(var scope = app.Services.CreateScope())
     runner.MigrateUp();
 }
 app.UseHttpsRedirection();
+
+app.UseFileServer(new FileServerOptions()
+{
+    EnableDirectoryBrowsing = true
+});
+app.UseStaticFiles(new StaticFileOptions() 
+{ 
+    ServeUnknownFileTypes = true 
+});
 
 app.UseProblemDetailsExceptionHandler(app.Services.GetRequiredService<ILoggerFactory>());
 
