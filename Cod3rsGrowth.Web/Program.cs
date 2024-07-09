@@ -4,6 +4,7 @@ using Cod3rsGrowth.Infra;
 using Cod3rsGrowth.Servico.Servicos;
 using FluentMigrator.Runner;
 using FluentValidation;
+using Microsoft.Extensions.FileProviders;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 
@@ -43,6 +44,13 @@ using(var scope = app.Services.CreateScope())
     runner.MigrateUp();
 }
 app.UseHttpsRedirection();
+
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/webapp/")),
+    RequestPath = new PathString("/app"),
+    ServeUnknownFileTypes = true
+});
 
 app.UseProblemDetailsExceptionHandler(app.Services.GetRequiredService<ILoggerFactory>());
 
