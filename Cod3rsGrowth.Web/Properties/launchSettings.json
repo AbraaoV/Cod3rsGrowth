@@ -21,9 +21,9 @@
     },
     "https": {
       "commandName": "Project",
-      "dotnetRunMessages": false,
-      "launchBrowser": false,
-      "launchUrl": "swagger",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "",
       "applicationUrl": "https://localhost:7205;http://localhost:5094",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

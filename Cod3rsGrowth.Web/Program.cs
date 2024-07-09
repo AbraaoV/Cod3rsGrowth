@@ -21,13 +21,15 @@ builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
 
 builder.Services.AddMvc();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddDirectoryBrowser();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<ServicoCliente>();
+builder.Services.AddScoped<ServicoCliente>();   
 builder.Services.AddScoped<ServicoPedido>();
 builder.Services.AddScoped<IClienteRepositorio, ClienteRepositorio>();
 builder.Services.AddScoped<IPedidoRepositorio, PedidoRepositorio>();
 builder.Services.AddScoped<IValidator<Cliente>, ValidacaoCliente>();
 builder.Services.AddScoped<IValidator<Pedido>, ValidacaoPedido>();
+
 
 
 var app = builder.Build();
@@ -45,11 +47,9 @@ using(var scope = app.Services.CreateScope())
 }
 app.UseHttpsRedirection();
 
-app.UseStaticFiles(new StaticFileOptions()
+app.UseFileServer(new FileServerOptions()
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/webapp/")),
-    RequestPath = new PathString("/app"),
-    ServeUnknownFileTypes = true
+    EnableDirectoryBrowsing = true
 });
 
 app.UseProblemDetailsExceptionHandler(app.Services.GetRequiredService<ILoggerFactory>());
