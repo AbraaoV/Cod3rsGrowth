@@ -40,6 +40,39 @@
 		"viewName": "ui5.codersgrowth.app.App",
 		"type": "XML",
 		"id": "app"
+	},
+	"routing": {
+	   "config": {
+		  "routerClass": "sap.m.routing.Router",
+		  "type": "View",
+		  "viewType": "XML",
+		  "path": "ui5.codersgrowth.home",
+		  "controlId": "app",
+		  "controlAggregation": "pages",
+		  "transition": "slide",
+		  "bypassed": {
+			"target": "notFound"
+		 },
+		  "async": true
+	   },
+	   "routes": [{
+		  "pattern": "",
+		  "name": "appHome",
+		  "target": "home"
+	   }],
+	   "targets": {
+		  "home": {
+			 "id": "home",
+			 "name": "Home",
+			 "level" : 1
+		  },
+		  "notFound": {
+			"path": "ui5.codersgrowth.notFound",
+			 "id": "notFound",
+			 "name": "NotFound",
+			 "transition": "show"
+		  }
+	   }
 	}
   }
 }
