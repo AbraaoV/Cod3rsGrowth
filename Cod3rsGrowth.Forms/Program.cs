@@ -36,7 +36,6 @@ namespace Cod3rsGrowth.Forms
             var appSettings = ConfigurationManager.AppSettings;
             string result = appSettings[ConstantesDosRepositorios.CONNECTION_STRING];
 
-
             return new ServiceCollection()
                 .AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb

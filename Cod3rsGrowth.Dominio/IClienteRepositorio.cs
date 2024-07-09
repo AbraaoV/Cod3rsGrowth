@@ -14,6 +14,6 @@ namespace Cod3rsGrowth.Dominio
         Cliente ObterPorId (int id);
         void Atualizar(int id,Cliente cliente);
         void Deletar(int id);
-        int Adicionar(Cliente cliente);
+        void Adicionar(Cliente cliente);
     }
 }

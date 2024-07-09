@@ -20,7 +20,6 @@ namespace Cod3rsGrowth.Infra
         {
             var appSettings = ConfigurationManager.AppSettings;
             string result = appSettings[ConstantesDosRepositorios.CONNECTION_STRING];
-
             _dataConnection = new DataConnection(
            new DataOptions()
                .UseSqlServer(result));

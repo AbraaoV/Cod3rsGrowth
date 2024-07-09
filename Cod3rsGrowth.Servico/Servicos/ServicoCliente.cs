@@ -25,10 +25,10 @@ namespace Cod3rsGrowth.Servico.Servicos
             var clientes = _clienteRepositorio.ObterPorId(id);
             return clientes;
         }
-        public int Adicionar(Cliente cliente)
+        public void Adicionar(Cliente cliente)
         {
             _validarCliente.ValidateAndThrow(cliente);
-            return _clienteRepositorio.Adicionar(cliente);
+            _clienteRepositorio.Adicionar(cliente);
         }
         public void Atualizar(int id, Cliente cliente)
         {
