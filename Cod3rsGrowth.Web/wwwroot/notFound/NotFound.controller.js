@@ -9,7 +9,7 @@ sap.ui.define([
 			return UIComponent.getRouterFor(this);
 		},
 
-		onNavBack: function () {
+		noVoltarNavegacao: function () {
 			var oHistory, sPreviousHash;
 
 			oHistory = History.getInstance();
