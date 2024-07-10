@@ -58,10 +58,10 @@
 	   "routes": [{
 		  "pattern": "",
 		  "name": "lista",
-		  "target": "home"
+		  "target": "lista"
 	   }],
 	   "targets": {
-		  "home": {
+		  "lista": {
 			"path" : "ui5.codersgrowth.app.lista",
 			 "id": "lista",
 			 "name": "Lista",
