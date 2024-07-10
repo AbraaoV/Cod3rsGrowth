@@ -3,11 +3,15 @@
    xmlns="sap.m"
    xmlns:mvc="sap.ui.core.mvc">
    <Page title="{i18n>homePageTitle}" class="sapUiResponsiveContentPadding">
-      <content>
-        <Button
-        id="bntMostrarAqui"
-        text="{i18n>botaoMostrarAqui}"
-        press=".noMostrarAqui"/>
-      </content>
+      <List headerText="Custom Content" items="{path: '/'}" >
+         <CustomListItem>
+            <HBox>
+               <VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
+                  <Label text="{nome}"/>
+                  <Label text="{tipo}"/>
+               </VBox>
+            </HBox>
+         </CustomListItem>
+      </List>
    </Page>
 </mvc:View>

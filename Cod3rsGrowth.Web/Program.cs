@@ -5,6 +5,7 @@ using Cod3rsGrowth.Servico.Servicos;
 using FluentMigrator.Runner;
 using FluentValidation;
 using Microsoft.Extensions.FileProviders;
+using System.Text.Json.Serialization;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 
@@ -19,7 +20,11 @@ builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
     .ScanIn(typeof(AtualizarTabela).Assembly).For.Migrations()
 ).AddLogging(lb => lb.AddFluentMigratorConsole());
 
-builder.Services.AddMvc();
+builder.Services.AddMvc().AddJsonOptions(x =>
+{
+    // serialize enums as strings in api responses (e.g. Role)
+    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDirectoryBrowser();
 builder.Services.AddSwaggerGen();
