@@ -4,12 +4,12 @@ sap.ui.define([
 	"sap/ui/core/UIComponent"
  ], function (Controller, History, UIComponent) {
     "use strict";
-    return Controller.extend("ui5.codersgrowth.notFound.NotFound", {
+    return Controller.extend("ui5.codersgrowth.app.notFound.NotFound", {
         getRouter : function () {
 			return UIComponent.getRouterFor(this);
 		},
 
-		noVoltarNavegacao: function () {
+		aoClicarEmVoltar: function () {
 			var oHistory, sPreviousHash;
 
 			oHistory = History.getInstance();
@@ -18,7 +18,7 @@ sap.ui.define([
 			if (sPreviousHash !== undefined) {
 				window.history.go(-1);
 			} else {
-				this.getRouter().navTo("appHome", {}, true);
+				this.getRouter().navTo("lista", {}, true);
 			}
 		},
         onInit: function () {

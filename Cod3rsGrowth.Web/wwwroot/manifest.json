@@ -46,7 +46,7 @@
 		  "routerClass": "sap.m.routing.Router",
 		  "type": "View",
 		  "viewType": "XML",
-		  "path": "ui5.codersgrowth.home",
+		  "path": "ui5.codersgrowth.app",
 		  "controlId": "app",
 		  "controlAggregation": "pages",
 		  "transition": "slide",
@@ -57,17 +57,18 @@
 	   },
 	   "routes": [{
 		  "pattern": "",
-		  "name": "appHome",
+		  "name": "lista",
 		  "target": "home"
 	   }],
 	   "targets": {
 		  "home": {
-			 "id": "home",
-			 "name": "Home",
+			"path" : "ui5.codersgrowth.app.lista",
+			 "id": "lista",
+			 "name": "Lista",
 			 "level" : 1
 		  },
 		  "notFound": {
-			"path": "ui5.codersgrowth.notFound",
+			"path": "ui5.codersgrowth.app.notFound",
 			 "id": "notFound",
 			 "name": "NotFound",
 			 "transition": "show"
