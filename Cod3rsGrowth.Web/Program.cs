@@ -22,7 +22,6 @@ builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
 
 builder.Services.AddMvc().AddJsonOptions(x =>
 {
-    // serialize enums as strings in api responses (e.g. Role)
     x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 builder.Services.AddEndpointsApiExplorer();

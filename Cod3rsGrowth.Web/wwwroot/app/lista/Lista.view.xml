@@ -1,15 +1,34 @@
-<mvc:View
+<mvc:View xmlns:f="sap.f"
    controllerName="ui5.codersgrowth.app.lista.Lista"
+   xmlns:core="sap.ui.core"
    xmlns="sap.m"
    xmlns:mvc="sap.ui.core.mvc">
-   <Page title="{i18n>homePageTitle}" class="sapUiResponsiveContentPadding">
-      <List headerText="Custom Content" items="{path: '/'}" >
+   <Page title="{i18n>appTitle}" class="sapUiResponsiveContentPadding">
+      <List id ="listaCliente" items="{path: '/'}" growing="true" growingThreshold="10">
+         <headerToolbar>
+            <Toolbar>
+               <Title text="{i18n>listTitle}"/>
+               <ToolbarSpacer/>
+               <SearchField 
+                  width="50%"
+                  placeholder="{i18n>placeHolderFilter}"
+                  liveChange=".aoBuscar"/>
+            </Toolbar>
+         </headerToolbar>
          <CustomListItem>
             <HBox>
-               <VBox class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
-                  <Label text="{nome}"/>
-                  <Label text="{tipo}"/>
+               <core:Icon size="2rem" src="sap-icon://customer" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
+               <VBox width="100%" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
+                  <Title text="{nome}"/>
+                  <Label text="{path: 'cpf', formatter: '.formatter.formatarCpf'}{path: 'cnpj', formatter: '.formatter.formatarCnpj'}"/>
                </VBox>
+               <FlexBox
+                  class= "sapUiSmallMarginEnd"
+                  height="60px"
+				      alignItems="Center"
+				      justifyContent="End">
+                  <Title text="Pessoa {tipo}"/>
+               </FlexBox>
             </HBox>
          </CustomListItem>
       </List>

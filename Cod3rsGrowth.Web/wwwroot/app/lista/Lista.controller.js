@@ -1,12 +1,16 @@
 sap.ui.define([
    "sap/ui/core/mvc/Controller",
-   'sap/ui/model/json/JSONModel'
-], function (Controller, JSONModel) {
+   'sap/ui/model/json/JSONModel',
+   "../model/formatter",
+   "sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator"
+], function (Controller, JSONModel, formatter, Filter, FilterOperator) {
    "use strict";
 
    return Controller.extend("ui5.codersgrowth.app.lista.Lista", {
+      formatter: formatter,
       onInit: async function() {
-
+         console.log("Controller inicializado.");
                try{
                const response = await fetch("https://localhost:7205/api/ControllerCliente", {
                   method: "GET",
@@ -26,16 +30,17 @@ sap.ui.define([
                   console.log(error);        
                }                  
       },
+      aoBuscar: function (oEvent) {
+			var aFilters = [];
+			var sQuery = oEvent.getSource().getValue();
+			if (sQuery && sQuery.length > 0) {
+				var filter = new Filter("nome", FilterOperator.Contains, sQuery);
+				aFilters.push(filter);
+			}
 
-      async onBemVindo() {
-         this.oDialogo ??= await this.loadFragment({
-               name: "ui5.anime.app.BemVindoDialogo"
-         });
-         this.oDialogo.open();
-      },
-      onFecharDialogo(){
-         this.byId("bemVindoDialogo").close();
-      }
+			var oList = this.byId("listaCliente");
+			var oBinding = oList.getBinding("items");
+			oBinding.filter(aFilters, "Application");
+		},
    });
-
 });
