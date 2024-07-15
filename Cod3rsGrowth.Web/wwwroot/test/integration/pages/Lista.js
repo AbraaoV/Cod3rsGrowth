@@ -2,8 +2,10 @@ sap.ui.define([
 	"sap/ui/test/Opa5",
 	'sap/ui/test/matchers/AggregationLengthEquals',
 	"sap/ui/test/actions/Press",
-	'sap/ui/test/actions/EnterText'
-], (Opa5, Press, AggregationLengthEquals, EnterText) => {
+	"sap/ui/test/actions/EnterText",
+	"sap/ui/test/matchers/PropertyStrictEquals",
+	"sap/ui/test/matchers/Properties"
+], (Opa5, Press, AggregationLengthEquals, EnterText, PropertyStrictEquals, Properties) => {
 	"use strict";
 
 	const sViewName = "ui5.codersgrowth.app.lista.Lista",
@@ -30,47 +32,58 @@ sap.ui.define([
 						errorMessage: "Barra de pesquisa não encontrada."
 					});
 				},
-				aoFiltrarPorTipoDePessoa: function (sOption) {
+				aoApertarBotaoFiltro: function () {
 					return this.waitFor({
-						id: "botaoFiltro",
+						id: "botaoFiltros",
 						viewName: sViewName,
-						actions: new Press(),
-						success: function () {
-							this.waitFor({
-								searchOpenDialogs: true,
-								controlType: "sap.m.StandardListItem",
-								matchers: function(oControl){
-									return this.I18NTextExtended(oControl, "filterName", "title");
-								}.bind(this),
-								actions: new Press(),
-								success: function () {
-									this.waitFor({
-										searchOpenDialogs: true,
-										controlType: "sap.m.StandardListItem",
-										matchers: function(oControl){
-											return this.I18NTextExtended(oControl, sOption, "title");
-										}.bind(this),
-										actions: new Press(),
-										success: function () {
-											this.waitFor({
-												searchOpenDialogs: true,
-												controlType: "sap.m.Button",
-												matchers: function(oControl){
-													return this.I18NTextExtended(oControl, "VIEWSETTINGS_ACCEPT", "text", "sap.m");
-												}.bind(this),
-												actions: new Press(),
-												errorMessage: "Erro ao apertar o botão OK"
-											});
-										},
-										errorMessage: "Não foi encontrado " +  sOption + " no filtro tipo de pessoa"
-									});
-								},
-								errorMessage: "Não foi entrado o filtro tipo de pessoa"
-							});
+						actions: function (oMenuItem) {
+							oMenuItem.firePress();
 						},
-						errorMessage: "Botão de filtro não encontrado"
+						errorMessage: "Não foi possível pressionar o botão de filtro."
 					});
 				},
+				aoSelecionarFiltroTipoDePessoa: function (){
+					return this.waitFor({
+						searchOpenDialogs: true,
+						controlType: "sap.m.StandardListItem",
+						matchers: new PropertyStrictEquals({
+							name: "id",
+							value: "__component0---lista--filterItems-list-item"
+						}),
+						actions: function (oMenuItem) {
+							oMenuItem.firePress();
+						},
+						errorMessage: "Não foi possível pressionar o campo Tipo de Pessoa."
+					});
+				},	
+				aoSelecionarOTipoDePessoaAFiltrar: function(){
+					return this.waitFor({
+						searchOpenDialogs: true,
+						controlType: "sap.m.StandardListItem",
+						matchers: new PropertyStrictEquals({
+							name: "title",
+							value: "Pessoa Jurídica"
+						}),
+						actions: function (oControl) {
+							oControl.setSelected() = true;
+						},
+						errorMessage: "Falha ao escolher o tipo de pesssoa para filtrar."
+					});
+				},
+				aoApertarBotaoOkNoFiltro: function(){
+					return this.waitFor({
+						searchOpenDialogs: true,
+						controlType: "sap.m.Button",
+						matchers: new PropertyStrictEquals({
+							name: "id",
+							value: "__component0---lista--filtroFragment-acceptbutton"
+						}),
+						actions: function (oMenuItem) {
+							oMenuItem.firePress();
+						},
+						errorMessage: "Falha ao apertar o botão ok."
+					});
+				}		
 			},
 
 			assertions: {

@@ -15,7 +15,7 @@
                   placeholder="{i18n>placeHolderFilter}"
                   liveChange=".aoFiltrarNome"/>
                <Button
-                  id="botaoFiltro"
+                  id="botaoFiltros"
                   icon="sap-icon://filter"
                   press=".aoApertarFiltro"
                   type="Transparent"/>

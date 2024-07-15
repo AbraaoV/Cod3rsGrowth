@@ -24,15 +24,17 @@ sap.ui.define([
 		When.naListaCliente.aoPesquisarNome("João");
 		//Assertions
 		Then.naListaCliente.aListaTemDoisItems();
-		// Cleanuo
-        Then.iTeardownMyApp();
 	});
 	opaTest("Lista cliente filtrado por pessoa física", function(Given, When, Then) {
 		// Action
-		When.naListaCliente.aoFiltrarPorTipoDePessoa("Pessoa Física");
-
+		When.naListaCliente.aoApertarBotaoFiltro();
+		When.naListaCliente.aoSelecionarFiltroTipoDePessoa();
+		When.naListaCliente.aoSelecionarOTipoDePessoaAFiltrar();
+		When.naListaCliente.aoApertarBotaoOkNoFiltro();
 		// Assertion
 		Then.naListaCliente.listaDeveEstarFiltradaPorTipoDePessoaFisica();
+		// Cleanuo
+        Then.iTeardownMyApp();
 	});
 
 });

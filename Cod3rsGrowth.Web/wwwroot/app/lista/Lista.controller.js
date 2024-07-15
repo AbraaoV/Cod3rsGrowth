@@ -32,7 +32,8 @@ sap.ui.define([
       },
       aoApertarFiltro: async function(){
          this.oDialog ??= await this.loadFragment({
-            name: "ui5.codersgrowth.app.lista.Lista"
+            name: "ui5.codersgrowth.app.lista.Filtro",
+            controller: this
          });
          this.oDialog.open();
       },
@@ -71,7 +72,6 @@ sap.ui.define([
          if(_filtroTipo === null){
             var oParams = {
                nome: _filtroNome, 
-               tipo: _filtroTipo,
             }
          };
          try {
