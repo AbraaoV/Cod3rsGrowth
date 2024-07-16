@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Cod3rsGrowth.Web.Controllers
 {
-    [Route(ConstantesDaController.ROTA)]
+    [Route(ConstantesDaController.ROTA_CLIENTE)]
     [ApiController]
     public class ControllerCliente : ControllerBase
     {

@@ -135,7 +135,7 @@ sap.ui.define([
 							if (!oElement.getBindingContext()) {
 								return false;
 							} else {
-								var sNome = oElement.getBindingContext().getProperty("nome");
+								var sNome = oElement.getBindingContext().getModel("listaDeCliente").getProperty("nome");
 								return sNome.includes(sNomeFiltro);
 							}
 						};
@@ -156,12 +156,9 @@ sap.ui.define([
 				listaDeveEstarFiltradaPorTipoDePessoa: function (sTipoPessoa) {
 					function fnCheckFilter(oList) {
 						var fnIsFiltered = function (oElement) {
-							if (!oElement.getBindingContext()) {
-								return false;
-							} else {
-								var sTipo = oElement.getBindingContext().getProperty("tipo");
-								return sTipo === sTipoPessoa;
-							}
+							var listaCliente = oElement.getOwnerComponent().getModel("listaDeCliente");
+							var sTipo = listaCliente.getProperty("/tipo")
+							return sTipo === sTipoPessoa;
 						};
 						return oList.getItems().every(fnIsFiltered);
 					}

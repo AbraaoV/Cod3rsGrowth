@@ -4,8 +4,8 @@
 	<ViewSettingsDialog
 		id="filtroFragment"
         title="Filtros"
-		confirm=".aoConfirmar"
-        reset=".aoLimparFiltro">
+		confirm=".aoClicarEmConfirmarNoFiltro"
+        reset=".aoClicarEmLimparFiltro">
 		<filterItems>
 			<ViewSettingsFilterItem
 				id="filterItems"

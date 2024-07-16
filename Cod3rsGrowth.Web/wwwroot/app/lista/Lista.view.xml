@@ -4,7 +4,7 @@
    xmlns="sap.m"
    xmlns:mvc="sap.ui.core.mvc">
    <Page title="{i18n>appTitle}" class="sapUiResponsiveContentPadding">    
-      <List id ="listaCliente" items="{path: '/'}" growing="true" growingThreshold="10" width="auto" class="sapFDynamicPageAlignContent">
+      <List id ="listaCliente" items="{path:'listaDeCliente>/'}" growing="true" growingThreshold="10" width="auto" class="sapFDynamicPageAlignContent">
          <headerToolbar>
             <Toolbar>
                <Title text="{i18n>listTitle}"/>
@@ -17,7 +17,7 @@
                <Button
                   id="botaoFiltro"
                   icon="sap-icon://filter"
-                  press=".aoApertarFiltro"
+                  press=".aoClicarEmFiltro"
                   type="Transparent"/>
                <Button 
                   id="botaoAdicionar"
@@ -31,15 +31,15 @@
             <HBox>
                <core:Icon size="2rem" src="sap-icon://customer" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
                <VBox width="100%" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
-                  <Title text="{nome}"/>
-                  <Label text="{path: 'cpf', formatter: '.formatter.formatarCpf'}{path: 'cnpj', formatter: '.formatter.formatarCnpj'}"/>
+                  <Title text="{listaDeCliente>nome}"/>
+                  <Label text="{path: 'listaDeCliente>cpf', formatter: '.formatter.formatarCpf'}{path: 'listaDeCliente>cnpj', formatter: '.formatter.formatarCnpj'}"/>
                </VBox>
                <FlexBox
                   class= "sapUiSmallMarginEnd"
                   height="60px"
                   alignItems="Center"
                   justifyContent="End">
-                  <Title text="Pessoa {tipo}"/>
+                  <Title text="Pessoa {listaDeCliente>tipo}"/>
                </FlexBox>
             </HBox>
          </CustomListItem>

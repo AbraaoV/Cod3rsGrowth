@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace Cod3rsGrowth.Web.Controllers
 {
-    [Route(ConstantesDaController.ROTA)]
+    [Route(ConstantesDaController.ROTA_PEDIDO)]
     [ApiController]
     public class ControllerPedido : ControllerBase
     {
