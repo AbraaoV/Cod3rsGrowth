@@ -4,7 +4,7 @@
    xmlns="sap.m"
    xmlns:mvc="sap.ui.core.mvc">
    <Page title="{i18n>appTitle}" class="sapUiResponsiveContentPadding">    
-      <List id ="listaCliente" items="{path: '/'}" growing="true" growingThreshold="10">
+      <List id ="listaCliente" items="{path: '/'}" growing="true" growingThreshold="10" width="auto" class="sapFDynamicPageAlignContent">
          <headerToolbar>
             <Toolbar>
                <Title text="{i18n>listTitle}"/>
@@ -15,9 +15,15 @@
                   placeholder="{i18n>placeHolderFilter}"
                   liveChange=".aoFiltrarNome"/>
                <Button
-                  id="botaoFiltros"
+                  id="botaoFiltro"
                   icon="sap-icon://filter"
                   press=".aoApertarFiltro"
+                  type="Transparent"/>
+               <Button 
+                  id="botaoAdicionar"
+                  text="Adicionar"
+                  icon="sap-icon://add-employee"
+                  press=".aoApertarEmAdicionar"
                   type="Transparent"/>
             </Toolbar>
          </headerToolbar>

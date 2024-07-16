@@ -13,7 +13,6 @@ sap.ui.define([
 				name: "ui5.codersgrowth"
 			}
 		});
-
         //Actions
         When.naListaCliente.aoApertarEmMais();
 		// Assertions
@@ -23,18 +22,32 @@ sap.ui.define([
 		//Actions
 		When.naListaCliente.aoPesquisarNome("João");
 		//Assertions
-		Then.naListaCliente.aListaTemDoisItems();
+		Then.naListaCliente.listaDeveEstarFiltradaPorNome("João");
+	});
+	opaTest("Deve ser capaz de limpar a campo de pesquisa", function(Given, When, Then) {
+		//Actions
+		When.naListaCliente.aoPesquisarNome("");
+		//Assertions
+		Then.naListaCliente.listaDeveConterDezClientesNaPagina();
 	});
 	opaTest("Lista cliente filtrado por pessoa física", function(Given, When, Then) {
 		// Action
 		When.naListaCliente.aoApertarBotaoFiltro();
 		When.naListaCliente.aoSelecionarFiltroTipoDePessoa();
-		When.naListaCliente.aoSelecionarOTipoDePessoaAFiltrar();
+		When.naListaCliente.aoSelecionarOTipoDePessoaAFiltrar("Pessoa Jurídica");
 		When.naListaCliente.aoApertarBotaoOkNoFiltro();
 		// Assertion
-		Then.naListaCliente.listaDeveEstarFiltradaPorTipoDePessoaFisica();
+		Then.naListaCliente.listaDeveEstarFiltradaPorTipoDePessoa("Juridica");
 		// Cleanuo
-        Then.iTeardownMyApp();
 	});
-
+	opaTest("Deve ser capaz de resetar os filtro do tipo de pessoa", function(Given, When, Then) {
+		// Action
+		When.naListaCliente.aoApertarBotaoFiltro();
+		When.naListaCliente.aoResetarFiltroTipo();
+		When.naListaCliente.aoApertarBotaoOkNoFiltro();
+		// Assertion
+		Then.naListaCliente.listaDeveConterDezClientesNaPagina();
+		// Cleanuo
+		Then.iTeardownMyApp();
+	});
 });

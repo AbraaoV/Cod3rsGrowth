@@ -52,27 +52,25 @@ sap.ui.define([
 					break;
 				}
          })
-         this.aoBuscar(oEvent);
+         this. aoFiltrar();
       },
       aoLimparFiltro: async function(oEvent){
          _filtroTipo = null;
-         this.aoBuscar(oEvent);
+         this. aoFiltrar();
       },
       aoFiltrarNome: async function(oEvent){
          var sNome = oEvent.getSource().getValue();
          _filtroNome = sNome;
-         this.aoBuscar(oEvent);
+         this. aoFiltrar();
       },
 
-      aoBuscar: async function (oEvent) {
+      aoFiltrar: async function () {
          var oParams = {
             nome: _filtroNome, 
             tipo: _filtroTipo,
          };
          if(_filtroTipo === null){
-            var oParams = {
-               nome: _filtroNome, 
-            }
+            delete oParams.tipo;
          };
          try {
             const response = await fetch("https://localhost:7205/api/ControllerCliente?" + new URLSearchParams(oParams), {

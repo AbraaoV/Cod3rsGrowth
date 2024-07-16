@@ -34,7 +34,7 @@ sap.ui.define([
 				},
 				aoApertarBotaoFiltro: function () {
 					return this.waitFor({
-						id: "botaoFiltros",
+						id: "botaoFiltro",
 						viewName: sViewName,
 						actions: function (oMenuItem) {
 							oMenuItem.firePress();
@@ -56,16 +56,16 @@ sap.ui.define([
 						errorMessage: "Não foi possível pressionar o campo Tipo de Pessoa."
 					});
 				},	
-				aoSelecionarOTipoDePessoaAFiltrar: function(){
+				aoSelecionarOTipoDePessoaAFiltrar: function(sTipoDePessoa){
 					return this.waitFor({
 						searchOpenDialogs: true,
 						controlType: "sap.m.StandardListItem",
 						matchers: new PropertyStrictEquals({
 							name: "title",
-							value: "Pessoa Jurídica"
+							value: sTipoDePessoa
 						}),
-						actions: function (oControl) {
-							oControl.setSelected() = true;
+						actions: function (oMenuItem) {
+							oMenuItem.$().trigger("tap");
 						},
 						errorMessage: "Falha ao escolher o tipo de pesssoa para filtrar."
 					});
@@ -83,6 +83,20 @@ sap.ui.define([
 						},
 						errorMessage: "Falha ao apertar o botão ok."
 					});
+				},
+				aoResetarFiltroTipo: function(){
+					return this.waitFor({
+						searchOpenDialogs: true,
+						controlType: "sap.m.Button",
+						matchers: new PropertyStrictEquals({
+							name: "id",
+							value: "__component0---lista--filtroFragment-detailresetbutton"
+						}),
+						actions: function (oMenuItem) {
+							oMenuItem.firePress();
+						},
+						errorMessage: "Falha ao apertar o botao de resetar"
+					});	
 				}		
 			},
 
@@ -101,47 +115,67 @@ sap.ui.define([
 						errorMessage: "A lista não contem todos os items"
 					});
 				},
-				aListaTemDoisItems: function(){
+				listaDeveConterDezClientesNaPagina(){
 					return this.waitFor({
 						id: sIdLista,
 						viewName: sViewName,
 						matchers: new AggregationLengthEquals({
 							name: "items",
-							length: 2
+							length: 10
 						}),
 						success: function () {
-							Opa5.assert.ok(true, "A lista contem quatidade correto de items");
+							Opa5.assert.ok(true, "A lista tem 10 items em sua pagiana");
 						},
-						errorMessage: "A lista não tem dois items."
+						errorMessage: "A lista não contem 10 items"
 					});
 				},
-				listaDeveEstarFiltradaPorTipoDePessoaFisica: function () {
-					function fnCheckFilter (oList){
+				listaDeveEstarFiltradaPorNome: function (sNomeFiltro) {
+					function fnCheckFilter(oList) {
 						var fnIsFiltered = function (oElement) {
 							if (!oElement.getBindingContext()) {
 								return false;
 							} else {
-								var sDate = oElement.getBindingContext().getProperty("tipo");
-								if (!sDate) {
-									return false;
-								} else {
-									return true;
-								}
+								var sNome = oElement.getBindingContext().getProperty("nome");
+								return sNome.includes(sNomeFiltro);
 							}
 						};
-
+				
 						return oList.getItems().every(fnIsFiltered);
 					}
-
+				
 					return this.waitFor({
 						id: sIdLista,
+						viewName: sViewName,
 						matchers: fnCheckFilter,
-						success: function() {
-							Opa5.assert.ok(true, "Master list has been filtered correctly");
+						success: function () {
+							Opa5.assert.ok(true, "A lista foi filtrada pelo nome: " + sNomeFiltro);
 						},
-						errorMessage: "Master list has not been filtered correctly"
+						errorMessage: "Erro ao filtrar"
 					});
 				},
+				listaDeveEstarFiltradaPorTipoDePessoa: function (sTipoPessoa) {
+					function fnCheckFilter(oList) {
+						var fnIsFiltered = function (oElement) {
+							if (!oElement.getBindingContext()) {
+								return false;
+							} else {
+								var sTipo = oElement.getBindingContext().getProperty("tipo");
+								return sTipo === sTipoPessoa;
+							}
+						};
+						return oList.getItems().every(fnIsFiltered);
+					}
+				
+					return this.waitFor({
+						id: sIdLista,
+						viewName: sViewName,
+						matchers: fnCheckFilter,
+						success: function () {
+							Opa5.assert.ok(true, "A lista está filtrada corretamente por Pessoa Física.");
+						},
+						errorMessage: "A lista não está filtrada corretamente por Pessoa Física."
+					});
+				}
 
 			}
 		}
