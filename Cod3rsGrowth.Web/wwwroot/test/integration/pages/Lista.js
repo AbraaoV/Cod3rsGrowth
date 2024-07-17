@@ -132,10 +132,10 @@ sap.ui.define([
 				listaDeveEstarFiltradaPorNome: function (sNomeFiltro) {
 					function fnCheckFilter(oList) {
 						var fnIsFiltered = function (oElement) {
-							if (!oElement.getBindingContext()) {
+							if (!oElement.getBindingContext("listaDeCliente")) {
 								return false;
 							} else {
-								var sNome = oElement.getBindingContext().getModel("listaDeCliente").getProperty("nome");
+								var sNome = oElement.getBindingContext("listaDeCliente").getProperty("nome");
 								return sNome.includes(sNomeFiltro);
 							}
 						};
@@ -156,10 +156,14 @@ sap.ui.define([
 				listaDeveEstarFiltradaPorTipoDePessoa: function (sTipoPessoa) {
 					function fnCheckFilter(oList) {
 						var fnIsFiltered = function (oElement) {
-							var listaCliente = oElement.getOwnerComponent().getModel("listaDeCliente");
-							var sTipo = listaCliente.getProperty("/tipo")
-							return sTipo === sTipoPessoa;
+							if (!oElement.getBindingContext("listaDeCliente")) {
+								return false;
+							} else {
+								var sTipo = oElement.getBindingContext("listaDeCliente").getProperty("tipo");
+								return sTipo === sTipoPessoa;
+							}
 						};
+				
 						return oList.getItems().every(fnIsFiltered);
 					}
 				
