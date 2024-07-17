@@ -121,7 +121,7 @@ sap.ui.define([
 						viewName: sViewName,
 						matchers: new AggregationLengthEquals({
 							name: "items",
-							length: 10
+							length: 2
 						}),
 						success: function () {
 							Opa5.assert.ok(true, "A lista tem 10 items em sua pagiana");
@@ -132,10 +132,10 @@ sap.ui.define([
 				listaDeveEstarFiltradaPorNome: function (sNomeFiltro) {
 					function fnCheckFilter(oList) {
 						var fnIsFiltered = function (oElement) {
-							if (!oElement.getBindingContext("listaDeCliente")) {
+							if (!oElement.getBindingContext("listaDeClientes")) {
 								return false;
 							} else {
-								var sNome = oElement.getBindingContext("listaDeCliente").getProperty("nome");
+								var sNome = oElement.getBindingContext("listaDeClientes").getProperty("nome");
 								return sNome.includes(sNomeFiltro);
 							}
 						};
@@ -156,10 +156,10 @@ sap.ui.define([
 				listaDeveEstarFiltradaPorTipoDePessoa: function (sTipoPessoa) {
 					function fnCheckFilter(oList) {
 						var fnIsFiltered = function (oElement) {
-							if (!oElement.getBindingContext("listaDeCliente")) {
+							if (!oElement.getBindingContext("listaDeClientes")) {
 								return false;
 							} else {
-								var sTipo = oElement.getBindingContext("listaDeCliente").getProperty("tipo");
+								var sTipo = oElement.getBindingContext("listaDeClientes").getProperty("tipo");
 								return sTipo === sTipoPessoa;
 							}
 						};

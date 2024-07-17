@@ -4,8 +4,7 @@ namespace Cod3rsGrowth.Web
 {
     public static class ConstantesDaController
     {
-        public const string ROTA_CLIENTE = "api/Cliente";
-        public const string ROTA_PEDIDO = "api/Pedido";
+        public const string ROTA = "api/[controller]";
         public const string PARAMETRO_ID = "{id}";
         public const string TITULO = "Ocorreram um ou mais erros de validação.";
         public const string DETALHE = "Consulte a propriedade erros para obter detalhes adicionais.";

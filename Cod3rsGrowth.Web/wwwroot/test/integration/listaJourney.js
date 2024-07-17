@@ -38,7 +38,6 @@ sap.ui.define([
 		When.naListaCliente.aoApertarBotaoOkNoFiltro();
 		// Assertion
 		Then.naListaCliente.listaDeveEstarFiltradaPorTipoDePessoa("Juridica");
-		// Cleanuo
 	});
 	opaTest("Deve ser capaz de resetar os filtro do tipo de pessoa", function(Given, When, Then) {
 		// Action

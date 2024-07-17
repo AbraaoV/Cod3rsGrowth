@@ -9,47 +9,57 @@ sap.ui.define([
    "use strict";
    let _filtroTipo = null;
    let _filtroNome = "";
+   const NOME_DO_MODELO_DA_LISTA = "listaDeClientes";
+   const CAMINHO_PARA_API = "/api/Cliente?";
+   const CAMPO_PESSOA_FISICA = "fisica";
+   const CAMPO_PESSOA_JURIDICA = "juridica";
+   const VALOR_FILTRO_PESSOA_FISICA = 1;
+   const VALOR_FILTRO_PESSOA_JURIDICA = 2;
+   const FRAGMENTO_FILTRO = "ui5.codersgrowth.app.lista.Filtro"
+   const PARAMETRO_DA_PAGINA_DE_ITENS_DO_FILTRO = "filterItems"
+   
    return Controller.extend("ui5.codersgrowth.app.lista.Lista", {
       formatter: formatter,
       onInit: async function() {
          const oRota = this.getOwnerComponent().getRouter();
          oRota.getRoute("lista").attachPatternMatched(this.prencherLista, this);
       },
-      prencherLista: async function(){
+      prencherLista: async function(oParams){
          try{
-            const response = await fetch("/api/Cliente", {
+            const response = await fetch(CAMINHO_PARA_API + new URLSearchParams(oParams), {
                method: "GET",
                headers: {
                   "Content-Type": "application/json",
                },
-               });
-               if (response.ok) {
+            });
+            if (response.ok) {
                const data = await response.json();
 
-            const oModel = new JSONModel(data);
-            this.getView().setModel(oModel, "listaDeCliente");
-               }
-            }catch(error){
+               const oModel = new JSONModel(data);
+               this.getView().setModel(oModel, NOME_DO_MODELO_DA_LISTA);
+            }
+         }catch(error){
                MessageToast.show(error);        
-            }        
+         }        
       },
+
       aoClicarEmFiltro: async function(){
          this.oDialog ??= await this.loadFragment({
-            name: "ui5.codersgrowth.app.lista.Filtro",
+            name: FRAGMENTO_FILTRO,
             controller: this
          });
          this.oDialog.open();
       },
 
       aoClicarEmConfirmarNoFiltro: async function(oEvent){
-         let aFiltros = oEvent.getParameter("filterItems");
+         let aFiltros = oEvent.getParameter(PARAMETRO_DA_PAGINA_DE_ITENS_DO_FILTRO);
          aFiltros.forEach(function (oItem) {
 				switch (oItem.getKey()) {
-					case "fisica":
-						_filtroTipo = 1;
+					case CAMPO_PESSOA_FISICA:
+						_filtroTipo = VALOR_FILTRO_PESSOA_FISICA;
 						break;
-					case "juridica":
-						_filtroTipo = 2;
+					case CAMPO_PESSOA_JURIDICA:
+						_filtroTipo = VALOR_FILTRO_PESSOA_JURIDICA;
 						break;
 					default:
 					break;
@@ -57,10 +67,12 @@ sap.ui.define([
          })
          this.filtrar();
       },
+
       aoClicarEmLimparFiltro: function(){
          _filtroTipo = null;
          this.filtrar();
       },
+
       aoFiltrarNome: async function(oEvent){
          let sNome = oEvent.getSource().getValue();
          _filtroNome = sNome;
@@ -75,27 +87,7 @@ sap.ui.define([
          if(_filtroTipo === null){
             delete oParams.tipo;
          };
-         try {
-            const response = await fetch("/api/Cliente?" + new URLSearchParams(oParams), {
-               method: "GET",
-               headers: {
-                  "Content-Type": "application/json",
-               },
-            });
-      
-            if (response.ok) {
-               const data = await response.json();
-      
-               const oModel = new JSONModel(data);
-               this.getView().setModel(oModel,"listaDeCliente");
-      
-            } else {
-               MessageToast.show("Falha ao filtrar:", response.status);
-            }
-         } catch (error) {
-            MessageToast.show(error); 
-         }
-      },
-      
+         this.prencherLista(oParams)
+      },     
    });
 });
