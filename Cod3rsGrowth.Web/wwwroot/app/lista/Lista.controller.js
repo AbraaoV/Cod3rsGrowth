@@ -24,23 +24,42 @@ sap.ui.define([
          const oRota = this.getOwnerComponent().getRouter();
          oRota.getRoute("lista").attachPatternMatched(this.prencherLista, this);
       },
+      onAfterRendering: function() {
+         this.filtrar();
+      },
+      filtrarPelaRota: function(){
+         const oRota = this.getOwnerComponent().getRouter();
+         const oMudarHash = oRota.getHashChanger().getHash();
+         const oParams = new URLSearchParams(oMudarHash);
+
+         _filtroNome = oParams.get("nome");
+         _filtroTipo = oParams.has("tipo") ? parseInt(oParams.get("tipo")) : null;
+
+         const prencherCampoPequisa = this.byId("filtroPesquisa").setValue(_filtroNome);
+      },
       prencherLista: async function(oParams){
+
+         this.filtrarPelaRota();
+
          try{
-            const response = await fetch(CAMINHO_PARA_API + new URLSearchParams(oParams), {
+            let url = CAMINHO_PARA_API + new URLSearchParams(oParams);
+
+            const response = await fetch(url, {
                method: "GET",
                headers: {
                   "Content-Type": "application/json",
                },
             });
+
             if (response.ok) {
                const data = await response.json();
 
                const oModel = new JSONModel(data);
                this.getView().setModel(oModel, NOME_DO_MODELO_DA_LISTA);
             }
-         }catch(error){
-               MessageToast.show(error);        
-         }        
+         } catch(error) {
+            MessageToast.show(error);        
+         }
       },
 
       aoClicarEmFiltro: async function(){
@@ -48,6 +67,15 @@ sap.ui.define([
             name: FRAGMENTO_FILTRO,
             controller: this
          });
+
+         if (_filtroTipo === VALOR_FILTRO_PESSOA_FISICA) {
+            this.byId("pessoaFisica").setSelected(true);
+            this.byId("pessoaJuridica").setSelected(false);
+         } else if (_filtroTipo === VALOR_FILTRO_PESSOA_JURIDICA) {
+            this.byId("pessoaFisica").setSelected(false);
+            this.byId("pessoaJuridica").setSelected(true);
+         }
+
          this.oDialog.open();
       },
 
@@ -65,7 +93,7 @@ sap.ui.define([
 					break;
 				}
          })
-         this.filtrar();
+         this.adicionarParametros();
       },
 
       aoClicarEmLimparFiltro: function(){
@@ -76,18 +104,33 @@ sap.ui.define([
       aoFiltrarNome: async function(oEvent){
          let sNome = oEvent.getSource().getValue();
          _filtroNome = sNome;
+
+         this.adicionarParametros();
+      },
+
+      adicionarParametros: function(){
+         const oRota = this.getOwnerComponent().getRouter();
+         let querry = {};
+         if (_filtroNome) {
+            querry.nome = _filtroNome;
+         }
+         if (_filtroTipo !== null) {
+            querry.tipo = _filtroTipo;
+         }
+         oRota.navTo("lista", {"?queryFiltro": querry});
+
          this.filtrar();
       },
 
       filtrar: async function () {
-         let oParams = {
-            nome: _filtroNome, 
-            tipo: _filtroTipo,
-         };
-         if(_filtroTipo === null){
-            delete oParams.tipo;
-         };
-         this.prencherLista(oParams)
+         let oParams = {};
+         if (_filtroNome) {
+            oParams.nome = _filtroNome;
+         }
+         if (_filtroTipo !== null) {
+            oParams.tipo = _filtroTipo;
+         }
+         this.prencherLista(oParams);
       },     
    });
 });

@@ -17,68 +17,68 @@
 	"desktop": true,
 	"tablet": true,
 	"phone": true
-}
+	}
 },
 "sap.ui5": {
-"dependencies": {
-	"minUI5Version": "1.108.0",
-	"libs": {
-	"sap.ui.core": {},
-	"sap.m": {}
-	}
-},
-"models": {
-	"i18n": {
-	"type": "sap.ui.model.resource.ResourceModel",
-	"settings": {
-		"bundleName": "ui5.codersgrowth.i18n.i18n",
-		"supportedLocales": ["pt_BR"],
-		"fallbackLocale": "pt_BR"
-	}
+	"dependencies": {
+		"minUI5Version": "1.108.0",
+		"libs": {
+		"sap.ui.core": {},
+		"sap.m": {}
+		}
 	},
-	"cliente" : {
+	"models": {
+		"i18n": {
+		"type": "sap.ui.model.resource.ResourceModel",
+		"settings": {
+			"bundleName": "ui5.codersgrowth.i18n.i18n",
+			"supportedLocales": ["pt_BR"],
+			"fallbackLocale": "pt_BR"
+			}
+		},
+		"cliente" : {
 		"type": "sap.ui.model.json.JSONModel",
 		"uri" : "https://localhost:7205/api/ControllerCliente"
-	}
-},
-"rootView": {
-	"viewName": "ui5.codersgrowth.app.App",
-	"type": "XML",
-	"id": "app"
-},
-"routing": {
-	"config": {
-		"routerClass": "sap.m.routing.Router",
-		"type": "View",
-		"viewType": "XML",
-		"path": "ui5.codersgrowth.app",
-		"controlId": "app",
-		"controlAggregation": "pages",
-		"transition": "slide",
-		"bypassed": {
-		"target": "notFound"
-		},
-		"async": true
+		}
 	},
-	"routes": [{
-		"pattern": "",
-		"name": "lista",
-		"target": "lista"
-	}],
-	"targets": {
-		"lista": {
-		"path" : "ui5.codersgrowth.app.lista",
-			"id": "lista",
-			"name": "Lista",
-			"level" : 1
+	"rootView": {
+		"viewName": "ui5.codersgrowth.app.App",
+		"type": "XML",
+		"id": "app"
+	},
+	"routing": {
+		"config": {
+			"routerClass": "sap.m.routing.Router",
+			"type": "View",
+			"viewType": "XML",
+			"path": "ui5.codersgrowth.app",
+			"controlId": "app",
+			"controlAggregation": "pages",
+			"transition": "slide",
+			"bypassed": {
+			"target": "notFound"
+			},
+			"async": true
 		},
-		"notFound": {
-		"path": "ui5.codersgrowth.app.notFound",
-			"id": "notFound",
-			"name": "NotFound",
-			"transition": "show"
+		"routes": [{
+			"pattern": ":?queryFiltro:",
+			"name": "lista",
+			"target": "lista"
+		}],
+		"targets": {
+			"lista": {
+			"path" : "ui5.codersgrowth.app.lista",
+				"id": "lista",
+				"name": "Lista",
+				"level" : 1
+			},
+			"notFound": {
+			"path": "ui5.codersgrowth.app.notFound",
+				"id": "notFound",
+				"name": "NotFound",
+				"transition": "show"
+				}
+			}
 		}
 	}
-}
-}
 }
