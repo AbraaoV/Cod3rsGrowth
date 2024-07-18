@@ -15,9 +15,11 @@ sap.ui.define([
    const CAMPO_PESSOA_JURIDICA = "juridica";
    const VALOR_FILTRO_PESSOA_FISICA = 1;
    const VALOR_FILTRO_PESSOA_JURIDICA = 2;
+   const ID_FILTRO_PESSOA_FISICA = "pessoaFisica";
+   const ID_FILTRO_PESSOA_JURIDICA = "pessoaJuridica";
    const FRAGMENTO_FILTRO = "ui5.codersgrowth.app.lista.Filtro"
    const PARAMETRO_DA_PAGINA_DE_ITENS_DO_FILTRO = "filterItems"
-   var oParams = {}
+   let oParams = {}
    
    return Controller.extend("ui5.codersgrowth.app.lista.Lista", {
       formatter: formatter,
@@ -67,11 +69,11 @@ sap.ui.define([
          });
 
          if (_filtroTipo === VALOR_FILTRO_PESSOA_FISICA) {
-            this.byId("pessoaFisica").setSelected(true);
-            this.byId("pessoaJuridica").setSelected(false);
+            this.byId(ID_FILTRO_PESSOA_FISICA).setSelected(true);
+            this.byId(ID_FILTRO_PESSOA_JURIDICA).setSelected(false);
          } else if (_filtroTipo === VALOR_FILTRO_PESSOA_JURIDICA) {
-            this.byId("pessoaFisica").setSelected(false);
-            this.byId("pessoaJuridica").setSelected(true);
+            this.byId(ID_FILTRO_PESSOA_FISICA).setSelected(false);
+            this.byId(ID_FILTRO_PESSOA_JURIDICA).setSelected(true);
          }
 
          this.oDialog.open();
