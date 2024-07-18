@@ -17,6 +17,7 @@ sap.ui.define([
    const VALOR_FILTRO_PESSOA_JURIDICA = 2;
    const FRAGMENTO_FILTRO = "ui5.codersgrowth.app.lista.Filtro"
    const PARAMETRO_DA_PAGINA_DE_ITENS_DO_FILTRO = "filterItems"
+   var oParams = {}
    
    return Controller.extend("ui5.codersgrowth.app.lista.Lista", {
       formatter: formatter,
@@ -24,25 +25,22 @@ sap.ui.define([
          const oRota = this.getOwnerComponent().getRouter();
          oRota.getRoute("lista").attachPatternMatched(this.prencherLista, this);
       },
-      onAfterRendering: function() {
-         this.filtrar();
-      },
       filtrarPelaRota: function(){
          const oRota = this.getOwnerComponent().getRouter();
          const oMudarHash = oRota.getHashChanger().getHash();
-         const oParams = new URLSearchParams(oMudarHash);
+         oParams = new URLSearchParams(oMudarHash);
 
          _filtroNome = oParams.get("nome");
          _filtroTipo = oParams.has("tipo") ? parseInt(oParams.get("tipo")) : null;
 
          const prencherCampoPequisa = this.byId("filtroPesquisa").setValue(_filtroNome);
       },
-      prencherLista: async function(oParams){
+      prencherLista: async function(){
 
          this.filtrarPelaRota();
 
          try{
-            let url = CAMINHO_PARA_API + new URLSearchParams(oParams);
+            let url = CAMINHO_PARA_API + oParams;
 
             const response = await fetch(url, {
                method: "GET",
@@ -119,18 +117,7 @@ sap.ui.define([
          }
          oRota.navTo("lista", {"?queryFiltro": querry});
 
-         this.filtrar();
+         this.prencherLista();
       },
-
-      filtrar: async function () {
-         let oParams = {};
-         if (_filtroNome) {
-            oParams.nome = _filtroNome;
-         }
-         if (_filtroTipo !== null) {
-            oParams.tipo = _filtroTipo;
-         }
-         this.prencherLista(oParams);
-      },     
    });
 });
