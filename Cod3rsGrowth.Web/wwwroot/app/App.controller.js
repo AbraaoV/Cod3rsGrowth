@@ -1,9 +1,10 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
- ], (Controller) => {
-    "use strict";
- 
-    return Controller.extend("ui5.codersgrowth.app.App", {
-       
-    });
- });
+   "sap/ui/core/mvc/Controller",
+], (Controller) => {
+   "use strict";
+
+   return Controller.extend("ui5.codersgrowth.app.App", {
+
+      
+   });
+});

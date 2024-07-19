@@ -23,8 +23,9 @@ sap.ui.define([
    const PARAMETRO_FILTRO_TIPO = "tipo";
    const NOME_DA_ROTA = "lista";
    const ID_LISTA_DE_CLIENTES = "listaClientes";
-   const ID_FILTRO_DE_PESQUISA = "filtroPesquisa"
-   const MSG_DE_ERRO = "Ocorreu um erro: "
+   const ID_FILTRO_DE_PESQUISA = "filtroPesquisa";
+   const MSG_DE_ERRO = "Ocorreu um erro: ";
+   const ROTA_ADICIONAR_CLIENTE = "adicionarCliente";
    
    return Controller.extend("ui5.codersgrowth.app.lista.Lista", {
       formatter: formatter,
@@ -118,6 +119,14 @@ sap.ui.define([
          
             this._adicionarParametros();
          });
+      },
+
+      aoClicarEmAdicionar: function(){
+         this._exibirEspera(() => {
+            const oRota = this.getOwnerComponent().getRouter();
+            var oBlaBla = this.getModel("listaDeClientes")
+            oRota.navTo(ROTA_ADICIONAR_CLIENTE);
+         });   
       },
 
       _adicionarParametros: function(){

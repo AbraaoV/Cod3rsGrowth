@@ -1,0 +1,29 @@
+<mvc:View 
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:semantic="sap.f.semantic"
+    controllerName="ui5.codersgrowth.app.adicionarCliente.AdicionarCliente">
+    <semantic:SemanticPage
+		id="pageAdicionarCliente"
+		busy="{/busy}"
+		busyIndicatorDelay="{/delay}">
+        <semantic:titleHeading>
+			<Title
+				text="Adicionar Cliente"/>
+		</semantic:titleHeading>
+        <semantic:content>
+            <Dialog id="dialogAdicionarCliente" title="Adicionar Cliente">
+                <Label text="Nome" />
+        
+                <Label text="Email" />
+        
+                <beginButton>
+                    <Button text="Salvar" press="onSavePress" />
+                </beginButton>
+                <endButton>
+                    <Button text="Cancelar" press="onCancelPress" />
+                </endButton>
+            </Dialog>
+        </semantic:content>
+    </semantic:SemanticPage>
+</mvc:View>

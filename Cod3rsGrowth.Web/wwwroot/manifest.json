@@ -60,16 +60,29 @@
 			},
 			"async": true
 		},
-		"routes": [{
-			"pattern": ":?queryFiltro:",
-			"name": "lista",
-			"target": "lista"
-		}],
+		"routes": [
+			{
+				"pattern": ":?queryFiltro:",
+				"name": "lista",
+				"target": "lista"
+			},
+			{
+				"pattern": "adicionar",
+				"name": "adicionarCliente",
+				"target": "adicionarCliente"
+			}
+		],
 		"targets": {
 			"lista": {
-			"path" : "ui5.codersgrowth.app.lista",
+				"path" : "ui5.codersgrowth.app.lista",
 				"id": "lista",
 				"name": "Lista",
+				"level" : 1
+			},
+			"adicionarCliente":{
+				"path" : "ui5.codersgrowth.app.adicionarCliente",
+				"id": "adicionarCliente",
+				"name": "AdicionarCliente",
 				"level" : 1
 			},
 			"notFound": {
