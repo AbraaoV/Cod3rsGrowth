@@ -1,13 +1,48 @@
-<mvc:View
+<mvc:View xmlns:f="sap.f"
    controllerName="ui5.codersgrowth.app.lista.Lista"
+   xmlns:core="sap.ui.core"
    xmlns="sap.m"
    xmlns:mvc="sap.ui.core.mvc">
-   <Page title="{i18n>homePageTitle}" class="sapUiResponsiveContentPadding">
-      <content>
-        <Button
-        id="bntMostrarAqui"
-        text="{i18n>botaoMostrarAqui}"
-        press=".noMostrarAqui"/>
-      </content>
+   <Page title="{i18n>appTitle}" busy="{/busy}" class="sapUiResponsiveContentPadding">   
+      <List id ="listaClientes" items="{path:'listaDeClientes>/'}" growing="true" growingThreshold="10" width="auto" class="sapFDynamicPageAlignContent" >
+         <headerToolbar>
+            <Toolbar>
+               <Title text="{i18n>listTitle}"/>
+               <ToolbarSpacer/>
+               <SearchField
+                  id="filtroPesquisa"
+                  width="20%"
+                  placeholder="{i18n>placeHolderFilter}"
+                  liveChange=".aoFiltrarNome"/>
+               <Button
+                  id="botaoFiltro"
+                  icon="sap-icon://filter"
+                  press=".aoClicarEmFiltro"
+                  type="Transparent"/>
+               <Button 
+                  id="botaoAdicionar"
+                  text="Adicionar"
+                  icon="sap-icon://add-employee"
+                  press=".aoApertarEmAdicionar"
+                  type="Transparent"/>
+            </Toolbar>
+         </headerToolbar>
+         <CustomListItem>
+            <HBox>
+               <core:Icon size="2rem" src="sap-icon://customer" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
+               <VBox width="100%" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
+                  <Title text="{listaDeClientes>nome}"/>
+                  <Label text="{path: 'listaDeClientes>cpf', formatter: '.formatter.formatarCpf'}{path: 'listaDeClientes>cnpj', formatter: '.formatter.formatarCnpj'}"/>
+               </VBox>
+               <FlexBox
+                  class= "sapUiSmallMarginEnd"
+                  height="60px"
+                  alignItems="Center"
+                  justifyContent="End">
+                  <Title text="Pessoa {listaDeClientes>tipo}"/>
+               </FlexBox>
+            </HBox>
+         </CustomListItem>
+      </List>
    </Page>
 </mvc:View>
