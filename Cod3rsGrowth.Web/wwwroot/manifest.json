@@ -38,7 +38,7 @@
 		},
 		"cliente" : {
 		"type": "sap.ui.model.json.JSONModel",
-		"uri" : "https://localhost:7205/api/ControllerCliente"
+		"uri" : "https://localhost:7205/api/Cliente"
 		}
 	},
 	"rootView": {

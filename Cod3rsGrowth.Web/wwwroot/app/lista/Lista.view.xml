@@ -3,8 +3,8 @@
    xmlns:core="sap.ui.core"
    xmlns="sap.m"
    xmlns:mvc="sap.ui.core.mvc">
-   <Page title="{i18n>appTitle}" class="sapUiResponsiveContentPadding">    
-      <List id ="listaCliente" items="{path:'listaDeClientes>/'}" growing="true" growingThreshold="10" width="auto" class="sapFDynamicPageAlignContent">
+   <Page title="{i18n>appTitle}" busy="{/busy}" class="sapUiResponsiveContentPadding">   
+      <List id ="listaClientes" items="{path:'listaDeClientes>/'}" growing="true" growingThreshold="10" width="auto" class="sapFDynamicPageAlignContent" >
          <headerToolbar>
             <Toolbar>
                <Title text="{i18n>listTitle}"/>

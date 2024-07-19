@@ -9,7 +9,7 @@ sap.ui.define([
 	"use strict";
 
 	const sViewName = "ui5.codersgrowth.app.lista.Lista",
-	sIdLista = "listaCliente"
+	sIdLista = "listaClientes"
 
 	Opa5.createPageObjects({
 		naListaCliente: {
@@ -121,7 +121,7 @@ sap.ui.define([
 						viewName: sViewName,
 						matchers: new AggregationLengthEquals({
 							name: "items",
-							length: 2
+							length: 10
 						}),
 						success: function () {
 							Opa5.assert.ok(true, "A lista tem 10 items em sua pagiana");
