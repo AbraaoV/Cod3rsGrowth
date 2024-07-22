@@ -97,6 +97,16 @@ sap.ui.define([
 						},
 						errorMessage: "Falha ao apertar o botao de resetar"
 					});	
+				},
+				aoApertarEmAdicionar: function(){
+					return this.waitFor({
+						id: "botaoAdicionar",
+						viewName: sViewName,
+						actions: function (oMenuItem) {
+							oMenuItem.firePress();
+						},
+						errorMessage: "Não foi possível pressionar o botão de adicionar."
+					});
 				}		
 			},
 
@@ -177,7 +187,6 @@ sap.ui.define([
 						errorMessage: "A lista não está filtrada corretamente por Pessoa Física."
 					});
 				}
-
 			}
 		}
 	});

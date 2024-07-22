@@ -4,7 +4,7 @@
     xmlns:core="sap.ui.core"
     xmlns:semantic="sap.f.semantic"
     controllerName="ui5.codersgrowth.app.adicionarCliente.AdicionarCliente">
-    <Page id="pagina" busy="{/busy}" class="sapUiResponsiveContentPadding" showHeader="true">
+    <Page id="paginaAdicionar" busy="{/busy}" class="sapUiResponsiveContentPadding" showHeader="true">
         <customHeader>
             <Toolbar>
                 <Button icon="sap-icon://nav-back" press=".aoClicarEmVoltar" tooltip="Voltar"/>
@@ -17,8 +17,19 @@
                 <content>
                     <VBox class="sapUiLargeMargin">
                         <Label text="Nome"/>
-                        <Input id="inputNome" width="100%"/>
-
+                        <Input
+                        id="inputNome"
+                        width="100%"
+                        valueStateText="Nome não pode estar vazio. Máximo de 50 caracteres."
+                        value="{
+                            path : '/nome',
+                            type : 'sap.ui.model.type.String',
+                            constraints : {
+                                minLength: 1,
+                                maxLength: 50
+                            }
+                        }"
+                        change=".aoDigitarNome"/>
                         <Label text="Pessoa"/>
                         <ComboBox id="comboxTipo" width="100%" items="{path: 'comboxTipoDePessoa>/'}" selectionChange=".aoSelecionarTipoPessoa" selectedKey="1">
                             <items>
@@ -26,9 +37,35 @@
                             </items>
                         </ComboBox>
                         <Label id="labelCpf" text="CPF" visible="true"/>
-                        <MaskInput mask="999.999.999-99" id="inputCpf" width="100%" visible="true"/>
+                        <MaskInput 
+                        mask="999.999.999-99" 
+                        id="inputCpf" width="100%" 
+                        visible="true"
+                        valueStateText="Cpf deve conter 11 caracteres"
+                        value="{
+                            path : '/cpf',
+                            type : 'sap.ui.model.type.String',
+                            constraints: {
+                                minLength: 11,
+                                maxLength: 11
+                            }
+                        }"
+                        />
                         <Label id="labelCnpj" text="CNPJ" visible="false"/>
-                        <MaskInput mask="99.999.999/9999-99" id="inputCnpj" width="100%" visible="false"/>
+                        <MaskInput 
+                        mask="99.999.999/9999-99" 
+                        id="inputCnpj" width="100%" 
+                        visible="false"
+                        valueStateText="Cnpj deve conter 14 caracteres."
+                        value="{
+                            path : '/cnpj',
+                            type : 'sap.ui.model.type.String',
+                            constraints: {
+                                minLength: 14,
+                                maxLength: 14
+                            }
+                        }"
+                        />
                     </VBox>
                     <HBox alignItems="Center" justifyContent="Start" class="sapUiSmallMarginBegin">
                         <Button type="Emphasized" class="sapUiLargeMarginBeginEnd sapUiMediumMarginTopBottom" text="Salvar" press=".aoClicarEmSalvar" width="175%"/>

@@ -6,9 +6,9 @@
    xmlns:semantic="sap.f.semantic">
    <Page id="pagina" busy="{/busy}" class="sapUiResponsiveContentPadding" showHeader="true">
    <customHeader>
-       <Toolbar>
-           <Title text="{i18n>appTitle}" titleStyle="H3" textAlign="End" width="10%"/>
-       </Toolbar>
+      <Toolbar>
+         <Title text="{i18n>appTitle}" titleStyle="H3" textAlign="End" width="10%"/>
+      </Toolbar>
    </customHeader>
       <List id ="listaClientes" items="{path:'listaDeClientes>/'}" growing="true" growingThreshold="10" width="auto" class="sapFDynamicPageAlignContent">
          <headerToolbar>

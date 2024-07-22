@@ -1,15 +1,16 @@
 sap.ui.define([
+    "sap/ui/core/Messaging",
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
     'sap/ui/model/json/JSONModel',
-    "sap/m/MessageBox"
-], (Controller, History, JSONModel, MessageBox) => {
+    "sap/m/MessageBox",
+], (Messaging, Controller, History, JSONModel, MessageBox) => {
     "use strict";
     const ROTA_ADICIONAR_CLIENTE = "adicionarCliente"
     const ROTA_PAGINA_PRINCIPAL = "lista"
     const CAMINHO_PARA_API = "/api/Cliente";
     const CAMINHO_PARA_API_ENUM = "/api/EnumTipo"
-    const ID_DA_PAGINA = "pagina"
+    const ID_DA_PAGINA = "paginaAdicionar"
     const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
     const MSG_DE_ERRO = "Ocorreu um erro: "
     const MSG_SUCESSO_CADASATRO_CLIENTE = "Cliente cadastrado com sucesso"
@@ -30,8 +31,15 @@ sap.ui.define([
         onInit: async function() {
             const oRota = this.getOwnerComponent().getRouter();
             oRota.getRoute(ROTA_ADICIONAR_CLIENTE).attachPatternMatched(this._prencherComboBox, this);
+            var oView = this.getView(),
+            oMM = Messaging;
 
-           
+            oView.setModel(new JSONModel({ name: "", cpf: "", cnpj: ""}));
+
+            // attach handlers for validation errors
+            oMM.registerObject(oView.byId(ID_INPUT_NOME), true);
+            oMM.registerObject(oView.byId(ID_INPUT_CPF), true);
+            oMM.registerObject(oView.byId(ID_INPUT_CNPJ), true);
         },
 
         _prencherComboBox: function(){
@@ -42,6 +50,7 @@ sap.ui.define([
         _modeloComboBox: function(oModel,){
             this.getView().setModel(oModel, NOME_DO_MODELO_DA_COMBOX_BOX);
         },
+
         _get: async function(url){
             this._exibirEspera( async () => {
                 const response = await fetch(url, {
@@ -56,9 +65,9 @@ sap.ui.define([
             
                     return this._modeloComboBox(oModel);
                 }
-               
             });
         },
+
         _post: async function(url, corpo){
             this._exibirEspera( async () => {
                 const response = await fetch(url, {
@@ -78,6 +87,7 @@ sap.ui.define([
                 }
             });
         },
+
         _sucessoNaRequicaoPost: function(){
             MessageBox.success(MSG_SUCESSO_CADASATRO_CLIENTE, {
                 actions: [OPCAO_NOVO_CADASTRO, OPCAO_VOLTAR_PARA_PAGINA_INICIAL],
@@ -91,6 +101,7 @@ sap.ui.define([
                 }
             });
         },
+
         _falhaNaRequicaoPost: function(data){
             const detalhesDoErro = data.extensions.errors.join('\n');
             const mensagemErro = `
@@ -102,6 +113,33 @@ sap.ui.define([
     
             MessageBox.error(`${MSG_ERRO_ADICIONAR_CLIENTE}\n${mensagemErro}`);
         },
+
+        _validarInput: function (oInput) {
+			var sValueState = "None";
+			var bValidationError = false;
+			var oBinding = oInput.getBinding("value");
+
+            var sInputSemMascara = oInput.getValue();
+            if (oInput === this.getView().byId(ID_INPUT_CPF) || oInput === this.getView().byId(ID_INPUT_CNPJ)) {
+                sInputSemMascara = sInputSemMascara.replace(/\D/g, '');
+            }
+			try {
+				oBinding.getType().validateValue(sInputSemMascara);
+			} catch (oException) {
+				sValueState = "Error";
+				bValidationError = true;
+			}
+
+			oInput.setValueState(sValueState);
+
+			return bValidationError;
+		},
+
+        aoDigitarNome: function(oEvent) {
+			var oInput = oEvent.getSource();
+			this._validarInput(oInput);
+		},
+        
 
         aoClicarEmVoltar: function(){
             this._exibirEspera(() => {
@@ -136,28 +174,48 @@ sap.ui.define([
                 });
             });
         },
+
         aoClicarEmSalvar: function(){
             this._exibirEspera(() => {
-                let oView = this.getView();
+                const nome = this.oView.byId(ID_INPUT_NOME);
+                const cpf = this.oView.byId(ID_INPUT_CPF);
+                const cnpj = this.oView.byId(ID_INPUT_CNPJ);
                 let oComboBox = oView.byId(ID_COMBO_BOX);
                 const tipoPessoa = parseInt(oComboBox.getSelectedKey(), 10);
-                
-                function removerMascara(value) {
-                    return value.replace(/\D/g, '');
-                }
-                const cpfSemMascara = removerMascara(this.oView.byId(ID_INPUT_CPF).getValue())
-                const cnpjSemMascara = removerMascara(this.oView.byId(ID_INPUT_CNPJ).getValue())
-                let corpo = {
-                    nome: this.oView.byId(ID_INPUT_NOME).getValue(),
-                    cpf: cpfSemMascara,
-                    cnpj: cnpjSemMascara,
-                    tipo: tipoPessoa
-                }
-                debugger
 
-                this._post(CAMINHO_PARA_API, corpo)
+                var oView = this.getView(),
+				aInputs = [
+                    nome,
+                    cpf,
+                    cnpj
+                ],
+				bValidationError = false;
+                
+                if(cpf.getValue() === ""){
+                    delete aInputs[1]
+                }
+                if(cnpj.getValue() === ""){
+                    delete aInputs[2]
+                }
+                aInputs.forEach(function (oInput) {
+				bValidationError = this._validarInput(oInput) || bValidationError;
+                }   , this);
+                if (bValidationError) {
+                    MessageBox.alert("Ocorreu um erro de validação. Preencha os campos em vermelho primeiro.");
+                    return;
+                } 
+                
+                let corpo = {
+                    nome: nome.getValue(),
+                    cpf: cpf.getValue().replace(/\D/g, ''),
+                    cnpj: cnpj.getValue().replace(/\D/g, ''),
+                    tipo: tipoPessoa
+                };
+                
+                this._post(CAMINHO_PARA_API, corpo);
             });    
         },
+        
         _limparCampos: function() {
             const oView = this.getView();
             oView.byId(ID_INPUT_NOME).setValue("");
@@ -171,12 +229,12 @@ sap.ui.define([
             oPagina.setBusy(true);
             
             try {
-               funcao();
+                funcao();
             } catch(error) {
-               MessageBox.error(MSG_DE_ERRO + error.message);
+                MessageBox.error(MSG_DE_ERRO + error.message);
             } finally {
-               oPagina.setBusy(false)
+                oPagina.setBusy(false)
             }
-         },
+        },
     });
 });
