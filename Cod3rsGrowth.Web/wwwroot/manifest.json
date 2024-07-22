@@ -82,8 +82,7 @@
 			"adicionarCliente":{
 				"path" : "ui5.codersgrowth.app.adicionarCliente",
 				"id": "adicionarCliente",
-				"name": "AdicionarCliente",
-				"level" : 1
+				"name": "AdicionarCliente"
 			},
 			"notFound": {
 			"path": "ui5.codersgrowth.app.notFound",

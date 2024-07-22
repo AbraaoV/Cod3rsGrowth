@@ -34,7 +34,7 @@ namespace Cod3rsGrowth.Web.Controllers
             return Ok(cliente);
         }
         [HttpPost]
-        public IActionResult Adicionar(Dominio.Cliente cliente)
+        public IActionResult Adicionar([FromBody] Dominio.Cliente cliente)
         {
             _servicoCliente.Adicionar(cliente);
             return Created("Cliente", cliente);

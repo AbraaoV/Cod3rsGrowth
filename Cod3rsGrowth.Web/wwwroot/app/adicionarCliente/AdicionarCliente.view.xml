@@ -1,29 +1,40 @@
-<mvc:View 
+<mvc:View
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
+    xmlns:core="sap.ui.core"
     xmlns:semantic="sap.f.semantic"
     controllerName="ui5.codersgrowth.app.adicionarCliente.AdicionarCliente">
-    <semantic:SemanticPage
-		id="pageAdicionarCliente"
-		busy="{/busy}"
-		busyIndicatorDelay="{/delay}">
-        <semantic:titleHeading>
-			<Title
-				text="Adicionar Cliente"/>
-		</semantic:titleHeading>
-        <semantic:content>
-            <Dialog id="dialogAdicionarCliente" title="Adicionar Cliente">
-                <Label text="Nome" />
-        
-                <Label text="Email" />
-        
-                <beginButton>
-                    <Button text="Salvar" press="onSavePress" />
-                </beginButton>
-                <endButton>
-                    <Button text="Cancelar" press="onCancelPress" />
-                </endButton>
-            </Dialog>
-        </semantic:content>
-    </semantic:SemanticPage>
+    <Page id="pagina" busy="{/busy}" class="sapUiResponsiveContentPadding" showHeader="true">
+        <customHeader>
+            <Toolbar>
+                <Button icon="sap-icon://nav-back" press=".aoClicarEmVoltar" tooltip="Voltar"/>
+                <Title text="{i18n>appTitle}" titleStyle="H3" textAlign="Begin" width="10%"/>
+            </Toolbar>
+        </customHeader>
+        <FlexBox direction="Column" alignItems="Center" justifyContent="Center" class="sapUiContentPadding" height="100%">
+            <Panel width="400px" height="450px" backgroundDesign="Translucent"
+                headerText="Cadastro de Cliente" class="sapUiNoContentPadding">
+                <content>
+                    <VBox class="sapUiLargeMargin">
+                        <Label text="Nome"/>
+                        <Input id="inputNome" width="100%"/>
+
+                        <Label text="Pessoa"/>
+                        <ComboBox id="comboxTipo" width="100%" items="{path: 'comboxTipoDePessoa>/'}" selectionChange=".aoSelecionarTipoPessoa" selectedKey="1">
+                            <items>
+                                <core:ListItem key="{comboxTipoDePessoa>key}" text="{comboxTipoDePessoa>descricao}"/>
+                            </items>
+                        </ComboBox>
+                        <Label id="labelCpf" text="CPF" visible="true"/>
+                        <MaskInput mask="999.999.999-99" id="inputCpf" width="100%" visible="true"/>
+                        <Label id="labelCnpj" text="CNPJ" visible="false"/>
+                        <MaskInput mask="99.999.999/9999-99" id="inputCnpj" width="100%" visible="false"/>
+                    </VBox>
+                    <HBox alignItems="Center" justifyContent="Start" class="sapUiSmallMarginBegin">
+                        <Button type="Emphasized" class="sapUiLargeMarginBeginEnd sapUiMediumMarginTopBottom" text="Salvar" press=".aoClicarEmSalvar" width="175%"/>
+                    </HBox>
+                </content>
+            </Panel>
+        </FlexBox>
+    </Page>
 </mvc:View>

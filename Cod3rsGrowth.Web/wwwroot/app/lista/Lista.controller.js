@@ -124,7 +124,6 @@ sap.ui.define([
       aoClicarEmAdicionar: function(){
          this._exibirEspera(() => {
             const oRota = this.getOwnerComponent().getRouter();
-            var oBlaBla = this.getModel("listaDeClientes")
             oRota.navTo(ROTA_ADICIONAR_CLIENTE);
          });   
       },
