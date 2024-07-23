@@ -8,7 +8,7 @@
         <customHeader>
             <Toolbar>
                 <Button icon="sap-icon://nav-back" press=".aoClicarEmVoltar" tooltip="Voltar"/>
-                <Title text="{i18n>appTitle}" titleStyle="H3" textAlign="Begin" width="10%"/>
+                <Title text="{i18n>appTitle}" titleStyle="H3" textAlign="Begin" width="100%"/>
             </Toolbar>
         </customHeader>
         <FlexBox direction="Column" alignItems="Center" justifyContent="Center" class="sapUiContentPadding" height="100%">
@@ -22,14 +22,14 @@
                         width="100%"
                         valueStateText="Nome não pode estar vazio. Máximo de 50 caracteres."
                         value="{
-                            path : '/nome',
+                            path : 'modeloFiltro>/nome',
                             type : 'sap.ui.model.type.String',
                             constraints : {
                                 minLength: 1,
                                 maxLength: 50
                             }
                         }"
-                        change=".aoDigitarNome"/>
+                        change=".aoDigitarNoInpunt"/>
                         <Label text="Pessoa"/>
                         <ComboBox id="comboxTipo" width="100%" items="{path: 'comboxTipoDePessoa>/'}" selectionChange=".aoSelecionarTipoPessoa" selectedKey="1">
                             <items>
@@ -43,32 +43,33 @@
                         visible="true"
                         valueStateText="Cpf deve conter 11 caracteres"
                         value="{
-                            path : '/cpf',
+                            path : 'modeloFiltro>/cpf',
                             type : 'sap.ui.model.type.String',
                             constraints: {
                                 minLength: 11,
-                                maxLength: 11
+                                maxLength: 14
                             }
                         }"
-                        />
+                        change=".aoDigitarNoInpunt"/>
                         <Label id="labelCnpj" text="CNPJ" visible="false"/>
                         <MaskInput 
                         mask="99.999.999/9999-99" 
                         id="inputCnpj" width="100%" 
                         visible="false"
                         valueStateText="Cnpj deve conter 14 caracteres."
+                        required="true"
                         value="{
-                            path : '/cnpj',
+                            path : 'modeloFiltro>/cnpj',
                             type : 'sap.ui.model.type.String',
                             constraints: {
                                 minLength: 14,
-                                maxLength: 14
+                                maxLength: 18
                             }
                         }"
-                        />
+                        change=".aoDigitarNoInpunt"/>
                     </VBox>
                     <HBox alignItems="Center" justifyContent="Start" class="sapUiSmallMarginBegin">
-                        <Button type="Emphasized" class="sapUiLargeMarginBeginEnd sapUiMediumMarginTopBottom" text="Salvar" press=".aoClicarEmSalvar" width="175%"/>
+                        <Button id="botaoSalvar" type="Emphasized" class="sapUiLargeMarginBeginEnd sapUiMediumMarginTopBottom" text="Salvar" press=".aoClicarEmSalvar" width="175%"/>
                     </HBox>
                 </content>
             </Panel>

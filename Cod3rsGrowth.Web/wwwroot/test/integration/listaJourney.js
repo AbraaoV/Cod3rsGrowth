@@ -4,15 +4,11 @@ sap.ui.define([
 ], function (opaTest) {
 	"use strict";
 
-	QUnit.module("Posts");
+	QUnit.module("Lista de Clientes");
 
 	opaTest("Deve ser capaz de carregar mais itens", function (Given, When, Then) {
 		// Arrangements
-		Given.iStartMyUIComponent({
-			componentConfig: {
-				name: "ui5.codersgrowth"
-			}
-		});
+		Given.iStartMyApp();
         //Actions
         When.naListaCliente.aoApertarEmMais();
 		// Assertions
