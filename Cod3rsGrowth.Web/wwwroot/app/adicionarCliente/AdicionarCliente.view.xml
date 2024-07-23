@@ -7,7 +7,7 @@
     <Page id="paginaAdicionar" busy="{/busy}" class="sapUiResponsiveContentPadding" showHeader="true">
         <customHeader>
             <Toolbar>
-                <Button icon="sap-icon://nav-back" press=".aoClicarEmVoltar" tooltip="Voltar"/>
+                <Button id="botaoVoltar" icon="sap-icon://nav-back" press=".aoClicarEmVoltar" tooltip="Voltar"/>
                 <Title text="{i18n>appTitle}" titleStyle="H3" textAlign="Begin" width="100%"/>
             </Toolbar>
         </customHeader>

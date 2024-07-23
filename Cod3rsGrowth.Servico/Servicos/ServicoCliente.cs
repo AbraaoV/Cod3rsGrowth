@@ -27,8 +27,15 @@ namespace Cod3rsGrowth.Servico.Servicos
         }
         public void Adicionar(Cliente cliente)
         {
-            _validarCliente.ValidateAndThrow(cliente);
-            _clienteRepositorio.Adicionar(cliente);
+            ValidationResult result = _validarCliente.Validate(cliente, options => options.IncludeRuleSets(ConstantesDoValidador.ADICIONAR, "default"));
+            if (result.IsValid)
+            {
+                _clienteRepositorio.Adicionar(cliente);
+            }
+            else if (!result.IsValid)
+            {
+                throw new ValidationException(result.Errors);
+            }
         }
         public void Atualizar(int id, Cliente cliente)
         {

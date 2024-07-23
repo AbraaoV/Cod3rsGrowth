@@ -117,7 +117,7 @@ sap.ui.define([
 						viewName: sViewName,
 						matchers: new AggregationLengthEquals({
 							name: "items",
-							length: 12
+							length: 20
 						}),
 						success: function () {
 							Opa5.assert.ok(true, "A lista tem 13 items");
@@ -186,6 +186,15 @@ sap.ui.define([
 						},
 						errorMessage: "A lista não está filtrada corretamente por Pessoa Física."
 					});
+				},
+				deveNavegarParaTelaDeLista: function(){
+					return this.waitFor({
+                        viewName: sViewName,
+                        success: function () {
+                            Opa5.assert.ok(true, "Sucesso ao navegar para tela de lista");
+                        },
+                        errorMessage: "Falha ao navegar a pagina de lista"
+                    });
 				}
 			}
 		}

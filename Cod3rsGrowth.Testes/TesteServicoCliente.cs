@@ -224,6 +224,56 @@ namespace Cod3rsGrowth.Testes
         }
 
         [Fact]
+        public void Ao_adicionar_cliente_com_cpf_que_ja_existe_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "95518508077",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var clienteNovo = new Cliente
+            {
+                Nome = "João",
+                Id = 100,
+                Cpf = "95518508077",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(clienteNovo));
+            Assert.Equal("Esse CPF já está cadastrado", mensagemErro.Errors.Single().ErrorMessage);
+        }
+
+        [Fact]
+        public void Ao_adicionar_cliente_com_cnpj_que_ja_existe_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cnpj = "90667544000102",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var clienteNovo = new Cliente
+            {
+                Nome = "João",
+                Id = 100,
+                Cnpj = "90667544000102",
+                Tipo = Cliente.TipoDeCliente.Juridica
+            };
+
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(clienteNovo));
+            Assert.Equal("Esse CNPJ já está cadastrado", mensagemErro.Errors.Single().ErrorMessage);
+        }
+
+        [Fact]
         public void Ao_adicionar_cliente_que_atende_todas_as_regras_deve_ser_adicionado_normalmente()
         {
             var cliente1 = new Cliente

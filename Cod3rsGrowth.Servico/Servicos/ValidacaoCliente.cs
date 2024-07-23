@@ -31,6 +31,7 @@ namespace Cod3rsGrowth.Servico.Servicos
                 })
                 .When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Fisica)
                 .WithMessage("CPF inválido");
+                
 
             RuleFor(cliente => cliente.Cpf)
                 .Empty()
@@ -47,6 +48,7 @@ namespace Cod3rsGrowth.Servico.Servicos
                 })
                 .When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Juridica)
                 .WithMessage("CNPJ inválido");
+               
 
 
             RuleSet(ConstantesDoValidador.ATUALIZAR, () =>
@@ -57,6 +59,24 @@ namespace Cod3rsGrowth.Servico.Servicos
                     return ValidarId(id) == true;
                 })
                 .WithMessage("Esse Id não existe.");
+            });
+
+            RuleSet(ConstantesDoValidador.ADICIONAR, () =>
+            {
+                RuleFor(cliente => cliente.Cpf)
+                 .Must(cpf =>
+                  {
+                      return CpfInedito(cpf);
+                  })
+                .When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Fisica)
+                .WithMessage("Esse CPF já está cadastrado");
+                RuleFor(cliente => cliente.Cnpj)
+                .Must(cnpj =>
+                 {
+                     return CnpjInedito(cnpj);
+                 })
+                .When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Juridica)
+                .WithMessage("Esse CPNJ já está cadastrado");
             });
 
             RuleSet(ConstantesDoValidador.REMOVER, () =>
@@ -81,6 +101,21 @@ namespace Cod3rsGrowth.Servico.Servicos
               return false;
         }
 
+        public bool CpfInedito(string cpf)
+        {
+            if(_clienteRepositorio.ObterTodos(null).Any(c => c.Cpf == cpf))
+                return false;
+            else
+                return true;
+        }
+
+        public bool CnpjInedito(string cnpj)
+        {
+            if (_clienteRepositorio.ObterTodos(null).Any(c => c.Cnpj == cnpj))
+                return false;
+            else
+                return true;
+        }
         public bool ValidarCpf(string cpf)
         {
             int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
