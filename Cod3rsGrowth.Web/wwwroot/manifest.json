@@ -52,8 +52,8 @@
 			"type": "View",
 			"viewType": "XML",
 			"path": "ui5.codersgrowth.app",
-			"controlId": "app",
-			"controlAggregation": "pages",
+			"controlId": "layout",
+			"controlAggregation": "beginColumnPages",
 			"transition": "slide",
 			"bypassed": {
 			"target": "notFound"
@@ -70,6 +70,14 @@
 				"pattern": "adicionar",
 				"name": "adicionarCliente",
 				"target": "adicionarCliente"
+			},
+			{
+				"pattern": "Orders/:?query:",
+				"name": "object",
+				"target": [
+					"lista",
+					"object"
+				]
 			}
 		],
 		"targets": {
@@ -79,10 +87,19 @@
 				"name": "Lista",
 				"level" : 1
 			},
+			"object": {
+					"path" : "ui5.codersgrowth.app.detalheCliente",
+					"name": "DetalheCliente",
+					"id": "detail",
+					"level": 1,
+					"controlAggregation": "midColumnPages"
+			},
 			"adicionarCliente":{
 				"path" : "ui5.codersgrowth.app.adicionarCliente",
 				"id": "adicionarCliente",
-				"name": "AdicionarCliente"
+				"name": "AdicionarCliente",
+				"controlId": "app",
+				"controlAggregation": "pages"
 			},
 			"notFound": {
 			"path": "ui5.codersgrowth.app.notFound",

@@ -41,7 +41,7 @@
                   type="Transparent"/>
             </Toolbar>
          </headerToolbar>
-         <CustomListItem>
+         <CustomListItem type="Navigation" press=".onShowDetail">
             <HBox>
                <core:Icon size="3rem" src="sap-icon://customer" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
                <VBox width="100%" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >

@@ -47,21 +47,21 @@ sap.ui.define([
 
         _get: async function(url, sNomeModelo){
             this._exibirEspera( async () => {
-               const response = await fetch(url, {
-                  method: "GET",
-                  headers: {
-                     "Content-Type": "application/json",
-                  },
-               });
-               if (response.ok) {
-               const data = await response.json();
-               const oModel = new JSONModel(data);
-      
-               return this._modelo(oModel, sNomeModelo);
-               }
+                const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                });
+                if (response.ok) {
+                const data = await response.json();
+                const oModel = new JSONModel(data);
+                    
+                return this._modelo(oModel, sNomeModelo);
+                }
             });
         },
-
+        
         _post: async function(url, corpo, respostaSucesso, respostaErro){
             this._exibirEspera( async () => {
                 const response = await fetch(url, {

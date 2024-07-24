@@ -44,7 +44,7 @@ sap.ui.define([
       _prencherLista: async function(){
          let urlFinal = CAMINHO_PARA_API + oParams;
          this._filtrarPelaRota();
-
+         this.getView().getModel("appView").setProperty("/layout", "OneColumn");
          this._get(urlFinal, NOME_DO_MODELO_DA_LISTA);
       },
 
@@ -95,6 +95,13 @@ sap.ui.define([
             this._adicionarParametros();
          });
       },
+
+      onShowDetail : function () {
+         debugger
+			this.getView().getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
+         const oRota = this.getOwnerComponent().getRouter();
+			oRota.navTo("object");
+		},
 
       aoClicarEmAdicionar: function(){
          this._exibirEspera(() => {
