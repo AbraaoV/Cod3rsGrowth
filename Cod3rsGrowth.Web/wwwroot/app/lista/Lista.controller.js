@@ -1,9 +1,7 @@
 sap.ui.define([
-   "sap/ui/core/mvc/Controller",
-   'sap/ui/model/json/JSONModel',
+   "ui5/codersgrowth/common/ControllerBase",
    "../model/formatter",
-   "sap/m/MessageBox"
-], function (Controller, JSONModel, formatter, MessageBox) {
+], function (ControllerBase, formatter) {
    "use strict";
    let _filtroTipo = null;
    let _filtroNome = "";
@@ -22,12 +20,10 @@ sap.ui.define([
    const PARAMETRO_FILTRO_NOME = "nome";
    const PARAMETRO_FILTRO_TIPO = "tipo";
    const NOME_DA_ROTA = "lista";
-   const ID_LISTA_DE_CLIENTES = "listaClientes";
    const ID_FILTRO_DE_PESQUISA = "filtroPesquisa";
-   const MSG_DE_ERRO = "Ocorreu um erro: ";
    const ROTA_ADICIONAR_CLIENTE = "adicionarCliente";
    
-   return Controller.extend("ui5.codersgrowth.app.lista.Lista", {
+   return ControllerBase.extend("ui5.codersgrowth.app.lista.Lista", {
       formatter: formatter,
       onInit: async function() {
          const oRota = this.getOwnerComponent().getRouter();
@@ -44,33 +40,12 @@ sap.ui.define([
 
          const prencherCampoPequisa = this.byId(ID_FILTRO_DE_PESQUISA).setValue(_filtroNome);
       },
-      _modeloLista: function(oModel){
-         this.getView().setModel(oModel, NOME_DO_MODELO_DA_LISTA);
-      },
-      _get: async function(url){
-         this._exibirEspera( async () => {
-            let urlFinal = url + oParams;
-
-            const response = await fetch(urlFinal, {
-               method: "GET",
-               headers: {
-                  "Content-Type": "application/json",
-               },
-            });
-            if (response.ok) {
-            const data = await response.json();
-            const oModel = new JSONModel(data);
-   
-            return this._modeloLista(oModel);
-            }
-         });
-      },
 
       _prencherLista: async function(){
-
+         let urlFinal = CAMINHO_PARA_API + oParams;
          this._filtrarPelaRota();
 
-         this._get(CAMINHO_PARA_API);
+         this._get(urlFinal, NOME_DO_MODELO_DA_LISTA);
       },
 
       aoClicarEmFiltro: async function(){
@@ -140,18 +115,5 @@ sap.ui.define([
          oRota.navTo(NOME_DA_ROTA, {"?queryFiltro": querry});
       },
 
-      _exibirEspera: function(funcao) {
-         var oLista = this.byId(ID_LISTA_DE_CLIENTES);
-         oLista.setBusy(true);
-         
-         try {
-            funcao();
-         } catch(error) {
-            MessageBox.error(MSG_DE_ERRO + error.message);
-         } finally {
-            oLista.setBusy(false)
-         }
-      },
-      
    });
 });

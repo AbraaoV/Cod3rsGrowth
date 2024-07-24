@@ -3,6 +3,7 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:semantic="sap.f.semantic"
+    id = "viewAdicionar"
     controllerName="ui5.codersgrowth.app.adicionarCliente.AdicionarCliente">
     <Page id="paginaAdicionar" busy="{/busy}" class="sapUiResponsiveContentPadding" showHeader="true">
         <customHeader>

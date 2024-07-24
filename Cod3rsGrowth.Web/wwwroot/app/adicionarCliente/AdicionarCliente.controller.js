@@ -1,18 +1,15 @@
 sap.ui.define([
     "sap/ui/core/Messaging",
-    "sap/ui/core/mvc/Controller",
-    "sap/ui/core/routing/History",
+    "ui5/codersgrowth/common/ControllerBase",
     'sap/ui/model/json/JSONModel',
     "sap/m/MessageBox",
-], (Messaging, Controller, History, JSONModel, MessageBox) => {
+], (Messaging, ControllerBase, JSONModel, MessageBox) => {
     "use strict";
     const ROTA_ADICIONAR_CLIENTE = "adicionarCliente"
     const ROTA_PAGINA_PRINCIPAL = "lista"
     const CAMINHO_PARA_API = "/api/Cliente";
     const CAMINHO_PARA_API_ENUM = "/api/EnumTipo"
-    const ID_DA_PAGINA = "paginaAdicionar"
     const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
-    const MSG_DE_ERRO = "Ocorreu um erro: "
     const MSG_SUCESSO_CADASATRO_CLIENTE = "Cliente cadastrado com sucesso"
     const MSG_ERRO_ADICIONAR_CLIENTE = "Erro ao adicionar cliente:"
     const OPCAO_NOVO_CADASTRO = "Novo Cadastro"
@@ -34,14 +31,14 @@ sap.ui.define([
     const VALOR_PROPRIEDAE = "value"
     const NOME_DO_MODELO_DOS_FILTROS = "modeloFiltro"
 
-    return Controller.extend("ui5.codersgrowth.adicionarCliente.AdicionarCliente", {
+    return ControllerBase.extend("ui5.codersgrowth.app.adicionarCliente.AdicionarCliente", {
         onInit: async function() {
             const oRota = this.getOwnerComponent().getRouter();
             oRota.getRoute(ROTA_ADICIONAR_CLIENTE).attachPatternMatched(this._prencherComboBox, this);
         },
 
         _prencherComboBox: function(){
-            this._get(CAMINHO_PARA_API_ENUM)
+            this._get(CAMINHO_PARA_API_ENUM, NOME_DO_MODELO_DA_COMBOX_BOX)
             this.aoSelecionarTipoPessoa();
             this._registarModeloParaVailidacao()
         },
@@ -57,46 +54,7 @@ sap.ui.define([
             oMM.registerObject(oView.byId(ID_INPUT_CNPJ), true);
         },
 
-        _modeloComboBox: function(oModel,){
-            this.getView().setModel(oModel, NOME_DO_MODELO_DA_COMBOX_BOX);
-        },
-
-        _get: async function(url){
-            this._exibirEspera( async () => {
-                const response = await fetch(url, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    const oModel = new JSONModel(data);
-            
-                    return this._modeloComboBox(oModel);
-                }
-            });
-        },
-
-        _post: async function(url, corpo){
-            this._exibirEspera( async () => {
-                const response = await fetch(url, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(corpo)
-                    
-                });
-                    const data = await response.json()
-                if (response.ok) {
-                    this._sucessoNaRequicaoPost();
-                }
-                else{ 
-                    this._falhaNaRequicaoPost(data);                    
-                }
-            });
-        },
+        
 
         _sucessoNaRequicaoPost: function(){
             MessageBox.success(MSG_SUCESSO_CADASATRO_CLIENTE, {
@@ -151,20 +109,6 @@ sap.ui.define([
                 this._validarInput(oInput);
             });
 		},
-
-        aoClicarEmVoltar: function(){
-            this._exibirEspera(() => {
-                const oHistorico = History.getInstance();
-                const sHashAnterior = oHistorico.getPreviousHash();
-
-                if (sHashAnterior !== undefined) {
-                    window.history.go(-1);
-                } else {
-                    const oRota = this.getOwnerComponent().getRouter();
-                    oRota.navTo(ROTA_PAGINA_PRINCIPAL, {}, true);
-                }
-            });
-        },
 
         aoSelecionarTipoPessoa: function(){
             this._exibirEspera(() => {
@@ -225,29 +169,17 @@ sap.ui.define([
                     tipo: tipoPessoa
                 };
                 
-                this._post(CAMINHO_PARA_API, corpo);
+                this._post(CAMINHO_PARA_API, corpo, () => this._sucessoNaRequicaoPost(), this._falhaNaRequicaoPost);
             });    
         },
         
         _limparCampos: function() {
-            const oView = this.getView();
+            const oView = this.getView()
             oView.byId(ID_INPUT_NOME).setValue(undefined);
             oView.byId(ID_INPUT_CPF).setValue(undefined);
             oView.byId(ID_INPUT_CNPJ).setValue(undefined);
             oView.byId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
         },
         
-        _exibirEspera: function(funcao) {
-            let oPagina = this.byId(ID_DA_PAGINA);
-            oPagina.setBusy(true);
-            
-            try {
-                funcao();
-            } catch(error) {
-                MessageBox.error(MSG_DE_ERRO + error.message);
-            } finally {
-                oPagina.setBusy(false)
-            }
-        },
     });
 });

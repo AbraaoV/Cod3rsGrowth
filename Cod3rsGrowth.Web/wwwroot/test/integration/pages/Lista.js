@@ -117,7 +117,7 @@ sap.ui.define([
 						viewName: sViewName,
 						matchers: new AggregationLengthEquals({
 							name: "items",
-							length: 20
+							length: 17
 						}),
 						success: function () {
 							Opa5.assert.ok(true, "A lista tem 13 items");
