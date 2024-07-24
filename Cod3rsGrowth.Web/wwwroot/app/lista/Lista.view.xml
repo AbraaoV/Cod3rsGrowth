@@ -2,18 +2,32 @@
    controllerName="ui5.codersgrowth.app.lista.Lista"
    xmlns:core="sap.ui.core"
    xmlns="sap.m"
-   xmlns:mvc="sap.ui.core.mvc">
-   <Page title="{i18n>appTitle}" busy="{/busy}" class="sapUiResponsiveContentPadding">   
-      <List id ="listaClientes" items="{path:'listaDeClientes>/'}" growing="true" growingThreshold="10" width="auto" class="sapFDynamicPageAlignContent" >
+   xmlns:mvc="sap.ui.core.mvc"
+   xmlns:semantic="sap.f.semantic">
+   <Page id="pagina" busy="{/busy}" class="sapUiResponsiveContentPadding" showHeader="true">
+   <customHeader>
+      <Toolbar>
+         <Title text="{i18n>appTitle}" titleStyle="H3" textAlign="Begin" width="100%"/>
+      </Toolbar>
+   </customHeader>
+      <List id ="listaClientes" items="{path:'listaDeClientes>/'}" growing="true" growingThreshold="10" width="auto" class="sapFDynamicPageAlignContent">
          <headerToolbar>
             <Toolbar>
-               <Title text="{i18n>listTitle}"/>
+               <Title text="{i18n>listTitle}" titleStyle="H4"/>
                <ToolbarSpacer/>
                <SearchField
                   id="filtroPesquisa"
                   width="20%"
                   placeholder="{i18n>placeHolderFilter}"
-                  liveChange=".aoFiltrarNome"/>
+                  liveChange=".aoFiltrarNome">
+                  <layoutData>
+                     <OverflowToolbarLayoutData
+                        minWidth="150px"
+                        maxWidth="240px"
+                        shrinkable="true"
+                        priority="NeverOverflow"/>
+                  </layoutData>
+                  </SearchField>
                <Button
                   id="botaoFiltro"
                   icon="sap-icon://filter"
@@ -23,13 +37,13 @@
                   id="botaoAdicionar"
                   text="Adicionar"
                   icon="sap-icon://add-employee"
-                  press=".aoApertarEmAdicionar"
+                  press=".aoClicarEmAdicionar"
                   type="Transparent"/>
             </Toolbar>
          </headerToolbar>
          <CustomListItem>
             <HBox>
-               <core:Icon size="2rem" src="sap-icon://customer" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
+               <core:Icon size="3rem" src="sap-icon://customer" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
                <VBox width="100%" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
                   <Title text="{listaDeClientes>nome}"/>
                   <Label text="{path: 'listaDeClientes>cpf', formatter: '.formatter.formatarCpf'}{path: 'listaDeClientes>cnpj', formatter: '.formatter.formatarCnpj'}"/>
@@ -44,5 +58,5 @@
             </HBox>
          </CustomListItem>
       </List>
-   </Page>
+   </Page>   
 </mvc:View>

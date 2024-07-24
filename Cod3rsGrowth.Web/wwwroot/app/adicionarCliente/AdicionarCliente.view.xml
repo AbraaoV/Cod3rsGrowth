@@ -1,0 +1,79 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:semantic="sap.f.semantic"
+    id = "viewAdicionar"
+    controllerName="ui5.codersgrowth.app.adicionarCliente.AdicionarCliente">
+    <Page id="paginaAdicionar" busy="{/busy}" class="sapUiResponsiveContentPadding" showHeader="true">
+        <customHeader>
+            <Toolbar>
+                <Button id="botaoVoltar" icon="sap-icon://nav-back" press=".aoClicarEmVoltar" tooltip="Voltar"/>
+                <Title text="{i18n>appTitle}" titleStyle="H3" textAlign="Begin" width="100%"/>
+            </Toolbar>
+        </customHeader>
+        <FlexBox direction="Column" alignItems="Center" justifyContent="Center" class="sapUiContentPadding" height="100%">
+            <Panel width="400px" height="450px" backgroundDesign="Translucent"
+                headerText="Cadastro de Cliente" class="sapUiNoContentPadding">
+                <content>
+                    <VBox class="sapUiLargeMargin">
+                        <Label text="Nome"/>
+                        <Input
+                        id="inputNome"
+                        width="100%"
+                        valueStateText="Nome não pode estar vazio. Máximo de 50 caracteres."
+                        value="{
+                            path : 'modeloFiltro>/nome',
+                            type : 'sap.ui.model.type.String',
+                            constraints : {
+                                minLength: 1,
+                                maxLength: 50
+                            }
+                        }"
+                        change=".aoDigitarNoInpunt"/>
+                        <Label text="Pessoa"/>
+                        <ComboBox id="comboxTipo" width="100%" items="{path: 'comboxTipoDePessoa>/'}" selectionChange=".aoSelecionarTipoPessoa" selectedKey="1">
+                            <items>
+                                <core:ListItem key="{comboxTipoDePessoa>key}" text="{comboxTipoDePessoa>descricao}"/>
+                            </items>
+                        </ComboBox>
+                        <Label id="labelCpf" text="CPF" visible="true"/>
+                        <MaskInput 
+                        mask="999.999.999-99" 
+                        id="inputCpf" width="100%" 
+                        visible="true"
+                        valueStateText="Cpf deve conter 11 caracteres"
+                        value="{
+                            path : 'modeloFiltro>/cpf',
+                            type : 'sap.ui.model.type.String',
+                            constraints: {
+                                minLength: 11,
+                                maxLength: 14
+                            }
+                        }"
+                        change=".aoDigitarNoInpunt"/>
+                        <Label id="labelCnpj" text="CNPJ" visible="false"/>
+                        <MaskInput 
+                        mask="99.999.999/9999-99" 
+                        id="inputCnpj" width="100%" 
+                        visible="false"
+                        valueStateText="Cnpj deve conter 14 caracteres."
+                        required="true"
+                        value="{
+                            path : 'modeloFiltro>/cnpj',
+                            type : 'sap.ui.model.type.String',
+                            constraints: {
+                                minLength: 14,
+                                maxLength: 18
+                            }
+                        }"
+                        change=".aoDigitarNoInpunt"/>
+                    </VBox>
+                    <HBox alignItems="Center" justifyContent="Start" class="sapUiSmallMarginBegin">
+                        <Button id="botaoSalvar" type="Emphasized" class="sapUiLargeMarginBeginEnd sapUiMediumMarginTopBottom" text="Salvar" press=".aoClicarEmSalvar" width="175%"/>
+                    </HBox>
+                </content>
+            </Panel>
+        </FlexBox>
+    </Page>
+</mvc:View>

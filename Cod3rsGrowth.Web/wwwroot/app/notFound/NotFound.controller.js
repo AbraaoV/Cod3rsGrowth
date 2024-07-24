@@ -1,26 +1,8 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
-    "sap/ui/core/routing/History",
-	"sap/ui/core/UIComponent"
- ], function (Controller, History, UIComponent) {
+    "ui5/codersgrowth/common/ControllerBase",
+ ], function (ControllerBase) {
     "use strict";
-    return Controller.extend("ui5.codersgrowth.app.notFound.NotFound", {
-        getRouter : function () {
-			return UIComponent.getRouterFor(this);
-		},
-
-		aoClicarEmVoltar: function () {
-			var oHistory, sPreviousHash;
-
-			oHistory = History.getInstance();
-			sPreviousHash = oHistory.getPreviousHash();
-
-			if (sPreviousHash !== undefined) {
-				window.history.go(-1);
-			} else {
-				this.getRouter().navTo("lista", {}, true);
-			}
-		},
+    return ControllerBase.extend("ui5.codersgrowth.app.notFound.NotFound", {
         onInit: function () {
        }
     });

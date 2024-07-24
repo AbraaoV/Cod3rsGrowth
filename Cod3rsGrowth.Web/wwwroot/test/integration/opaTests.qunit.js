@@ -6,7 +6,7 @@ sap.ui.require(["sap/ui/core/Core"], async(Core) => {
 	await Core.ready();
 
 	sap.ui.require([
-		"ui5/codersgrowth/test/integration/listaJourney"
+		"ui5/codersgrowth/test/integration/AllJourney"
 	], () => {
 		QUnit.start();
 	});

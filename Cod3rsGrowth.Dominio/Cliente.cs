@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
+using System.Reflection;
 using LinqToDB.Mapping;
 using ColumnAttribute = LinqToDB.Mapping.ColumnAttribute;
 using TableAttribute = LinqToDB.Mapping.TableAttribute;
@@ -26,6 +25,16 @@ namespace Cod3rsGrowth.Dominio
             Fisica = 1,
             [Description("Pessoa Jurídica")]
             Juridica = 2
+        }
+        public static string capturarDescricaoEnum(Enum value)
+        {
+            FieldInfo field = value.GetType().GetField(value.ToString());
+
+            DescriptionAttribute[] attributes =
+                (DescriptionAttribute[])field.GetCustomAttributes(
+                typeof(DescriptionAttribute), false);
+
+            return attributes.Length > 0 ? attributes[0].Description : value.ToString();
         }
     }
 }

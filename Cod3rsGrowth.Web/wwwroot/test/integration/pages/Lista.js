@@ -1,14 +1,14 @@
 sap.ui.define([
 	"sap/ui/test/Opa5",
-	'sap/ui/test/matchers/AggregationLengthEquals',
 	"sap/ui/test/actions/Press",
+	"sap/ui/test/matchers/AggregationLengthEquals",
 	"sap/ui/test/actions/EnterText",
-	"sap/ui/test/matchers/PropertyStrictEquals",
-	"sap/ui/test/matchers/Properties"
-], (Opa5, Press, AggregationLengthEquals, EnterText, PropertyStrictEquals, Properties) => {
+	"sap/ui/test/matchers/I18NText",
+	"sap/ui/test/matchers/PropertyStrictEquals"
+], (Opa5, Press, AggregationLengthEquals, EnterText, I18NText, PropertyStrictEquals) => {
 	"use strict";
 
-	const sViewName = "ui5.codersgrowth.app.lista.Lista",
+	const sViewName = "lista.Lista",
 	sIdLista = "listaClientes"
 
 	Opa5.createPageObjects({
@@ -46,9 +46,9 @@ sap.ui.define([
 					return this.waitFor({
 						searchOpenDialogs: true,
 						controlType: "sap.m.StandardListItem",
-						matchers: new PropertyStrictEquals({
-							name: "id",
-							value: "__component0---lista--filterItems-list-item"
+						matchers: new I18NText({
+							propertyName: "title",
+							key: "filterName"
 						}),
 						actions: function (oMenuItem) {
 							oMenuItem.firePress();
@@ -97,6 +97,16 @@ sap.ui.define([
 						},
 						errorMessage: "Falha ao apertar o botao de resetar"
 					});	
+				},
+				aoApertarEmAdicionar: function(){
+					return this.waitFor({
+						id: "botaoAdicionar",
+						viewName: sViewName,
+						actions: function (oMenuItem) {
+							oMenuItem.firePress();
+						},
+						errorMessage: "Não foi possível pressionar o botão de adicionar."
+					});
 				}		
 			},
 
@@ -107,7 +117,7 @@ sap.ui.define([
 						viewName: sViewName,
 						matchers: new AggregationLengthEquals({
 							name: "items",
-							length: 13
+							length: 17
 						}),
 						success: function () {
 							Opa5.assert.ok(true, "A lista tem 13 items");
@@ -176,8 +186,16 @@ sap.ui.define([
 						},
 						errorMessage: "A lista não está filtrada corretamente por Pessoa Física."
 					});
+				},
+				deveNavegarParaTelaDeLista: function(){
+					return this.waitFor({
+                        viewName: sViewName,
+                        success: function () {
+                            Opa5.assert.ok(true, "Sucesso ao navegar para tela de lista");
+                        },
+                        errorMessage: "Falha ao navegar a pagina de lista"
+                    });
 				}
-
 			}
 		}
 	});
