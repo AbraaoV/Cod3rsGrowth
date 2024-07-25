@@ -33,14 +33,14 @@ sap.ui.define([
 
     return ControllerBase.extend("ui5.codersgrowth.app.adicionarCliente.AdicionarCliente", {
         onInit: async function() {
-            const oRota = this.getOwnerComponent().getRouter();
-            oRota.getRoute(ROTA_ADICIONAR_CLIENTE).attachPatternMatched(this._prencherComboBox, this);
+            this.getRota().getRoute(ROTA_ADICIONAR_CLIENTE).attachPatternMatched(this._prencherComboBox, this);
         },
 
         _prencherComboBox: function(){
             this._get(CAMINHO_PARA_API_ENUM, NOME_DO_MODELO_DA_COMBOX_BOX)
             this.aoSelecionarTipoPessoa();
             this._registarModeloParaVailidacao()
+            this.getModelo("appView").setProperty("/layout", "OneColumn");
         },
 
         _registarModeloParaVailidacao: function(){
@@ -112,18 +112,17 @@ sap.ui.define([
 
         aoSelecionarTipoPessoa: function(){
             this._exibirEspera(() => {
-                let oView = this.getView();
-                let oComboBox = oView.byId(ID_COMBO_BOX);
-                let oLabelCPF = oView.byId(ID_LABEL_CPF);
-                let oInputCPF = oView.byId(ID_INPUT_CPF);
-                let oLabelCNPJ = oView.byId(ID_LABEL_CPNJ);
-                let oInputCNPJ = oView.byId(ID_INPUT_CNPJ);
+                let oComboBox = this.peloId(ID_COMBO_BOX);
+                let oLabelCPF = this.peloId(ID_LABEL_CPF);
+                let oInputCPF = this.peloId(ID_INPUT_CPF);
+                let oLabelCNPJ = this.peloId(ID_LABEL_CPNJ);
+                let oInputCNPJ = this.peloId(ID_INPUT_CNPJ);
 
                 oComboBox.attachSelectionChange(function(oEvent) {
                     let itemSelecionado = oEvent.getParameter(PARAMETRO_ITEM_SELECIONADO);
                     let key = itemSelecionado.getKey();
-                    oView.byId(ID_INPUT_CPF).setValue(undefined);
-                    oView.byId(ID_INPUT_CNPJ).setValue(undefined);
+                    oInputCPF.setValue(undefined);
+                    oInputCNPJ.setValue(undefined);
                     oLabelCPF.setVisible(key === KEY_PESSOA_FISICA);
                     oInputCPF.setVisible(key === KEY_PESSOA_FISICA);
                     oLabelCNPJ.setVisible(key === KEY_PESSOA_JURIDICA);
@@ -134,11 +133,10 @@ sap.ui.define([
 
         aoClicarEmSalvar: function(){
             this._exibirEspera(() => {
-                let oView = this.getView()
-                const nome = this.oView.byId(ID_INPUT_NOME);
-                const cpf = this.oView.byId(ID_INPUT_CPF);
-                const cnpj = this.oView.byId(ID_INPUT_CNPJ);
-                let oComboBox = oView.byId(ID_COMBO_BOX);
+                const nome = this.peloId(ID_INPUT_NOME);
+                const cpf = this.peloId(ID_INPUT_CPF);
+                const cnpj = this.peloId(ID_INPUT_CNPJ);
+                let oComboBox = this.peloId(ID_COMBO_BOX);
                 const tipoPessoa = parseInt(oComboBox.getSelectedKey(), 10);
 
 				let aInputs = [
@@ -174,11 +172,10 @@ sap.ui.define([
         },
         
         _limparCampos: function() {
-            const oView = this.getView()
-            oView.byId(ID_INPUT_NOME).setValue(undefined);
-            oView.byId(ID_INPUT_CPF).setValue(undefined);
-            oView.byId(ID_INPUT_CNPJ).setValue(undefined);
-            oView.byId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
+            this.peloId(ID_INPUT_NOME).setValue(undefined);
+            this.peloId(ID_INPUT_CPF).setValue(undefined);
+            this.peloId(ID_INPUT_CNPJ).setValue(undefined);
+            this.peloId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
         },
         
     });

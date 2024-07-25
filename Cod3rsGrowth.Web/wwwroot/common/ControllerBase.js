@@ -11,9 +11,13 @@ sap.ui.define([
     const ROTA_PAGINA_PRINCIPAL = "lista"
 
 	return Controller.extend("ui5.codersgrowth.common.ControllerBase", {
-        getRouter : function () {
-			return UIComponent.getRouterFor(this);
+        getRota: function () {
+			return this.getOwnerComponent().getRouter();
 		},
+
+        peloId: function(sId) {
+            return this.getView().byId(sId)
+        },
 
         aoClicarEmVoltar: function () {
 			var oHistory, sPreviousHash;
@@ -24,25 +28,29 @@ sap.ui.define([
 			if (sPreviousHash !== undefined) {
 				window.history.go(-1);
 			} else {
-				this.getRouter().navTo(ROTA_PAGINA_PRINCIPAL, {}, true);
+				this.getRota().navTo(ROTA_PAGINA_PRINCIPAL, {}, true);
 			}
+		},
+        
+        getModelo : function (sNome) {
+			return this.getView().getModel(sNome);
 		},
 
         _exibirEspera: function(funcao) {
+            this.getModelo("appView").setProperty("/busy", true);
             let oPagina = this.getView();
-            oPagina.setBusy(true);
             
             try {
                 funcao();
             } catch(error) {
                 MessageBox.error(MSG_DE_ERRO + error.message);
             } finally {
-                oPagina.setBusy(false)
+                this.getModelo("appView").setProperty("/busy", false);
             }
         },
 
         _modelo: function(oModel, sNomeModelo){
-            this.getView().setModel(oModel, sNomeModelo);
+            return this.getView().setModel(oModel, sNomeModelo);
         },
 
         _get: async function(url, sNomeModelo){
@@ -81,6 +89,5 @@ sap.ui.define([
                 }
             });
         },
-
 	});
 });

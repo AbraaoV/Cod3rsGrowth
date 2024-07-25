@@ -6,6 +6,7 @@ sap.ui.define([
    let _filtroTipo = null;
    let _filtroNome = "";
    let oParams = {};
+   let urlFinal
 
    const NOME_DO_MODELO_DA_LISTA = "listaDeClientes";
    const CAMINHO_PARA_API = "/api/Cliente?";
@@ -26,25 +27,23 @@ sap.ui.define([
    return ControllerBase.extend("ui5.codersgrowth.app.lista.Lista", {
       formatter: formatter,
       onInit: async function() {
-         const oRota = this.getOwnerComponent().getRouter();
-         oRota.getRoute(NOME_DA_ROTA).attachPatternMatched(this._prencherLista, this);
+         this.getRota().getRoute(NOME_DA_ROTA).attachPatternMatched(this._prencherLista, this);
       },
 
       _filtrarPelaRota: function(){
-         const oRota = this.getOwnerComponent().getRouter();
-         const oHash = oRota.getHashChanger().getHash();
+         const oHash = this.getRota().getHashChanger().getHash();
          oParams = new URLSearchParams(oHash);
 
          _filtroNome = oParams.get(PARAMETRO_FILTRO_NOME);
          _filtroTipo = oParams.has(PARAMETRO_FILTRO_TIPO) ? parseInt(oParams.get(PARAMETRO_FILTRO_TIPO)) : null;
+         urlFinal = CAMINHO_PARA_API + oParams;
 
          const prencherCampoPequisa = this.byId(ID_FILTRO_DE_PESQUISA).setValue(_filtroNome);
       },
 
       _prencherLista: async function(){
-         let urlFinal = CAMINHO_PARA_API + oParams;
          this._filtrarPelaRota();
-         this.getView().getModel("appView").setProperty("/layout", "OneColumn");
+         this.getModelo("appView").setProperty("/layout", "OneColumn");
          this._get(urlFinal, NOME_DO_MODELO_DA_LISTA);
       },
 
@@ -96,22 +95,23 @@ sap.ui.define([
          });
       },
 
-      onShowDetail : function () {
-         debugger
-			this.getView().getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
-         const oRota = this.getOwnerComponent().getRouter();
-			oRota.navTo("object");
+      aoClicarEmDetalhe : function (oElement) {
+         this._exibirEspera(() => {
+            this.getModelo("appView").setProperty("/layout", "TwoColumnsMidExpanded");
+            this.getRota().navTo("detalhesCliente", {
+               clienteId: oElement.getSource().getBindingContext(NOME_DO_MODELO_DA_LISTA).getProperty("id")
+            });
+         });
 		},
 
       aoClicarEmAdicionar: function(){
          this._exibirEspera(() => {
-            const oRota = this.getOwnerComponent().getRouter();
-            oRota.navTo(ROTA_ADICIONAR_CLIENTE);
+            this.getModelo("appView").setProperty("/layout", "OneColumn");
+            this.getRota().navTo(ROTA_ADICIONAR_CLIENTE);
          });   
       },
 
       _adicionarParametros: function(){
-         const oRota = this.getOwnerComponent().getRouter();
          let querry = {};
          if (_filtroNome) {
             querry.nome = _filtroNome;
@@ -119,7 +119,7 @@ sap.ui.define([
          if (_filtroTipo !== null) {
             querry.tipo = _filtroTipo;
          }
-         oRota.navTo(NOME_DA_ROTA, {"?queryFiltro": querry});
+         this.getRota().navTo(NOME_DA_ROTA, {"?queryFiltro": querry});
       },
 
    });

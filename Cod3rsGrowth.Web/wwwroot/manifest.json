@@ -48,7 +48,7 @@
 	},
 	"routing": {
 		"config": {
-			"routerClass": "sap.m.routing.Router",
+			"routerClass": "sap.f.routing.Router",
 			"type": "View",
 			"viewType": "XML",
 			"path": "ui5.codersgrowth.app",
@@ -72,11 +72,11 @@
 				"target": "adicionarCliente"
 			},
 			{
-				"pattern": "Orders/:?query:",
-				"name": "object",
+				"pattern": "cliente/{clienteId}/:?query:",
+				"name": "detalhesCliente",
 				"target": [
 					"lista",
-					"object"
+					"detalhesCliente"
 				]
 			}
 		],
@@ -87,25 +87,24 @@
 				"name": "Lista",
 				"level" : 1
 			},
-			"object": {
-					"path" : "ui5.codersgrowth.app.detalheCliente",
-					"name": "DetalheCliente",
-					"id": "detail",
+			"detalhesCliente": {
+					"path" : "ui5.codersgrowth.app.detalhesCliente",
+					"name": "DetalhesCliente",
+					"id": "detalhesCliente",
 					"level": 1,
+					"controlId": "layout",
 					"controlAggregation": "midColumnPages"
 			},
 			"adicionarCliente":{
 				"path" : "ui5.codersgrowth.app.adicionarCliente",
 				"id": "adicionarCliente",
 				"name": "AdicionarCliente",
-				"controlId": "app",
-				"controlAggregation": "pages"
+				"level" : 1
 			},
 			"notFound": {
 			"path": "ui5.codersgrowth.app.notFound",
 				"id": "notFound",
-				"name": "NotFound",
-				"transition": "show"
+				"name": "NotFound"
 				}
 			}
 		}
