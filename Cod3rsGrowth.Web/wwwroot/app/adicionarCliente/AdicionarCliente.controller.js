@@ -3,11 +3,12 @@ sap.ui.define([
     "ui5/codersgrowth/common/ControllerBase",
     'sap/ui/model/json/JSONModel',
     "sap/m/MessageBox",
-], (Messaging, ControllerBase, JSONModel, MessageBox) => {
+    "ui5/codersgrowth/common/ConstantesDoBanco",
+    "ui5/codersgrowth/common/ConstantesLayoutDoApp"
+], (Messaging, ControllerBase, JSONModel, MessageBox, ConstantesDoBanco, ConstantesLayoutDoApp) => {
     "use strict";
     const ROTA_ADICIONAR_CLIENTE = "adicionarCliente"
     const ROTA_PAGINA_PRINCIPAL = "lista"
-    const CAMINHO_PARA_API = "/api/Cliente";
     const CAMINHO_PARA_API_ENUM = "/api/EnumTipo"
     const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
     const MSG_SUCESSO_CADASATRO_CLIENTE = "Cliente cadastrado com sucesso"
@@ -33,14 +34,14 @@ sap.ui.define([
 
     return ControllerBase.extend("ui5.codersgrowth.app.adicionarCliente.AdicionarCliente", {
         onInit: async function() {
-            this.getRota().getRoute(ROTA_ADICIONAR_CLIENTE).attachPatternMatched(this._prencherComboBox, this);
+            this.obterRota().getRoute(ROTA_ADICIONAR_CLIENTE).attachPatternMatched(this._prencherComboBox, this);
         },
 
         _prencherComboBox: function(){
             this._get(CAMINHO_PARA_API_ENUM, NOME_DO_MODELO_DA_COMBOX_BOX)
             this.aoSelecionarTipoPessoa();
             this._registarModeloParaVailidacao()
-            this.getModelo("appView").setProperty("/layout", "OneColumn");
+            this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
         },
 
         _registarModeloParaVailidacao: function(){
@@ -167,7 +168,7 @@ sap.ui.define([
                     tipo: tipoPessoa
                 };
                 
-                this._post(CAMINHO_PARA_API, corpo, () => this._sucessoNaRequicaoPost(), this._falhaNaRequicaoPost);
+                this._post(ConstantesDoBanco.CAMINHO_PARA_API, corpo, () => this._sucessoNaRequicaoPost(), this._falhaNaRequicaoPost);
             });    
         },
         

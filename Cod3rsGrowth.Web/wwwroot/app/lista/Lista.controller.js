@@ -1,7 +1,9 @@
 sap.ui.define([
    "ui5/codersgrowth/common/ControllerBase",
+   "ui5/codersgrowth/common/ConstantesDoBanco",
+   "ui5/codersgrowth/common/ConstantesLayoutDoApp",
    "../model/formatter",
-], function (ControllerBase, formatter) {
+], function (ControllerBase, ConstantesDoBanco, ConstantesLayoutDoApp, formatter) {
    "use strict";
    let _filtroTipo = null;
    let _filtroNome = "";
@@ -9,7 +11,6 @@ sap.ui.define([
    let urlFinal
 
    const NOME_DO_MODELO_DA_LISTA = "listaDeClientes";
-   const CAMINHO_PARA_API = "/api/Cliente?";
    const CAMPO_PESSOA_FISICA = "fisica";
    const CAMPO_PESSOA_JURIDICA = "juridica";
    const VALOR_FILTRO_PESSOA_FISICA = 1;
@@ -23,27 +24,29 @@ sap.ui.define([
    const NOME_DA_ROTA = "lista";
    const ID_FILTRO_DE_PESQUISA = "filtroPesquisa";
    const ROTA_ADICIONAR_CLIENTE = "adicionarCliente";
+   const NOME_DA_ROTA_DE_DETALHE = "detalhesCliente";
+   const PROPRIEDADE_ID_DO_CLIENTE_DA_LISTA = "id";
    
    return ControllerBase.extend("ui5.codersgrowth.app.lista.Lista", {
       formatter: formatter,
       onInit: async function() {
-         this.getRota().getRoute(NOME_DA_ROTA).attachPatternMatched(this._prencherLista, this);
+         this.obterRota().getRoute(NOME_DA_ROTA).attachPatternMatched(this._prencherLista, this);
       },
 
       _filtrarPelaRota: function(){
-         const oHash = this.getRota().getHashChanger().getHash();
+         const oHash = this.obterRota().getHashChanger().getHash();
          oParams = new URLSearchParams(oHash);
 
          _filtroNome = oParams.get(PARAMETRO_FILTRO_NOME);
          _filtroTipo = oParams.has(PARAMETRO_FILTRO_TIPO) ? parseInt(oParams.get(PARAMETRO_FILTRO_TIPO)) : null;
-         urlFinal = CAMINHO_PARA_API + oParams;
+         urlFinal = ConstantesDoBanco.CAMINHO_PARA_API + "?" + oParams;
 
          const prencherCampoPequisa = this.byId(ID_FILTRO_DE_PESQUISA).setValue(_filtroNome);
       },
 
       _prencherLista: async function(){
          this._filtrarPelaRota();
-         this.getModelo("appView").setProperty("/layout", "OneColumn");
+         this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
          this._get(urlFinal, NOME_DO_MODELO_DA_LISTA);
       },
 
@@ -97,17 +100,17 @@ sap.ui.define([
 
       aoClicarEmDetalhe : function (oElement) {
          this._exibirEspera(() => {
-            this.getModelo("appView").setProperty("/layout", "TwoColumnsMidExpanded");
-            this.getRota().navTo("detalhesCliente", {
-               clienteId: oElement.getSource().getBindingContext(NOME_DO_MODELO_DA_LISTA).getProperty("id")
+            this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_DUAS_COLUNAS_DIVIDAS)
+            this.obterRota().navTo(NOME_DA_ROTA_DE_DETALHE, {
+               clienteId: oElement.getSource().getBindingContext(NOME_DO_MODELO_DA_LISTA).getProperty(PROPRIEDADE_ID_DO_CLIENTE_DA_LISTA)
             });
          });
 		},
 
       aoClicarEmAdicionar: function(){
          this._exibirEspera(() => {
-            this.getModelo("appView").setProperty("/layout", "OneColumn");
-            this.getRota().navTo(ROTA_ADICIONAR_CLIENTE);
+            this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
+            this.obterRota().navTo(ROTA_ADICIONAR_CLIENTE);
          });   
       },
 
@@ -119,7 +122,7 @@ sap.ui.define([
          if (_filtroTipo !== null) {
             querry.tipo = _filtroTipo;
          }
-         this.getRota().navTo(NOME_DA_ROTA, {"?queryFiltro": querry});
+         this.obterRota().navTo(NOME_DA_ROTA, {"?queryFiltro": querry});
       },
 
    });

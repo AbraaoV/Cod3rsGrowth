@@ -9,9 +9,10 @@ sap.ui.define([
 
     const MSG_DE_ERRO = "Ocorreu um erro: "
     const ROTA_PAGINA_PRINCIPAL = "lista"
+    const NOME_MODELO_DO_APP = "appView"
 
 	return Controller.extend("ui5.codersgrowth.common.ControllerBase", {
-        getRota: function () {
+        obterRota: function () {
 			return this.getOwnerComponent().getRouter();
 		},
 
@@ -31,21 +32,24 @@ sap.ui.define([
 				this.getRota().navTo(ROTA_PAGINA_PRINCIPAL, {}, true);
 			}
 		},
+
+        mudarLayout: function(sLayout){
+            return this.obterModelo(NOME_MODELO_DO_APP).setProperty("/layout", sLayout);
+        },
         
-        getModelo : function (sNome) {
+        obterModelo : function (sNome) {
 			return this.getView().getModel(sNome);
 		},
 
         _exibirEspera: function(funcao) {
-            this.getModelo("appView").setProperty("/busy", true);
-            let oPagina = this.getView();
+            this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", true);
             
             try {
                 funcao();
             } catch(error) {
                 MessageBox.error(MSG_DE_ERRO + error.message);
             } finally {
-                this.getModelo("appView").setProperty("/busy", false);
+                this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", false);
             }
         },
 

@@ -1,14 +1,17 @@
 sap.ui.define([
    "ui5/codersgrowth/common/ControllerBase",
-], function (ControllerBase) {
+   "ui5/codersgrowth/common/ConstantesLayoutDoApp"
+], function (ControllerBase, ConstantesLayoutDoApp) {
    "use strict";
+   const NOME_TARGET_NOT_FOUND = "notFound"
+
    return ControllerBase.extend("ui5.codersgrowth.app.notFound.NotFound", {
       onInit: function () {
-         this.getRota().getTarget("notFound").attachDisplay(this._onNotFoundDisplayed, this);
+         this.getRota().getTarget(NOME_TARGET_NOT_FOUND).attachDisplay(this._onNotFoundDisplayed, this);
       },
 
       _onNotFoundDisplayed : function () {
-         this.getModelo("appView").setProperty("/layout", "OneColumn");
+         this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
 		}
 
    });
