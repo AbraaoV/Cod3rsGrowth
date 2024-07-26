@@ -1,4 +1,6 @@
-<mvc:View displayBlock="true" 
+<mvc:View 
+	controllerName="ui5.codersgrowth.app.detalhesCliente.DetalhesCliente"
+	displayBlock="true" 
 	xmlns="sap.uxap"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:m="sap.m"
@@ -8,7 +10,7 @@
 	<ObjectPageLayout id="ObjectPageLayout"
 					showTitleInHeaderContent="true"
 					alwaysShowContentHeader="false"
-					preserveHeaderStateOnScroll="false"
+					preserveHeaderStateOnScroll="true"
 					headerContentPinnable="true"
 					isChildPage="true"
 					upperCaseAnchorBar="false">
@@ -19,11 +21,10 @@
 						</expandedHeading>
 
 						<navigationActions>
-							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="aoApertarEmTelaCheia" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
-							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="aoSairDaTelaCheia" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
-							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="aoFecharDetalhhes"  tooltip="Close middle column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
+							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press=".aoClicarEmTelaCheia" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press=".aoClicarEmFecharTelaCheia" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+							<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press=".aoFecharDetalhes" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
 						</navigationActions>
-
 						<actions>
 							<m:Button
 									text="{i18n>editBtnText}"
@@ -33,12 +34,9 @@
 									text="{i18n>deleteBtnText}"
 									type="Transparent"/>
 						</actions>
-
 					</ObjectPageDynamicHeaderTitle>
 				</headerTitle>
-
 		<sections>
-			
 			<ObjectPageSection title="General Information">
 				<subSections>
 					<ObjectPageSubSection>
@@ -54,19 +52,20 @@
 								columnsL="1"
 								columnsM="1">
 								<form:content>
-									<m:Label text="Product ID"/>
-									<m:Text text="{products>ProductId}"/>
-									<m:Label text="Description"/>
-									<m:Text text="{products>Description}"/>
-									<m:Label text="Supplier"/>
-									<m:Text text="{products>SupplierName}"/>
+									<m:Label text="Nome"/>
+									<m:Text  text="{listaDeClientes>nome}"/>
+									<m:Label text="Pessoa"/>
+									
+									<m:Label text="Cpf"/>
+									<m:Label text="{path: 'listaDeClientes>cpf', formatter: '.formatter.formatarCpf'}{path: 'listaDeClientes>cnpj', formatter: '.formatter.formatarCnpj'}"/>
+									<m:Label text="Cnpj"/>
+									<m:Text text="{listaDeClientes>tipo}"/>
 								</form:content>
 							</form:SimpleForm>
 						</blocks>
 					</ObjectPageSubSection>
 				</subSections>
 			</ObjectPageSection>
-			
 			<ObjectPageSection title="{i18n>titleOrdersList}">
 				<subSections>
 					<ObjectPageSubSection>
