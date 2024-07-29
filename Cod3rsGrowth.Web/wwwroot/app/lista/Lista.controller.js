@@ -122,6 +122,8 @@ sap.ui.define([
          if (_filtroTipo !== null) {
             querry.tipo = _filtroTipo;
          }
+         
+         // this._get(ConstantesDoBanco.CAMINHO_PARA_API + "?" + new URLSearchParams(query), NOME_DO_MODELO_DA_LISTA);
          this.obterRota().navTo(NOME_DA_ROTA, {"?queryFiltro": querry});
       },
 

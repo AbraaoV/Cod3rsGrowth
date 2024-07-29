@@ -7,7 +7,7 @@ sap.ui.define([
 
    return ControllerBase.extend("ui5.codersgrowth.app.notFound.NotFound", {
       onInit: function () {
-         this.getRota().getTarget(NOME_TARGET_NOT_FOUND).attachDisplay(this._onNotFoundDisplayed, this);
+         this.obterRota().getTarget(NOME_TARGET_NOT_FOUND).attachDisplay(this._onNotFoundDisplayed, this);
       },
 
       _onNotFoundDisplayed : function () {

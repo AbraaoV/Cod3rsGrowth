@@ -5,7 +5,8 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:m="sap.m"
 	xmlns:f="sap.f"
-	xmlns:form="sap.ui.layout.form">
+	xmlns:form="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
 
 	<ObjectPageLayout id="ObjectPageLayout"
 					showTitleInHeaderContent="true"
@@ -44,20 +45,19 @@
 							labelSpanM="12"
 							emptySpanL="0"
 							emptySpanM="0"
-							columnsL="1"
-							columnsM="1">
+							columnsL="2"
+							columnsM="2">
 							<form:content>
+								<core:Title text="{i18n>customerInfoTitle}"/>
 								<m:Label text="Nome" design="Bold"/>
-								<m:Text  text="{clienteSelecionado>/nome}"/>
+								<m:Text  text="{clienteSelecionado>/nome}" />
 								<m:Label text="Pessoa" design="Bold"/>
 								<m:Text text="{clienteSelecionado>/tipo}"/>
-								<m:Label design="Bold" id="labelCpf" text="CPF" visible="{= ${clienteSelecionado>/tipo} === 'Fisica'}"/>
-								<m:Text id="textoCpf" text="{path: 'clienteSelecionado>/cpf', formatter: '.formatter.formatarCpf'}"
-								visible="{= ${clienteSelecionado>/tipo} === 'Fisica'}"/>
-								<m:Label design="Bold" id="labelCnpj" text="CNPJ" visible="{= ${clienteSelecionado>/tipo} === 'Juridica'}"/>
-								<m:Text id="textoCnpj" text="{path: 'clienteSelecionado>/cnpj', formatter: '.formatter.formatarCnpj'}"
-								visible="{= ${clienteSelecionado>/tipo} === 'Juridica'}"/>
-								<m:Image src="{}" width="50%" height="50%" />
+								<m:Label design="Bold" text="{= ${clienteSelecionado>/tipo} === 'Fisica' ? 'CPF' : 'CNPJ'}"/>
+								<m:Text text="{= ${clienteSelecionado>/tipo} === 'Fisica' ? ${path: 'clienteSelecionado>/cpf', formatter: '.formatter.formatarCpf'} : ${path: 'clienteSelecionado>/cnpj', formatter: '.formatter.formatarCnpj'}}"/>
+								<core:Title text="Foto do Cliente" class="sapUiResponsiveMargin"
+								/>
+								<m:Image src="/images/fisica.png" width="50%" height="50%" class="centered-image"/>
 							</form:content>
 						</form:SimpleForm>
 					</blocks>
