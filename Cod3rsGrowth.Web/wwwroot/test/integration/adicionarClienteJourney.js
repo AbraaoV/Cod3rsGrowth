@@ -21,7 +21,7 @@ sap.ui.define([
 		// Assertions
 		Then.naTelaDeAdicionar.deveAperecerUmaMessageBoxDe("Alerta");
 		// Assertions
-		Then.naTelaDeAdicionar.deveFecharMessageBoxAoApertarEmOk("OK");
+		Then.naTelaDeAdicionar.deveFecharMessageBoxAoApertarEm("OK");
 	});
 	opaTest("Ao tentar adicionar um cliente invalido deve aparecer uma message box de erro", function(Given, When, Then){
 		//Actions
@@ -33,7 +33,7 @@ sap.ui.define([
 		// Assertions
 		Then.naTelaDeAdicionar.deveAperecerUmaMessageBoxDe("Erro");
 		// Assertions
-		Then.naTelaDeAdicionar.deveFecharMessageBoxAoApertarEmOk("Fechar");
+		Then.naTelaDeAdicionar.deveFecharMessageBoxAoApertarEm("Fechar");
 	});
 	opaTest("Ao adicionar um cliente valido deve ser adicionado com sucesso, e continuar na tela de adicionar ao clicar em novo cadastro", function(Given, When, Then){
 		//Actions
@@ -45,7 +45,7 @@ sap.ui.define([
 		// Assertions
 		Then.naTelaDeAdicionar.deveAperecerUmaMessageBoxDe("Êxito");
 		// Assertions
-		Then.naTelaDeAdicionar.deveFecharMessageBoxAoApertarEmOk("Novo Cadastro");
+		Then.naTelaDeAdicionar.deveFecharMessageBoxAoApertarEm("Novo Cadastro");
 	});
 	opaTest("Após cadastrar um cliente deve conseguir voltar para tela inicial", function(Given, When, Then){
 		//Actions
@@ -61,7 +61,7 @@ sap.ui.define([
 		// Assertions
 		Then.naTelaDeAdicionar.deveAperecerUmaMessageBoxDe("Êxito");
 		// Assertions
-		Then.naTelaDeAdicionar.deveFecharMessageBoxAoApertarEmOk("Voltar à Página Inicial");
+		Then.naTelaDeAdicionar.deveFecharMessageBoxAoApertarEm("Voltar à Página Inicial");
 		// Cleanuo
 	});
 	opaTest("Botão de voltar negação deve voltar para pagina principal", function(Given, When, Then){

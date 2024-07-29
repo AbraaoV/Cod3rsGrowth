@@ -47,7 +47,7 @@ sap.ui.define([
             try {
                 funcao();
             } catch(error) {
-                MessageBox.error(MSG_DE_ERRO + error.message);
+                MessageBox.error("{i18n>errorMenssage}" + error.message);
             } finally {
                 this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", false);
             }

@@ -5,8 +5,12 @@ sap.ui.define([
 	"ui5/codersgrowth/common/ConstantesLayoutDoApp"
 ], (ControllerBase, JSONModel, ConstantesDoBanco, ConstantesLayoutDoApp) => {
 	"use strict";
-const NOME_MODELO_DA_LISTA = "listaDeClientes"
-const NOME_MODELO_DO_APP = "appView"
+	const NOME_MODELO_DO_APP = "appView"
+	const PARAMETRO_FILTRO_NOME = "nome";
+	const PARAMETRO_FILTRO_TIPO = "tipo";
+	const NOME_DO_MODELO_DA_LISTA = "listaDeClientes";
+	let _filtroTipo = null;
+	let _filtroNome = "";
 
 return ControllerBase.extend("ui5.codersgrowth.app.App", {
 	
@@ -15,7 +19,7 @@ return ControllerBase.extend("ui5.codersgrowth.app.App", {
 
 			oViewModel = new JSONModel({
 				busy : false,
-				delay : 0,
+				delay : 5000,
 				layout : ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA,
 				previousLayout : "",
 				actionButtonsInfo : {
@@ -26,7 +30,12 @@ return ControllerBase.extend("ui5.codersgrowth.app.App", {
 			});
 			this._modelo(oViewModel, NOME_MODELO_DO_APP);
 
-			this._get(ConstantesDoBanco.CAMINHO_PARA_API, NOME_MODELO_DA_LISTA)
+			// const urlParams = new URLSearchParams(window.location.search);
+
+			// _filtroNome = urlParams.get(PARAMETRO_FILTRO_NOME);
+			// _filtroTipo = urlParams.has(PARAMETRO_FILTRO_TIPO) ? parseInt(urlParams.get(PARAMETRO_FILTRO_TIPO)) : null;
+			// var urlFinal = ConstantesDoBanco.CAMINHO_PARA_API + "?" + urlParams;
+			// this._get(urlFinal, NOME_DO_MODELO_DA_LISTA);
 		}
 	});
 });

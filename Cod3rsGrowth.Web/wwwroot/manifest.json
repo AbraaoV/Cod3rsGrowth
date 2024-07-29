@@ -73,7 +73,7 @@
 				"target": "adicionarCliente"
 			},
 			{
-				"pattern": "cliente/{clienteId}/:?query:",
+				"pattern": "cliente/{clienteId}/:?queryFiltro:",
 				"name": "detalhesCliente",
 				"target": [
 					"lista",
@@ -93,7 +93,6 @@
 					"name": "DetalhesCliente",
 					"id": "detalhesCliente",
 					"level": 1,
-					"controlId": "layout",
 					"controlAggregation": "midColumnPages"
 			},
 			"adicionarCliente":{

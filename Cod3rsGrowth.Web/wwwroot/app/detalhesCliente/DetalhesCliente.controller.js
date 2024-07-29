@@ -17,7 +17,7 @@ sap.ui.define([
 		onInit: function () {
 			this.obterRota().getRoute(NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._aoCarregar, this);
 		},
-
+		
         aoFecharDetalhes: function () {
 			this.obterModelo(NOME_DO_MODELO_DO_APP).setProperty("/actionButtonsInfo/midColumn/fullScreen", false);
 			this.obterRota().navTo(NOME_DA_ROTA_TELA_DE_LISTA);

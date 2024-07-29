@@ -24,7 +24,7 @@
 				<navigationActions>
 					<m:OverflowToolbarButton id= "botaoTelaCheia" type="Transparent" icon="sap-icon://full-screen" press=".aoClicarEmTelaCheia"/>
 					<m:OverflowToolbarButton id= "botaoSairTelaCheia" type="Transparent" icon="sap-icon://exit-full-screen" press=".aoClicarEmFecharTelaCheia" visible="false"/>
-					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press=".aoFecharDetalhes"/>
+					<m:OverflowToolbarButton id= "botaoFecharDetalhes" type="Transparent" icon="sap-icon://decline" press=".aoFecharDetalhes"/>
 				</navigationActions>
 				<actions>
 					<m:Button text="{i18n>editBtnText}" type="Emphasized" press="toggleAreaPriority"/>
@@ -57,7 +57,7 @@
 								<m:Text text="{= ${clienteSelecionado>/tipo} === 'Fisica' ? ${path: 'clienteSelecionado>/cpf', formatter: '.formatter.formatarCpf'} : ${path: 'clienteSelecionado>/cnpj', formatter: '.formatter.formatarCnpj'}}"/>
 								<core:Title text="Foto do Cliente" class="sapUiResponsiveMargin"
 								/>
-								<m:Image src="/images/fisica.png" width="50%" height="50%" class="centered-image"/>
+								<m:Image src="" width="50%" height="50%" class="centered-image"/>
 							</form:content>
 						</form:SimpleForm>
 					</blocks>

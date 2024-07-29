@@ -31,16 +31,18 @@ sap.ui.define([
       formatter: formatter,
       onInit: async function() {
          this.obterRota().getRoute(NOME_DA_ROTA).attachPatternMatched(this._prencherLista, this);
+         this.obterRota().getRoute(NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._prencherLista, this);
       },
 
       _filtrarPelaRota: function(){
          const oHash = this.obterRota().getHashChanger().getHash();
+         const urlParams = new URLSearchParams(window.location.search);
          oParams = new URLSearchParams(oHash);
 
-         _filtroNome = oParams.get(PARAMETRO_FILTRO_NOME);
-         _filtroTipo = oParams.has(PARAMETRO_FILTRO_TIPO) ? parseInt(oParams.get(PARAMETRO_FILTRO_TIPO)) : null;
-         urlFinal = ConstantesDoBanco.CAMINHO_PARA_API + "?" + oParams;
-
+         _filtroNome = urlParams.get(PARAMETRO_FILTRO_NOME);
+         _filtroTipo = urlParams.has(PARAMETRO_FILTRO_TIPO) ? parseInt(urlParams.get(PARAMETRO_FILTRO_TIPO)) : null;
+         urlFinal = ConstantesDoBanco.CAMINHO_PARA_API + "?" + urlParams;
+         this._get(urlFinal, NOME_DO_MODELO_DA_LISTA);
          const prencherCampoPequisa = this.byId(ID_FILTRO_DE_PESQUISA).setValue(_filtroNome);
       },
 
@@ -122,9 +124,17 @@ sap.ui.define([
          if (_filtroTipo !== null) {
             querry.tipo = _filtroTipo;
          }
+         const urlParams = new URLSearchParams(querry);
+         const urlBase =  window.location.origin
          
-         // this._get(ConstantesDoBanco.CAMINHO_PARA_API + "?" + new URLSearchParams(query), NOME_DO_MODELO_DA_LISTA);
-         this.obterRota().navTo(NOME_DA_ROTA, {"?queryFiltro": querry});
+         let url = `${urlBase}?${urlParams.toString()}`;
+
+         if(window.location.hash){
+            url += window.location.hash;
+         }
+         window.history.pushState({}, '', url);
+         urlFinal = ConstantesDoBanco.CAMINHO_PARA_API + "?" + urlParams;
+         this._get(urlFinal, NOME_DO_MODELO_DA_LISTA);
       },
 
    });

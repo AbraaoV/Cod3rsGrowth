@@ -4,8 +4,9 @@ sap.ui.define([
 	"sap/ui/test/matchers/AggregationLengthEquals",
 	"sap/ui/test/actions/EnterText",
 	"sap/ui/test/matchers/I18NText",
-	"sap/ui/test/matchers/PropertyStrictEquals"
-], (Opa5, Press, AggregationLengthEquals, EnterText, I18NText, PropertyStrictEquals) => {
+	"sap/ui/test/matchers/PropertyStrictEquals",
+	"sap/ui/test/matchers/BindingPath"
+], (Opa5, Press, AggregationLengthEquals, EnterText, I18NText, PropertyStrictEquals, BindingPath) => {
 	"use strict";
 
 	const sViewName = "lista.Lista",
@@ -107,9 +108,31 @@ sap.ui.define([
 						},
 						errorMessage: "Não foi possível pressionar o botão de adicionar."
 					});
-				}		
+				},
+				
+				aoClicarNaLista: function () {
+					return this.waitFor({
+						id: sIdLista,
+						viewName: sViewName,
+						actions: new Press(),
+						errorMessage: "Lista de clientes não encontrada"
+					});
+				},
+
+				aoClicarNoClienteDaPosicao: function(iPosicao){
+					return this.waitFor({
+						controlType: "sap.m.CustomListItem",
+						matchers:  new BindingPath({
+							path: "/" + iPosicao,
+							modelName: "listaDeClientes",
+						}),
+						actions: new Press(),
+						errorMessage: "A lista de clientes não contem um cliente na posição" + iPosicao
+					});
+				},
 			},
 
+			
 			assertions: {
 				listaDeveMostrarTodosOsClientes() {
 					return this.waitFor({
@@ -117,7 +140,7 @@ sap.ui.define([
 						viewName: sViewName,
 						matchers: new AggregationLengthEquals({
 							name: "items",
-							length: 17
+							length: 20
 						}),
 						success: function () {
 							Opa5.assert.ok(true, "A lista tem 13 items");
