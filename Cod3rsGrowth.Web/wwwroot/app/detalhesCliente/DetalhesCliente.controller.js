@@ -9,7 +9,8 @@ sap.ui.define([
 	const ID_BOTAO_TELA_CHEIA = "botaoTelaCheia"
 	const ID_BOTAO_SAIR_TELA_CHEIA = "botaoSairTelaCheia"
 	const NOME_DO_MODELO_DO_CLIENTE = "clienteSelecionado"
-	const NOME_DO_MODELO_DO_APP = "appView" 
+	const NOME_DO_MODELO_DO_APP = "appView"
+	const ID_DO_CLIENTE_NA_ROTA = 1
 
 	return ControllerBase.extend("ui5.codersgrowth.app.detalhesCliente.DetalhesCliente", {
 		formatter: formatter,
@@ -18,25 +19,31 @@ sap.ui.define([
 		},
 		
         aoFecharDetalhes: function () {
-			this.obterModelo(NOME_DO_MODELO_DO_APP).setProperty("/actionButtonsInfo/midColumn/fullScreen", false);
-			this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
+			this._exibirEspera(() => {
+				this.obterModelo(NOME_DO_MODELO_DO_APP).setProperty(ConstantesLayoutDoApp.LAYOUT_SAIR_TELA_CHEIA, false);
+				this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
+			});
 		},
 
         aoClicarEmTelaCheia: function () {
-			this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_MEIO_TELA_CHEIA)
-			this.peloId(ID_BOTAO_SAIR_TELA_CHEIA).setVisible(true);
-			this.peloId(ID_BOTAO_TELA_CHEIA ).setVisible(false);
+			this._exibirEspera(() => {
+				this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_MEIO_TELA_CHEIA)
+				this.peloId(ID_BOTAO_SAIR_TELA_CHEIA).setVisible(true);
+				this.peloId(ID_BOTAO_TELA_CHEIA ).setVisible(false);
+			});	
 		},
 		aoClicarEmFecharTelaCheia: function () {
-			this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_DUAS_COLUNAS_DIVIDAS)
-			this.peloId(ID_BOTAO_SAIR_TELA_CHEIA).setVisible(false);
-			this.peloId(ID_BOTAO_TELA_CHEIA).setVisible(true);
+			this._exibirEspera(() => {
+				this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_DUAS_COLUNAS_DIVIDAS)
+				this.peloId(ID_BOTAO_SAIR_TELA_CHEIA).setVisible(false);
+				this.peloId(ID_BOTAO_TELA_CHEIA).setVisible(true);
+			});	
 		},
 
 		_aoCarregar: function () {
 			this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_DUAS_COLUNAS_DIVIDAS)
 			const obterParametros = this.obterRota().getHashChanger().getHash().split("/");
-			this._get(ConstantesDoBanco.CAMINHO_PARA_API + "/" + obterParametros[1], NOME_DO_MODELO_DO_CLIENTE );
+			this._get(ConstantesDoBanco.CAMINHO_PARA_API + "/" + obterParametros[ID_DO_CLIENTE_NA_ROTA], NOME_DO_MODELO_DO_CLIENTE );
 		}
 	});
 });
