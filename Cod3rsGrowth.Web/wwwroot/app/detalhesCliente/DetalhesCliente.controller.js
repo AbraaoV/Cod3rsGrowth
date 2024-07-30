@@ -2,11 +2,10 @@ sap.ui.define([
 	"../model/formatter",
 	"ui5/codersgrowth/common/ControllerBase",
 	"ui5/codersgrowth/common/ConstantesDoBanco",
-	"ui5/codersgrowth/common/ConstantesLayoutDoApp"
-], function (formatter, ControllerBase, ConstantesDoBanco, ConstantesLayoutDoApp) {
+	"ui5/codersgrowth/common/ConstantesLayoutDoApp",
+	"ui5/codersgrowth/common/ConstantesDaRota",
+], function (formatter, ControllerBase, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota) {
 	"use strict";
-	const NOME_DA_ROTA_DE_DETALHE = "detalhesCliente"
-	const NOME_DA_ROTA_TELA_DE_LISTA = "lista"
 	const ID_BOTAO_TELA_CHEIA = "botaoTelaCheia"
 	const ID_BOTAO_SAIR_TELA_CHEIA = "botaoSairTelaCheia"
 	const NOME_DO_MODELO_DO_CLIENTE = "clienteSelecionado"
@@ -15,12 +14,12 @@ sap.ui.define([
 	return ControllerBase.extend("ui5.codersgrowth.app.detalhesCliente.DetalhesCliente", {
 		formatter: formatter,
 		onInit: function () {
-			this.obterRota().getRoute(NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._aoCarregar, this);
+			this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._aoCarregar, this);
 		},
 		
         aoFecharDetalhes: function () {
 			this.obterModelo(NOME_DO_MODELO_DO_APP).setProperty("/actionButtonsInfo/midColumn/fullScreen", false);
-			this.obterRota().navTo(NOME_DA_ROTA_TELA_DE_LISTA);
+			this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
 		},
 
         aoClicarEmTelaCheia: function () {

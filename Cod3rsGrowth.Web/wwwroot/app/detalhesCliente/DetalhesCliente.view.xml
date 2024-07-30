@@ -55,9 +55,8 @@
 								<m:Text text="{clienteSelecionado>/tipo}"/>
 								<m:Label design="Bold" text="{= ${clienteSelecionado>/tipo} === 'Fisica' ? 'CPF' : 'CNPJ'}"/>
 								<m:Text text="{= ${clienteSelecionado>/tipo} === 'Fisica' ? ${path: 'clienteSelecionado>/cpf', formatter: '.formatter.formatarCpf'} : ${path: 'clienteSelecionado>/cnpj', formatter: '.formatter.formatarCnpj'}}"/>
-								<core:Title text="Foto do Cliente" class="sapUiResponsiveMargin"
-								/>
-								<m:Image src="" width="50%" height="50%" class="centered-image"/>
+								<core:Title text="{i18n>iconTitle}" class="sapUiResponsiveMargin"/>
+								<m:Image src="{= ${clienteSelecionado>/tipo} === 'Fisica' ? 'images/iconePadraoFisica.png' : 'images/iconePadraoJuridica.png'}" width="25%" height="25%" class="centered-image"/>
 							</form:content>
 						</form:SimpleForm>
 					</blocks>

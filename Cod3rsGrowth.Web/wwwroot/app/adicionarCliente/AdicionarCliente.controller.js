@@ -4,11 +4,10 @@ sap.ui.define([
     'sap/ui/model/json/JSONModel',
     "sap/m/MessageBox",
     "ui5/codersgrowth/common/ConstantesDoBanco",
-    "ui5/codersgrowth/common/ConstantesLayoutDoApp"
-], (Messaging, ControllerBase, JSONModel, MessageBox, ConstantesDoBanco, ConstantesLayoutDoApp) => {
+    "ui5/codersgrowth/common/ConstantesLayoutDoApp",
+    "ui5/codersgrowth/common/ConstantesDaRota"
+], (Messaging, ControllerBase, JSONModel, MessageBox, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota) => {
     "use strict";
-    const ROTA_ADICIONAR_CLIENTE = "adicionarCliente"
-    const ROTA_PAGINA_PRINCIPAL = "lista"
     const CAMINHO_PARA_API_ENUM = "/api/EnumTipo"
     const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
     const MSG_SUCESSO_CADASATRO_CLIENTE = "Cliente cadastrado com sucesso"
@@ -34,7 +33,7 @@ sap.ui.define([
 
     return ControllerBase.extend("ui5.codersgrowth.app.adicionarCliente.AdicionarCliente", {
         onInit: async function() {
-            this.obterRota().getRoute(ROTA_ADICIONAR_CLIENTE).attachPatternMatched(this._prencherComboBox, this);
+            this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_ADICIONAR_CLIENTE).attachPatternMatched(this._prencherComboBox, this);
         },
 
         _prencherComboBox: function(){
@@ -65,7 +64,7 @@ sap.ui.define([
                         this._limparCampos(); 
                     } else if (sAction === OPCAO_VOLTAR_PARA_PAGINA_INICIAL) {
                         this._limparCampos(); 
-                        this.getOwnerComponent().getRouter().navTo(ROTA_PAGINA_PRINCIPAL);
+                        this.getOwnerComponent().getRouter().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
                     }
                 }
             });

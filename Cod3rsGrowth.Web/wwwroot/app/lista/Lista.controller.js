@@ -2,8 +2,9 @@ sap.ui.define([
    "ui5/codersgrowth/common/ControllerBase",
    "ui5/codersgrowth/common/ConstantesDoBanco",
    "ui5/codersgrowth/common/ConstantesLayoutDoApp",
+   "ui5/codersgrowth/common/ConstantesDaRota",
    "../model/formatter",
-], function (ControllerBase, ConstantesDoBanco, ConstantesLayoutDoApp, formatter) {
+], function (ControllerBase, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, formatter) {
    "use strict";
    let _filtroTipo = null;
    let _filtroNome = "";
@@ -21,17 +22,14 @@ sap.ui.define([
    const PARAMETRO_DA_PAGINA_DE_ITENS_DO_FILTRO = "filterItems";
    const PARAMETRO_FILTRO_NOME = "nome";
    const PARAMETRO_FILTRO_TIPO = "tipo";
-   const NOME_DA_ROTA = "lista";
    const ID_FILTRO_DE_PESQUISA = "filtroPesquisa";
-   const ROTA_ADICIONAR_CLIENTE = "adicionarCliente";
-   const NOME_DA_ROTA_DE_DETALHE = "detalhesCliente";
    const PROPRIEDADE_ID_DO_CLIENTE_DA_LISTA = "id";
    
    return ControllerBase.extend("ui5.codersgrowth.app.lista.Lista", {
       formatter: formatter,
       onInit: async function() {
-         this.obterRota().getRoute(NOME_DA_ROTA).attachPatternMatched(this._prencherLista, this);
-         this.obterRota().getRoute(NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._prencherLista, this);
+         this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE).attachPatternMatched(this._prencherLista, this);
+         this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._prencherLista, this);
       },
 
       _filtrarPelaRota: function(){
@@ -103,7 +101,7 @@ sap.ui.define([
       aoClicarEmDetalhe : function (oElement) {
          this._exibirEspera(() => {
             this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_DUAS_COLUNAS_DIVIDAS)
-            this.obterRota().navTo(NOME_DA_ROTA_DE_DETALHE, {
+            this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE, {
                clienteId: oElement.getSource().getBindingContext(NOME_DO_MODELO_DA_LISTA).getProperty(PROPRIEDADE_ID_DO_CLIENTE_DA_LISTA)
             });
          });
@@ -112,7 +110,7 @@ sap.ui.define([
       aoClicarEmAdicionar: function(){
          this._exibirEspera(() => {
             this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
-            this.obterRota().navTo(ROTA_ADICIONAR_CLIENTE);
+            this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DE_ADICIONAR_CLIENTE);
          });   
       },
 
