@@ -7,11 +7,11 @@
 	xmlns:mvc="sap.ui.core.mvc">
 	<App
 		id="app"
-		busy="{/busy}"
-		busyIndicatorDelay="{/delay}">
+		busy="{appView>/busy}"
+		busyIndicatorDelay="{appView>/delay}">
 		<f:FlexibleColumnLayout
 			id="layout"
-			layout="{/layout}"
+			layout="{appView>/layout}"
 			backgroundDesign="Translucent">
 		</f:FlexibleColumnLayout>
 	</App>

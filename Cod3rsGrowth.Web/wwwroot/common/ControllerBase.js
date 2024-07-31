@@ -9,11 +9,16 @@ sap.ui.define([
 
     const MSG_DE_ERRO = "Ocorreu um erro: "
     const ROTA_PAGINA_PRINCIPAL = "lista"
+    const NOME_MODELO_DO_APP = "appView"
 
 	return Controller.extend("ui5.codersgrowth.common.ControllerBase", {
-        getRouter : function () {
-			return UIComponent.getRouterFor(this);
+        obterRota: function () {
+			return this.getOwnerComponent().getRouter();
 		},
+
+        peloId: function(sId) {
+            return this.getView().byId(sId)
+        },
 
         aoClicarEmVoltar: function () {
 			var oHistory, sPreviousHash;
@@ -24,44 +29,59 @@ sap.ui.define([
 			if (sPreviousHash !== undefined) {
 				window.history.go(-1);
 			} else {
-				this.getRouter().navTo(ROTA_PAGINA_PRINCIPAL, {}, true);
+				this.obterRota().navTo(ROTA_PAGINA_PRINCIPAL, {}, true);
 			}
 		},
 
+        mudarLayout: function(sLayout){
+            return this.obterModelo(NOME_MODELO_DO_APP).setProperty("/layout", sLayout);
+        },
+        
+        obterModelo : function (sNome) {
+			return this.getView().getModel(sNome);
+		},
+
         _exibirEspera: function(funcao) {
-            let oPagina = this.getView();
-            oPagina.setBusy(true);
+            this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", true);
             
             try {
                 funcao();
             } catch(error) {
-                MessageBox.error(MSG_DE_ERRO + error.message);
+                MessageBox.error("{i18n>errorMenssage}" + error.message);
             } finally {
-                oPagina.setBusy(false)
+                this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", false);
             }
         },
 
         _modelo: function(oModel, sNomeModelo){
-            this.getView().setModel(oModel, sNomeModelo);
+            return this.getView().setModel(oModel, sNomeModelo);
         },
 
-        _get: async function(url, sNomeModelo){
-            this._exibirEspera( async () => {
-               const response = await fetch(url, {
-                  method: "GET",
-                  headers: {
-                     "Content-Type": "application/json",
-                  },
-               });
-               if (response.ok) {
-               const data = await response.json();
-               const oModel = new JSONModel(data);
-      
-               return this._modelo(oModel, sNomeModelo);
-               }
+        _get: function(url) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const response = await fetch(url, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        const oModel = new JSONModel(data);
+                        
+
+                        return resolve(oModel);
+                    }
+                } catch (error) {
+                    MessageBox.error(MSG_DE_ERRO + error.message);
+                    reject(error);
+                }
             });
         },
 
+        
         _post: async function(url, corpo, respostaSucesso, respostaErro){
             this._exibirEspera( async () => {
                 const response = await fetch(url, {
@@ -81,6 +101,5 @@ sap.ui.define([
                 }
             });
         },
-
 	});
 });

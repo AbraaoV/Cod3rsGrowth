@@ -7,7 +7,7 @@
    <Page id="pagina" busy="{/busy}" class="sapUiResponsiveContentPadding" showHeader="true">
    <customHeader>
       <Toolbar>
-         <Title text="{i18n>appTitle}" titleStyle="H3" textAlign="Begin" width="100%"/>
+         <Title text="{i18n>appTitle}" titleStyle="H3" textAlign="Begin" width="100%" class="sapUiMediumMarginBegin"/>
       </Toolbar>
    </customHeader>
       <List id ="listaClientes" items="{path:'listaDeClientes>/'}" growing="true" growingThreshold="10" width="auto" class="sapFDynamicPageAlignContent">
@@ -35,15 +35,15 @@
                   type="Transparent"/>
                <Button 
                   id="botaoAdicionar"
-                  text="Adicionar"
+                  text="{i18n>addCustomerBtnText}"
                   icon="sap-icon://add-employee"
                   press=".aoClicarEmAdicionar"
                   type="Transparent"/>
             </Toolbar>
          </headerToolbar>
-         <CustomListItem>
+         <CustomListItem type="Navigation" press=".aoClicarEmDetalhe">
             <HBox>
-               <core:Icon size="3rem" src="sap-icon://customer" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
+               <core:Icon size="3rem" src="{= ${listaDeClientes>tipo} === 'Fisica' ? 'sap-icon://customer' : 'sap-icon://customer-and-supplier'}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
                <VBox width="100%" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
                   <Title text="{listaDeClientes>nome}"/>
                   <Label text="{path: 'listaDeClientes>cpf', formatter: '.formatter.formatarCpf'}{path: 'listaDeClientes>cnpj', formatter: '.formatter.formatarCnpj'}"/>

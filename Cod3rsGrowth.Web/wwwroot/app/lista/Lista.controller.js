@@ -1,14 +1,16 @@
 sap.ui.define([
    "ui5/codersgrowth/common/ControllerBase",
+   "ui5/codersgrowth/common/ConstantesDoBanco",
+   "ui5/codersgrowth/common/ConstantesLayoutDoApp",
+   "ui5/codersgrowth/common/ConstantesDaRota",
    "../model/formatter",
-], function (ControllerBase, formatter) {
+], function (ControllerBase, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, formatter) {
    "use strict";
    let _filtroTipo = null;
    let _filtroNome = "";
-   let oParams = {};
+   let urlFinal
 
    const NOME_DO_MODELO_DA_LISTA = "listaDeClientes";
-   const CAMINHO_PARA_API = "/api/Cliente?";
    const CAMPO_PESSOA_FISICA = "fisica";
    const CAMPO_PESSOA_JURIDICA = "juridica";
    const VALOR_FILTRO_PESSOA_FISICA = 1;
@@ -19,33 +21,29 @@ sap.ui.define([
    const PARAMETRO_DA_PAGINA_DE_ITENS_DO_FILTRO = "filterItems";
    const PARAMETRO_FILTRO_NOME = "nome";
    const PARAMETRO_FILTRO_TIPO = "tipo";
-   const NOME_DA_ROTA = "lista";
    const ID_FILTRO_DE_PESQUISA = "filtroPesquisa";
-   const ROTA_ADICIONAR_CLIENTE = "adicionarCliente";
+   const PROPRIEDADE_ID_DO_CLIENTE_DA_LISTA = "id";
    
    return ControllerBase.extend("ui5.codersgrowth.app.lista.Lista", {
       formatter: formatter,
       onInit: async function() {
-         const oRota = this.getOwnerComponent().getRouter();
-         oRota.getRoute(NOME_DA_ROTA).attachPatternMatched(this._prencherLista, this);
+         this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
+         this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._aoCoincidirRota, this);
       },
 
       _filtrarPelaRota: function(){
-         const oRota = this.getOwnerComponent().getRouter();
-         const oHash = oRota.getHashChanger().getHash();
-         oParams = new URLSearchParams(oHash);
+         const urlParams = new URLSearchParams(window.location.search);
 
-         _filtroNome = oParams.get(PARAMETRO_FILTRO_NOME);
-         _filtroTipo = oParams.has(PARAMETRO_FILTRO_TIPO) ? parseInt(oParams.get(PARAMETRO_FILTRO_TIPO)) : null;
-
+         _filtroNome = urlParams.get(PARAMETRO_FILTRO_NOME);
+         _filtroTipo = urlParams.has(PARAMETRO_FILTRO_TIPO) ? parseInt(urlParams.get(PARAMETRO_FILTRO_TIPO)) : null;
+         urlFinal = ConstantesDoBanco.CAMINHO_PARA_API + "?" + urlParams;
          const prencherCampoPequisa = this.byId(ID_FILTRO_DE_PESQUISA).setValue(_filtroNome);
       },
 
-      _prencherLista: async function(){
-         let urlFinal = CAMINHO_PARA_API + oParams;
+      _aoCoincidirRota: async function(){
          this._filtrarPelaRota();
-
-         this._get(urlFinal, NOME_DO_MODELO_DA_LISTA);
+         this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
+         this._modelo(await this._get(urlFinal), NOME_DO_MODELO_DA_LISTA);
       },
 
       aoClicarEmFiltro: async function(){
@@ -96,15 +94,23 @@ sap.ui.define([
          });
       },
 
+      aoClicarEmDetalhe : function (oElement) {
+         this._exibirEspera(() => {
+            this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_DUAS_COLUNAS_DIVIDAS)
+            this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE, {
+               clienteId: oElement.getSource().getBindingContext(NOME_DO_MODELO_DA_LISTA).getProperty(PROPRIEDADE_ID_DO_CLIENTE_DA_LISTA)
+            });
+         });
+		},
+
       aoClicarEmAdicionar: function(){
          this._exibirEspera(() => {
-            const oRota = this.getOwnerComponent().getRouter();
-            oRota.navTo(ROTA_ADICIONAR_CLIENTE);
+            this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
+            this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DE_ADICIONAR_CLIENTE);
          });   
       },
 
-      _adicionarParametros: function(){
-         const oRota = this.getOwnerComponent().getRouter();
+      _adicionarParametros: async function(){
          let querry = {};
          if (_filtroNome) {
             querry.nome = _filtroNome;
@@ -112,7 +118,17 @@ sap.ui.define([
          if (_filtroTipo !== null) {
             querry.tipo = _filtroTipo;
          }
-         oRota.navTo(NOME_DA_ROTA, {"?queryFiltro": querry});
+         const urlParams = new URLSearchParams(querry);
+         const urlBase =  window.location.origin
+         
+         let url = `${urlBase}?${urlParams.toString()}`;
+
+         if(window.location.hash){
+            url += window.location.hash;
+         }
+         window.history.pushState({}, '', url);
+         urlFinal = ConstantesDoBanco.CAMINHO_PARA_API + "?" + urlParams;
+         this._modelo(await this._get(urlFinal), NOME_DO_MODELO_DA_LISTA);
       },
 
    });

@@ -14,7 +14,7 @@
         </customHeader>
         <FlexBox direction="Column" alignItems="Center" justifyContent="Center" class="sapUiContentPadding" height="100%">
             <Panel width="400px" height="450px" backgroundDesign="Translucent"
-                headerText="Cadastro de Cliente" class="sapUiNoContentPadding">
+                headerText="{i18n>addCustomerFormTitle}" class="sapUiNoContentPadding">
                 <content>
                     <VBox class="sapUiLargeMargin">
                         <Label text="Nome"/>

@@ -2,7 +2,7 @@
     controllerName="ui5.codersgrowth.app.notFound.NotFound"
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc">
-   <MessagePage
+    <MessagePage
         title="{i18n>NotFound}"
         text="{i18n>NotFound.text}"
         description="{i18n>NotFound.description}"

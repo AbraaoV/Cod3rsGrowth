@@ -111,7 +111,7 @@ sap.ui.define([
 					});
 				},
 
-				deveFecharMessageBoxAoApertarEmOk: function(sTextoBotao){
+				deveFecharMessageBoxAoApertarEm: function(sTextoBotao){
 					return this.waitFor({
 						controlType: "sap.m.Button",
 						matchers: [

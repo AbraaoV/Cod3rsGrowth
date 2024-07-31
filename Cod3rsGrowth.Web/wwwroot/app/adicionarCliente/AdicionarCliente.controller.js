@@ -3,11 +3,11 @@ sap.ui.define([
     "ui5/codersgrowth/common/ControllerBase",
     'sap/ui/model/json/JSONModel',
     "sap/m/MessageBox",
-], (Messaging, ControllerBase, JSONModel, MessageBox) => {
+    "ui5/codersgrowth/common/ConstantesDoBanco",
+    "ui5/codersgrowth/common/ConstantesLayoutDoApp",
+    "ui5/codersgrowth/common/ConstantesDaRota"
+], (Messaging, ControllerBase, JSONModel, MessageBox, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota) => {
     "use strict";
-    const ROTA_ADICIONAR_CLIENTE = "adicionarCliente"
-    const ROTA_PAGINA_PRINCIPAL = "lista"
-    const CAMINHO_PARA_API = "/api/Cliente";
     const CAMINHO_PARA_API_ENUM = "/api/EnumTipo"
     const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
     const MSG_SUCESSO_CADASATRO_CLIENTE = "Cliente cadastrado com sucesso"
@@ -33,14 +33,14 @@ sap.ui.define([
 
     return ControllerBase.extend("ui5.codersgrowth.app.adicionarCliente.AdicionarCliente", {
         onInit: async function() {
-            const oRota = this.getOwnerComponent().getRouter();
-            oRota.getRoute(ROTA_ADICIONAR_CLIENTE).attachPatternMatched(this._prencherComboBox, this);
+            this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_ADICIONAR_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
         },
 
-        _prencherComboBox: function(){
-            this._get(CAMINHO_PARA_API_ENUM, NOME_DO_MODELO_DA_COMBOX_BOX)
+        _aoCoincidirRota: async function(){
+            this._modelo(await this._get(CAMINHO_PARA_API_ENUM), NOME_DO_MODELO_DA_COMBOX_BOX)
             this.aoSelecionarTipoPessoa();
             this._registarModeloParaVailidacao()
+            this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
         },
 
         _registarModeloParaVailidacao: function(){
@@ -54,8 +54,6 @@ sap.ui.define([
             oMM.registerObject(oView.byId(ID_INPUT_CNPJ), true);
         },
 
-        
-
         _sucessoNaRequicaoPost: function(){
             MessageBox.success(MSG_SUCESSO_CADASATRO_CLIENTE, {
                 actions: [OPCAO_NOVO_CADASTRO, OPCAO_VOLTAR_PARA_PAGINA_INICIAL],
@@ -63,11 +61,15 @@ sap.ui.define([
                     if (sAction === OPCAO_NOVO_CADASTRO) {
                         this._limparCampos(); 
                     } else if (sAction === OPCAO_VOLTAR_PARA_PAGINA_INICIAL) {
-                        this._limparCampos(); 
-                        this.getOwnerComponent().getRouter().navTo(ROTA_PAGINA_PRINCIPAL);
+                        this._voltarPaginaInicial();
                     }
                 }
             });
+        },
+
+        _voltarPaginaInicial: function(){
+            this._limparCampos(); 
+            this.getOwnerComponent().getRouter().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
         },
 
         _falhaNaRequicaoPost: function(data){
@@ -112,18 +114,17 @@ sap.ui.define([
 
         aoSelecionarTipoPessoa: function(){
             this._exibirEspera(() => {
-                let oView = this.getView();
-                let oComboBox = oView.byId(ID_COMBO_BOX);
-                let oLabelCPF = oView.byId(ID_LABEL_CPF);
-                let oInputCPF = oView.byId(ID_INPUT_CPF);
-                let oLabelCNPJ = oView.byId(ID_LABEL_CPNJ);
-                let oInputCNPJ = oView.byId(ID_INPUT_CNPJ);
+                let oComboBox = this.peloId(ID_COMBO_BOX);
+                let oLabelCPF = this.peloId(ID_LABEL_CPF);
+                let oInputCPF = this.peloId(ID_INPUT_CPF);
+                let oLabelCNPJ = this.peloId(ID_LABEL_CPNJ);
+                let oInputCNPJ = this.peloId(ID_INPUT_CNPJ);
 
                 oComboBox.attachSelectionChange(function(oEvent) {
                     let itemSelecionado = oEvent.getParameter(PARAMETRO_ITEM_SELECIONADO);
                     let key = itemSelecionado.getKey();
-                    oView.byId(ID_INPUT_CPF).setValue(undefined);
-                    oView.byId(ID_INPUT_CNPJ).setValue(undefined);
+                    oInputCPF.setValue(undefined);
+                    oInputCNPJ.setValue(undefined);
                     oLabelCPF.setVisible(key === KEY_PESSOA_FISICA);
                     oInputCPF.setVisible(key === KEY_PESSOA_FISICA);
                     oLabelCNPJ.setVisible(key === KEY_PESSOA_JURIDICA);
@@ -134,11 +135,10 @@ sap.ui.define([
 
         aoClicarEmSalvar: function(){
             this._exibirEspera(() => {
-                let oView = this.getView()
-                const nome = this.oView.byId(ID_INPUT_NOME);
-                const cpf = this.oView.byId(ID_INPUT_CPF);
-                const cnpj = this.oView.byId(ID_INPUT_CNPJ);
-                let oComboBox = oView.byId(ID_COMBO_BOX);
+                const nome = this.peloId(ID_INPUT_NOME);
+                const cpf = this.peloId(ID_INPUT_CPF);
+                const cnpj = this.peloId(ID_INPUT_CNPJ);
+                let oComboBox = this.peloId(ID_COMBO_BOX);
                 const tipoPessoa = parseInt(oComboBox.getSelectedKey(), 10);
 
 				let aInputs = [
@@ -162,23 +162,26 @@ sap.ui.define([
                     return;
                 } 
                 
-                let corpo = {
+                let cliente = {
                     nome: nome.getValue(),
                     cpf: cpf.getValue().replace(/\D/g, ''),
                     cnpj: cnpj.getValue().replace(/\D/g, ''),
                     tipo: tipoPessoa
                 };
                 
-                this._post(CAMINHO_PARA_API, corpo, () => this._sucessoNaRequicaoPost(), this._falhaNaRequicaoPost);
+                this._adicionarCliente(cliente);
             });    
+        },
+
+        _adicionarCliente: function(cliente){
+            this._post(ConstantesDoBanco.CAMINHO_PARA_API, cliente, () => this._sucessoNaRequicaoPost(), this._falhaNaRequicaoPost);
         },
         
         _limparCampos: function() {
-            const oView = this.getView()
-            oView.byId(ID_INPUT_NOME).setValue(undefined);
-            oView.byId(ID_INPUT_CPF).setValue(undefined);
-            oView.byId(ID_INPUT_CNPJ).setValue(undefined);
-            oView.byId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
+            this.peloId(ID_INPUT_NOME).setValue(undefined);
+            this.peloId(ID_INPUT_CPF).setValue(undefined);
+            this.peloId(ID_INPUT_CNPJ).setValue(undefined);
+            this.peloId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
         },
         
     });
