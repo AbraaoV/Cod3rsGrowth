@@ -15,7 +15,7 @@ sap.ui.define([
 	return ControllerBase.extend("ui5.codersgrowth.app.detalhesCliente.DetalhesCliente", {
 		formatter: formatter,
 		onInit: function () {
-			this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._aoCarregar, this);
+			this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._aoCoincidirRota, this);
 		},
 		
         aoFecharDetalhes: function () {
@@ -40,10 +40,10 @@ sap.ui.define([
 			});	
 		},
 
-		_aoCarregar: function () {
+		_aoCoincidirRota: async function () {
 			this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_DUAS_COLUNAS_DIVIDAS)
 			const obterParametros = this.obterRota().getHashChanger().getHash().split("/");
-			this._get(ConstantesDoBanco.CAMINHO_PARA_API + "/" + obterParametros[ID_DO_CLIENTE_NA_ROTA], NOME_DO_MODELO_DO_CLIENTE );
+			this._modelo(await this._get(ConstantesDoBanco.CAMINHO_PARA_API + "/" + obterParametros[ID_DO_CLIENTE_NA_ROTA]), NOME_DO_MODELO_DO_CLIENTE);
 		}
 	});
 });

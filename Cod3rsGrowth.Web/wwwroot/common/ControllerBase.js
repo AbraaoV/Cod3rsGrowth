@@ -57,22 +57,30 @@ sap.ui.define([
             return this.getView().setModel(oModel, sNomeModelo);
         },
 
-        _get: async function(url, sNomeModelo){
-            this._exibirEspera( async () => {
-                const response = await fetch(url, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                });
-                if (response.ok) {
-                const data = await response.json();
-                const oModel = new JSONModel(data);
-                    
-                return this._modelo(oModel, sNomeModelo);
+        _get: function(url) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const response = await fetch(url, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        const oModel = new JSONModel(data);
+                        
+
+                        return resolve(oModel);
+                    }
+                } catch (error) {
+                    MessageBox.error(MSG_DE_ERRO + error.message);
+                    reject(error);
                 }
             });
         },
+
         
         _post: async function(url, corpo, respostaSucesso, respostaErro){
             this._exibirEspera( async () => {

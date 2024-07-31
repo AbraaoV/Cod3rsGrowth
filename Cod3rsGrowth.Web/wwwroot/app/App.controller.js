@@ -5,15 +5,20 @@ sap.ui.define([
 ], (ControllerBase, JSONModel, ConstantesLayoutDoApp) => {
 	"use strict";
 	const NOME_MODELO_DO_APP = "appView"
+	const DELAY_DO_BUSY_INDICATOR = 2000
 
 return ControllerBase.extend("ui5.codersgrowth.app.App", {
 	
-	onInit : function () {
-			var oViewModel,
+		onInit: function () {
+			this._definirModeloDoApp();
+		},
+
+		_definirModeloDoApp: function(){
+			let oViewModel;
 
 			oViewModel = new JSONModel({
 				busy : false,
-				delay : 5000,
+				delay : DELAY_DO_BUSY_INDICATOR,
 				layout : ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA,
 				previousLayout : "",
 				actionButtonsInfo : {
@@ -24,5 +29,6 @@ return ControllerBase.extend("ui5.codersgrowth.app.App", {
 			});
 			this._modelo(oViewModel, NOME_MODELO_DO_APP);
 		}
+
 	});
 });

@@ -8,7 +8,6 @@ sap.ui.define([
    "use strict";
    let _filtroTipo = null;
    let _filtroNome = "";
-   let oParams = {};
    let urlFinal
 
    const NOME_DO_MODELO_DA_LISTA = "listaDeClientes";
@@ -28,26 +27,23 @@ sap.ui.define([
    return ControllerBase.extend("ui5.codersgrowth.app.lista.Lista", {
       formatter: formatter,
       onInit: async function() {
-         this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE).attachPatternMatched(this._prencherLista, this);
-         this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._prencherLista, this);
+         this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
+         this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._aoCoincidirRota, this);
       },
 
       _filtrarPelaRota: function(){
-         const oHash = this.obterRota().getHashChanger().getHash();
          const urlParams = new URLSearchParams(window.location.search);
-         oParams = new URLSearchParams(oHash);
 
          _filtroNome = urlParams.get(PARAMETRO_FILTRO_NOME);
          _filtroTipo = urlParams.has(PARAMETRO_FILTRO_TIPO) ? parseInt(urlParams.get(PARAMETRO_FILTRO_TIPO)) : null;
          urlFinal = ConstantesDoBanco.CAMINHO_PARA_API + "?" + urlParams;
-         this._get(urlFinal, NOME_DO_MODELO_DA_LISTA);
          const prencherCampoPequisa = this.byId(ID_FILTRO_DE_PESQUISA).setValue(_filtroNome);
       },
 
-      _prencherLista: async function(){
+      _aoCoincidirRota: async function(){
          this._filtrarPelaRota();
          this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
-         this._get(urlFinal, NOME_DO_MODELO_DA_LISTA);
+         this._modelo(await this._get(urlFinal), NOME_DO_MODELO_DA_LISTA);
       },
 
       aoClicarEmFiltro: async function(){
@@ -114,7 +110,7 @@ sap.ui.define([
          });   
       },
 
-      _adicionarParametros: function(){
+      _adicionarParametros: async function(){
          let querry = {};
          if (_filtroNome) {
             querry.nome = _filtroNome;
@@ -132,7 +128,7 @@ sap.ui.define([
          }
          window.history.pushState({}, '', url);
          urlFinal = ConstantesDoBanco.CAMINHO_PARA_API + "?" + urlParams;
-         this._get(urlFinal, NOME_DO_MODELO_DA_LISTA);
+         this._modelo(await this._get(urlFinal), NOME_DO_MODELO_DA_LISTA);
       },
 
    });

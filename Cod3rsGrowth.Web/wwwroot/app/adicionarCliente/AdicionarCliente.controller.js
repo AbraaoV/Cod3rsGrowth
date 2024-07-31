@@ -33,11 +33,11 @@ sap.ui.define([
 
     return ControllerBase.extend("ui5.codersgrowth.app.adicionarCliente.AdicionarCliente", {
         onInit: async function() {
-            this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_ADICIONAR_CLIENTE).attachPatternMatched(this._prencherComboBox, this);
+            this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_ADICIONAR_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
         },
 
-        _prencherComboBox: function(){
-            this._get(CAMINHO_PARA_API_ENUM, NOME_DO_MODELO_DA_COMBOX_BOX)
+        _aoCoincidirRota: async function(){
+            this._modelo(await this._get(CAMINHO_PARA_API_ENUM), NOME_DO_MODELO_DA_COMBOX_BOX)
             this.aoSelecionarTipoPessoa();
             this._registarModeloParaVailidacao()
             this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
@@ -54,8 +54,6 @@ sap.ui.define([
             oMM.registerObject(oView.byId(ID_INPUT_CNPJ), true);
         },
 
-        
-
         _sucessoNaRequicaoPost: function(){
             MessageBox.success(MSG_SUCESSO_CADASATRO_CLIENTE, {
                 actions: [OPCAO_NOVO_CADASTRO, OPCAO_VOLTAR_PARA_PAGINA_INICIAL],
@@ -63,11 +61,15 @@ sap.ui.define([
                     if (sAction === OPCAO_NOVO_CADASTRO) {
                         this._limparCampos(); 
                     } else if (sAction === OPCAO_VOLTAR_PARA_PAGINA_INICIAL) {
-                        this._limparCampos(); 
-                        this.getOwnerComponent().getRouter().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
+                        this._voltarPaginaInicial();
                     }
                 }
             });
+        },
+
+        _voltarPaginaInicial: function(){
+            this._limparCampos(); 
+            this.getOwnerComponent().getRouter().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
         },
 
         _falhaNaRequicaoPost: function(data){
@@ -160,15 +162,19 @@ sap.ui.define([
                     return;
                 } 
                 
-                let corpo = {
+                let cliente = {
                     nome: nome.getValue(),
                     cpf: cpf.getValue().replace(/\D/g, ''),
                     cnpj: cnpj.getValue().replace(/\D/g, ''),
                     tipo: tipoPessoa
                 };
                 
-                this._post(ConstantesDoBanco.CAMINHO_PARA_API, corpo, () => this._sucessoNaRequicaoPost(), this._falhaNaRequicaoPost);
+                this._adicionarCliente(cliente);
             });    
+        },
+
+        _adicionarCliente: function(cliente){
+            this._post(ConstantesDoBanco.CAMINHO_PARA_API, cliente, () => this._sucessoNaRequicaoPost(), this._falhaNaRequicaoPost);
         },
         
         _limparCampos: function() {
