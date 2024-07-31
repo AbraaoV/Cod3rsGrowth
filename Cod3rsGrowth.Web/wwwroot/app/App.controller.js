@@ -5,7 +5,7 @@ sap.ui.define([
 ], (ControllerBase, JSONModel, ConstantesLayoutDoApp) => {
 	"use strict";
 	const NOME_MODELO_DO_APP = "appView"
-	const DELAY_DO_BUSY_INDICATOR = 2000
+	const DELAY_DO_BUSY_INDICATOR = 0
 
 return ControllerBase.extend("ui5.codersgrowth.app.App", {
 	

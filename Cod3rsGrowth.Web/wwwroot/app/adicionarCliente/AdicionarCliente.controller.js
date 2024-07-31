@@ -5,12 +5,14 @@ sap.ui.define([
     "sap/m/MessageBox",
     "ui5/codersgrowth/common/ConstantesDoBanco",
     "ui5/codersgrowth/common/ConstantesLayoutDoApp",
-    "ui5/codersgrowth/common/ConstantesDaRota"
-], (Messaging, ControllerBase, JSONModel, MessageBox, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota) => {
+    "ui5/codersgrowth/common/ConstantesDaRota",
+    "../model/formatter"
+], (Messaging, ControllerBase, JSONModel, MessageBox, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, formatter) => {
     "use strict";
     const CAMINHO_PARA_API_ENUM = "/api/EnumTipo"
     const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
-    const MSG_SUCESSO_CADASATRO_CLIENTE = "Cliente cadastrado com sucesso"
+    const MSG_SUCESSO_CADASATRO_CLIENTE = "Cliente cadastrado com sucesso."
+    const MSG_SUCESSO_EDITAR_CLIENTE = "Cliente editado com sucesso."
     const MSG_ERRO_ADICIONAR_CLIENTE = "Erro ao adicionar cliente:"
     const OPCAO_NOVO_CADASTRO = "Novo Cadastro"
     const OPCAO_VOLTAR_PARA_PAGINA_INICIAL = "Voltar à Página Inicial"
@@ -30,10 +32,22 @@ sap.ui.define([
     const VALOR_DE_ERRO = "Error"
     const VALOR_PROPRIEDAE = "value"
     const NOME_DO_MODELO_DOS_FILTROS = "modeloFiltro"
+    const NOME_DO_MODELO_DO_CLIENTE = "clienteSelecionado"
+    const INDEX_DO_ID_DO_CLIENTE_NA_ROTA = 1
+    const TITULO_DO_PANEL_CADASTRO = "Cadastro de Cliente"
+    const TITULO_DO_PANEL_EDITAR = "Editar Cliente"
+    const ID_PANEL = "container-codersgrowth---adicionarCliente--panelCliente"
+    const PROPRIEDADE_NOME = "/nome"
+    const PROPRIEDADE_CPF = "/cpf"
+    const PROPRIEDADE_CNPJ = "/cpnj"
+    const ROTA_EDITAR = "editar"
+    const INDEX_DO_NOME_DA_ROTA = 2
 
     return ControllerBase.extend("ui5.codersgrowth.app.adicionarCliente.AdicionarCliente", {
         onInit: async function() {
             this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_ADICIONAR_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
+            this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_EDITAR_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
+            this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_EDITAR_CLIENTE).attachPatternMatched(this._aoCoincidirRotaEditar, this);
         },
 
         _aoCoincidirRota: async function(){
@@ -41,6 +55,28 @@ sap.ui.define([
             this.aoSelecionarTipoPessoa();
             this._registarModeloParaVailidacao()
             this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
+            this._setarTituloDoPanel();
+        },
+
+        _aoCoincidirRotaEditar: async function(){
+            this._modelo(await this._get(ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA]), NOME_DO_MODELO_DO_CLIENTE);
+            this._prencherCliente();
+        },
+
+        _setarTituloDoPanel: function(){
+            if(this.obterParametros()[INDEX_DO_NOME_DA_ROTA] === ROTA_EDITAR){
+                sap.ui.getCore().byId(ID_PANEL).setHeaderText(TITULO_DO_PANEL_EDITAR)
+            }else{
+                sap.ui.getCore().byId(ID_PANEL).setHeaderText(TITULO_DO_PANEL_CADASTRO)
+            }
+        },
+
+        _prencherCliente: function(){
+            const modeloCliente = this.obterModelo(NOME_DO_MODELO_DO_CLIENTE)
+            this.peloId(ID_INPUT_NOME).setValue(modeloCliente.getProperty(PROPRIEDADE_NOME));
+            this.peloId(ID_INPUT_CPF).setValue(formatter.formatarCpf(modeloCliente.getProperty(PROPRIEDADE_CPF)));
+            this.peloId(ID_INPUT_CNPJ).setValue(formatter.formatarCpf(modeloCliente.getProperty(PROPRIEDADE_CNPJ)));
+            this.peloId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
         },
 
         _registarModeloParaVailidacao: function(){
@@ -54,25 +90,25 @@ sap.ui.define([
             oMM.registerObject(oView.byId(ID_INPUT_CNPJ), true);
         },
 
-        _sucessoNaRequicaoPost: function(){
-            MessageBox.success(MSG_SUCESSO_CADASATRO_CLIENTE, {
-                actions: [OPCAO_NOVO_CADASTRO, OPCAO_VOLTAR_PARA_PAGINA_INICIAL],
+        _sucessoNaRequicao: function(msgSucesso, requicaoPuT){
+            let opcoes = [OPCAO_NOVO_CADASTRO, OPCAO_VOLTAR_PARA_PAGINA_INICIAL]
+            if(requicaoPuT){
+                opcoes = [OPCAO_VOLTAR_PARA_PAGINA_INICIAL]
+            }
+            MessageBox.success(msgSucesso, {
+                actions: opcoes,
                 onClose: (sAction) => {
                     if (sAction === OPCAO_NOVO_CADASTRO) {
                         this._limparCampos(); 
                     } else if (sAction === OPCAO_VOLTAR_PARA_PAGINA_INICIAL) {
-                        this._voltarPaginaInicial();
+                        this._limparCampos(); 
+                        this.getOwnerComponent().getRouter().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
                     }
                 }
             });
         },
 
-        _voltarPaginaInicial: function(){
-            this._limparCampos(); 
-            this.getOwnerComponent().getRouter().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
-        },
-
-        _falhaNaRequicaoPost: function(data){
+        _falhaNaRequicao: function(data){
             const detalhesDoErro = data.extensions.errors.join('\n');
             const mensagemErro = `
             Tipo: ${data.type}
@@ -90,8 +126,13 @@ sap.ui.define([
 			let oBinding = oInput.getBinding(VALOR_PROPRIEDAE);
 
             let sInputSemMascara = oInput.getValue();
+            
             if (oInput === this.getView().byId(ID_INPUT_CPF) || oInput === this.getView().byId(ID_INPUT_CNPJ)) {
                 sInputSemMascara = sInputSemMascara.replace(/\D/g, '');
+            }
+            if(sInputSemMascara === ""){
+				sEstadoDoValor = VALOR_DE_ERRO;
+                bErroDeVaidacao = true;
             }
 			try {
 				oBinding.getType().validateValue(sInputSemMascara);
@@ -169,13 +210,23 @@ sap.ui.define([
                     tipo: tipoPessoa
                 };
                 
-                this._adicionarCliente(cliente);
+                if(this.obterParametros()[INDEX_DO_NOME_DA_ROTA] === ROTA_EDITAR){
+                    this._atualizarCliente(cliente);
+                }else{
+                    this._adicionarCliente(cliente);
+                }
+                
+                
             });    
         },
 
         _adicionarCliente: function(cliente){
-            this._post(ConstantesDoBanco.CAMINHO_PARA_API, cliente, () => this._sucessoNaRequicaoPost(), this._falhaNaRequicaoPost);
+            this._post(ConstantesDoBanco.CAMINHO_PARA_API, cliente, () => this._sucessoNaRequicao(MSG_SUCESSO_CADASATRO_CLIENTE), this._falhaNaRequicao);
         },
+
+        _atualizarCliente: function(cliente){
+            this._put(ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA], cliente, () => this._sucessoNaRequicao(MSG_SUCESSO_EDITAR_CLIENTE, true), this._falhaNaRequicao);
+        },  
         
         _limparCampos: function() {
             this.peloId(ID_INPUT_NOME).setValue(undefined);

@@ -13,7 +13,7 @@
             </Toolbar>
         </customHeader>
         <FlexBox direction="Column" alignItems="Center" justifyContent="Center" class="sapUiContentPadding" height="100%">
-            <Panel width="400px" height="450px" backgroundDesign="Translucent"
+            <Panel id= "panelCliente" width="400px" height="450px" backgroundDesign="Translucent"
                 headerText="{i18n>addCustomerFormTitle}" class="sapUiNoContentPadding">
                 <content>
                     <VBox class="sapUiLargeMargin">
@@ -24,11 +24,7 @@
                         valueStateText="Nome não pode estar vazio. Máximo de 50 caracteres."
                         value="{
                             path : 'modeloFiltro>/nome',
-                            type : 'sap.ui.model.type.String',
-                            constraints : {
-                                minLength: 1,
-                                maxLength: 50
-                            }
+                            type : 'sap.ui.model.type.String'
                         }"
                         change=".aoDigitarNoInpunt"/>
                         <Label text="Pessoa"/>

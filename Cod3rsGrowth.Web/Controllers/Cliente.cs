@@ -43,7 +43,7 @@ namespace Cod3rsGrowth.Web.Controllers
         public IActionResult Atualizar(int id, Dominio.Cliente cliente)
         {
             _servicoCliente.Atualizar(id, cliente);
-            return Ok();
+            return Ok(cliente);
         }
         [HttpDelete(ConstantesDaController.PARAMETRO_ID)]
         public IActionResult Deletar(int id)

@@ -20,6 +20,10 @@ sap.ui.define([
             return this.getView().byId(sId)
         },
 
+        obterParametros: function() {
+            return this.obterRota().getHashChanger().getHash().split("/");
+        },
+
         aoClicarEmVoltar: function () {
 			var oHistory, sPreviousHash;
 
@@ -47,7 +51,7 @@ sap.ui.define([
             try {
                 funcao();
             } catch(error) {
-                MessageBox.error("{i18n>errorMenssage}" + error.message);
+                MessageBox.error(MSG_DE_ERRO + error.message);
             } finally {
                 this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", false);
             }
@@ -59,6 +63,7 @@ sap.ui.define([
 
         _get: function(url) {
             return new Promise(async (resolve, reject) => {
+                this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", true);
                 try {
                     const response = await fetch(url, {
                         method: "GET",
@@ -77,6 +82,8 @@ sap.ui.define([
                 } catch (error) {
                     MessageBox.error(MSG_DE_ERRO + error.message);
                     reject(error);
+                } finally {
+                    this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", false);
                 }
             });
         },
@@ -86,6 +93,26 @@ sap.ui.define([
             this._exibirEspera( async () => {
                 const response = await fetch(url, {
                     method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(corpo)
+                    
+                });
+                    const data = await response.json()
+                if (response.ok) {
+                    respostaSucesso();
+                }
+                else{ 
+                    respostaErro(data);                    
+                }
+            });
+        },
+
+        _put: async function(url, corpo, respostaSucesso, respostaErro){
+            this._exibirEspera( async () => {
+                const response = await fetch(url, {
+                    method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
                     },
