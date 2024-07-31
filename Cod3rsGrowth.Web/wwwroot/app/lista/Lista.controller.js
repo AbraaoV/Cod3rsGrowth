@@ -28,7 +28,7 @@ sap.ui.define([
       formatter: formatter,
       onInit: async function() {
          this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
-         this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._aoCoincidirRota, this);
+         this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._filtrarPelaRota, this);
       },
 
       _filtrarPelaRota: function(){
@@ -37,7 +37,9 @@ sap.ui.define([
          _filtroNome = urlParams.get(PARAMETRO_FILTRO_NOME);
          _filtroTipo = urlParams.has(PARAMETRO_FILTRO_TIPO) ? parseInt(urlParams.get(PARAMETRO_FILTRO_TIPO)) : null;
          urlFinal = ConstantesDoBanco.CAMINHO_PARA_API + "?" + urlParams;
-         const prencherCampoPequisa = this.byId(ID_FILTRO_DE_PESQUISA).setValue(_filtroNome);
+         this.byId(ID_FILTRO_DE_PESQUISA).setValue(_filtroNome);
+
+         this._adicionarParametros();
       },
 
       _aoCoincidirRota: async function(){

@@ -79,6 +79,11 @@
 					"lista",
 					"detalhesCliente"
 				]
+			},
+			{
+				"pattern": "cliente/{clienteId}/editar",
+				"name": "editarCliente",
+				"target": "adicionarCliente"
 			}
 		],
 		"targets": {
