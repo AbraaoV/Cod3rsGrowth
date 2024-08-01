@@ -70,7 +70,7 @@
 			{
 				"pattern": "adicionar",
 				"name": "adicionarCliente",
-				"target": "adicionarCliente"
+				"target": "adicionarEditarCliente"
 			},
 			{
 				"pattern": "cliente/{clienteId}/:?queryFiltro:",
@@ -83,7 +83,7 @@
 			{
 				"pattern": "cliente/{clienteId}/editar",
 				"name": "editarCliente",
-				"target": "adicionarCliente"
+				"target": "adicionarEditarCliente"
 			}
 		],
 		"targets": {
@@ -100,10 +100,10 @@
 					"level": 1,
 					"controlAggregation": "midColumnPages"
 			},
-			"adicionarCliente":{
-				"path" : "ui5.codersgrowth.app.adicionarCliente",
-				"id": "adicionarCliente",
-				"name": "AdicionarCliente",
+			"adicionarEditarCliente":{
+				"path" : "ui5.codersgrowth.app.adicionarEditarCliente",
+				"id": "adicionarEditarCliente",
+				"name": "AdicionarEditarCliente",
 				"level" : 1
 			},
 			"notFound": {

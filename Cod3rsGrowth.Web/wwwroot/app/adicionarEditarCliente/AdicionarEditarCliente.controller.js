@@ -36,7 +36,7 @@ sap.ui.define([
     const INDEX_DO_ID_DO_CLIENTE_NA_ROTA = 1
     const TITULO_DO_PANEL_CADASTRO = "Cadastro de Cliente"
     const TITULO_DO_PANEL_EDITAR = "Editar Cliente"
-    const ID_PANEL = "container-codersgrowth---adicionarCliente--panelCliente"
+    const ID_PANEL = "container-codersgrowth---adicionarEditarCliente--panelCliente"
     const PROPRIEDADE_NOME = "/nome"
     const PROPRIEDADE_CPF = "/cpf"
     const PROPRIEDADE_CNPJ = "/cnpj"
@@ -44,7 +44,7 @@ sap.ui.define([
     const ROTA_EDITAR = "editar"
     const INDEX_DO_NOME_DA_ROTA = 2
 
-    return ControllerBase.extend("ui5.codersgrowth.app.adicionarCliente.AdicionarCliente", {
+    return ControllerBase.extend("ui5.codersgrowth.app.adicionarEditarCliente.AdicionarEditarCliente", {
         onInit: async function() {
             this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_ADICIONAR_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
             this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_EDITAR_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
@@ -56,6 +56,7 @@ sap.ui.define([
             this.aoSelecionarTipoPessoa();
             this._registarModeloParaVailidacao()
             this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
+            this.peloId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
             this._setarTituloDoPanel();
         },
 
@@ -105,10 +106,10 @@ sap.ui.define([
                 actions: opcoes,
                 onClose: (sAction) => {
                     if (sAction === OPCAO_NOVO_CADASTRO) {
-                        this._limparCampos(); 
+                        () => this._limparCampos(); 
                     } else if (sAction === OPCAO_VOLTAR_PARA_PAGINA_INICIAL) {
-                        this._limparCampos(); 
-                        this.getOwnerComponent().getRouter().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
+                        () => this._limparCampos(); 
+                        () => this.getOwnerComponent().getRouter().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
                     }
                 }
             });
@@ -166,7 +167,6 @@ sap.ui.define([
                 let oInputCPF = this.peloId(ID_INPUT_CPF);
                 let oLabelCNPJ = this.peloId(ID_LABEL_CPNJ);
                 let oInputCNPJ = this.peloId(ID_INPUT_CNPJ);
-
                 oComboBox.attachSelectionChange(function(oEvent) {
                     let itemSelecionado = oEvent.getParameter(PARAMETRO_ITEM_SELECIONADO);
                     let key = itemSelecionado.getKey();
@@ -186,7 +186,7 @@ sap.ui.define([
                 const cpf = this.peloId(ID_INPUT_CPF);
                 const cnpj = this.peloId(ID_INPUT_CNPJ);
                 let oComboBox = this.peloId(ID_COMBO_BOX);
-                const tipoPessoa = parseInt(oComboBox.getSelectedKey(), 10);
+                const tipoPessoa = oComboBox.getSelectedKey();
 
 				let aInputs = [
                     nome,
@@ -215,7 +215,6 @@ sap.ui.define([
                     cnpj: cnpj.getValue().replace(/\D/g, ''),
                     tipo: tipoPessoa
                 };
-                
                 if(this.obterParametros()[INDEX_DO_NOME_DA_ROTA] === ROTA_EDITAR){
                     this._atualizarCliente(cliente);
                 }else{

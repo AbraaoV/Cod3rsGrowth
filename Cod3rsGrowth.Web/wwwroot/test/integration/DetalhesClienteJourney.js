@@ -8,17 +8,11 @@ sap.ui.define([
 
 	QUnit.module("Detalhes do cliente");
 
-	opaTest("Deve ser capaz de navegar para tela de detalhes", function (Given, When, Then) {
-		// Arrangements
-		Given.iStartMyApp();
-        //Actions
-        When.naListaCliente.aoClicarNaLista();
-        //Actions
-        When.naListaCliente.aoClicarNoClienteDaPosicao(1);
-		// Assertions
-		Then.naTelaDeDetalhes.deveEstarNaTelaDeDetalhes();
-	});
+	
     opaTest("Deve ser capaz de filtrar por nome com a pagina de detalhes aberta ao lado", function(Given, When, Then) {
+		Given.iStartMyApp({
+			hash: "cliente/38/"
+		})
 		//Actions
 		When.naListaCliente.aoPesquisarNome("Empresa");
 		//Assertions

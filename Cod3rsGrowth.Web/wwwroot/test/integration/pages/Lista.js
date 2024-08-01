@@ -76,8 +76,8 @@ sap.ui.define([
 						searchOpenDialogs: true,
 						controlType: "sap.m.Button",
 						matchers: new PropertyStrictEquals({
-							name: "id",
-							value: "__component0---lista--filtroFragment-acceptbutton"
+							name: "text",
+							value: "OK"
 						}),
 						actions: function (oMenuItem) {
 							oMenuItem.firePress();
@@ -90,8 +90,8 @@ sap.ui.define([
 						searchOpenDialogs: true,
 						controlType: "sap.m.Button",
 						matchers: new PropertyStrictEquals({
-							name: "id",
-							value: "__component0---lista--filtroFragment-detailresetbutton"
+							name: "text",
+							value: "Reinicializar"
 						}),
 						actions: function (oMenuItem) {
 							oMenuItem.firePress();
