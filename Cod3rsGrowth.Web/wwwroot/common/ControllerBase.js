@@ -16,10 +16,6 @@ sap.ui.define([
 			return this.getOwnerComponent().getRouter();
 		},
 
-        peloId: function(sId) {
-            return this.getView().byId(sId)
-        },
-
         obterParametros: function() {
             return this.obterRota().getHashChanger().getHash().split("/");
         },
@@ -119,7 +115,7 @@ sap.ui.define([
                     body: JSON.stringify(corpo)
                     
                 });
-                    const data = await response.json()
+                    const data = response.json()
                 if (response.ok) {
                     respostaSucesso();
                 }

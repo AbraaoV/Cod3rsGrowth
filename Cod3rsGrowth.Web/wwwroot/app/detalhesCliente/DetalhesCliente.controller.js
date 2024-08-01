@@ -29,15 +29,15 @@ sap.ui.define([
         aoClicarEmTelaCheia: function () {
 			this._exibirEspera(() => {
 				this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_MEIO_TELA_CHEIA)
-				this.peloId(ID_BOTAO_SAIR_TELA_CHEIA).setVisible(true);
-				this.peloId(ID_BOTAO_TELA_CHEIA ).setVisible(false);
+				this.getView().byId(ID_BOTAO_SAIR_TELA_CHEIA).setVisible(true);
+				this.getView().byId(ID_BOTAO_TELA_CHEIA ).setVisible(false);
 			});	
 		},
 		aoClicarEmFecharTelaCheia: function () {
 			this._exibirEspera(() => {
 				this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_DUAS_COLUNAS_DIVIDAS)
-				this.peloId(ID_BOTAO_SAIR_TELA_CHEIA).setVisible(false);
-				this.peloId(ID_BOTAO_TELA_CHEIA).setVisible(true);
+				this.getView().byId(ID_BOTAO_SAIR_TELA_CHEIA).setVisible(false);
+				this.getView().byId(ID_BOTAO_TELA_CHEIA).setVisible(true);
 			});	
 		},
 

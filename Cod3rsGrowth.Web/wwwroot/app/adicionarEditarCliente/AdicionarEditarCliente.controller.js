@@ -56,34 +56,35 @@ sap.ui.define([
             this.aoSelecionarTipoPessoa();
             this._registarModeloParaVailidacao()
             this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
-            this.peloId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
-            this._setarTituloDoPanel();
+            this.getView().byId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
+            this._definitTituloCadastro();
         },
 
         _aoCoincidirRotaEditar: async function(){
             this._modelo(await this._get(ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA]), NOME_DO_MODELO_DO_CLIENTE);
             this._prencherCliente();
+            this._definirTituloEdicao();
         },
 
-        _setarTituloDoPanel: function(){
-            if(this.obterParametros()[INDEX_DO_NOME_DA_ROTA] === ROTA_EDITAR){
-                sap.ui.getCore().byId(ID_PANEL).setHeaderText(TITULO_DO_PANEL_EDITAR)
-            }else{
-                sap.ui.getCore().byId(ID_PANEL).setHeaderText(TITULO_DO_PANEL_CADASTRO)
-            }
+        _definirTituloEdicao: function(){
+            sap.ui.getCore().byId(ID_PANEL).setHeaderText(TITULO_DO_PANEL_EDITAR)
+        },
+
+        _definitTituloCadastro: function(){
+            sap.ui.getCore().byId(ID_PANEL).setHeaderText(TITULO_DO_PANEL_CADASTRO)
         },
 
         _prencherCliente: function(){
-            let comboBox = this.peloId(ID_COMBO_BOX);
+            let controleDoComboBox = this.getView().byId(ID_COMBO_BOX);
 
             const modeloCliente = this.obterModelo(NOME_DO_MODELO_DO_CLIENTE)
-            this.peloId(ID_INPUT_NOME).setValue(modeloCliente.getProperty(PROPRIEDADE_NOME));
-            comboBox.setSelectedKey(modeloCliente.getProperty(PROPRIEDADE_TIPO)).fireSelectionChange({
-                selectedItem: comboBox.getSelectedItem(),
-                key: comboBox.getSelectedItem().getKey()
+            this.getView().byId(ID_INPUT_NOME).setValue(modeloCliente.getProperty(PROPRIEDADE_NOME));
+            controleDoComboBox.setSelectedKey(modeloCliente.getProperty(PROPRIEDADE_TIPO)).fireSelectionChange({
+                selectedItem: controleDoComboBox.getSelectedItem(),
+                key: controleDoComboBox.getSelectedItem().getKey()
             });
-            this.peloId(ID_INPUT_CPF).setValue(formatter.formatarCpf(modeloCliente.getProperty(PROPRIEDADE_CPF)));
-            this.peloId(ID_INPUT_CNPJ).setValue(formatter.formatarCpf(modeloCliente.getProperty(PROPRIEDADE_CNPJ)));
+            this.getView().byId(ID_INPUT_CPF).setValue(formatter.formatarCpf(modeloCliente.getProperty(PROPRIEDADE_CPF)));
+            this.getView().byId(ID_INPUT_CNPJ).setValue(formatter.formatarCpf(modeloCliente.getProperty(PROPRIEDADE_CNPJ)));
         },
 
         _registarModeloParaVailidacao: function(){
@@ -162,30 +163,30 @@ sap.ui.define([
 
         aoSelecionarTipoPessoa: function(){
             this._exibirEspera(() => {
-                let oComboBox = this.peloId(ID_COMBO_BOX);
-                let oLabelCPF = this.peloId(ID_LABEL_CPF);
-                let oInputCPF = this.peloId(ID_INPUT_CPF);
-                let oLabelCNPJ = this.peloId(ID_LABEL_CPNJ);
-                let oInputCNPJ = this.peloId(ID_INPUT_CNPJ);
-                oComboBox.attachSelectionChange(function(oEvent) {
+                let controleDoComboBox = this.getView().byId(ID_COMBO_BOX);
+                let controleDaLabelCPF = this.getView().byId(ID_LABEL_CPF);
+                let controleDoInputCPF = this.getView().byId(ID_INPUT_CPF);
+                let controleDaLabelCNPJ = this.getView().byId(ID_LABEL_CPNJ);
+                let controleDoInputCNPJ = this.getView().byId(ID_INPUT_CNPJ);
+                controleDoComboBox.attachSelectionChange(function(oEvent) {
                     let itemSelecionado = oEvent.getParameter(PARAMETRO_ITEM_SELECIONADO);
                     let key = itemSelecionado.getKey();
-                    oInputCPF.setValue(undefined);
-                    oInputCNPJ.setValue(undefined);
-                    oLabelCPF.setVisible(key === KEY_PESSOA_FISICA);
-                    oInputCPF.setVisible(key === KEY_PESSOA_FISICA);
-                    oLabelCNPJ.setVisible(key === KEY_PESSOA_JURIDICA);
-                    oInputCNPJ.setVisible(key === KEY_PESSOA_JURIDICA);
+                    controleDoInputCPF.setValue(undefined);
+                    controleDoInputCNPJ.setValue(undefined);
+                    controleDaLabelCPF.setVisible(key === KEY_PESSOA_FISICA);
+                    controleDoInputCPF.setVisible(key === KEY_PESSOA_FISICA);
+                    controleDaLabelCNPJ.setVisible(key === KEY_PESSOA_JURIDICA);
+                    controleDoInputCNPJ.setVisible(key === KEY_PESSOA_JURIDICA);
                 });
             });
         },
 
         aoClicarEmSalvar: function(){
             this._exibirEspera(() => {
-                const nome = this.peloId(ID_INPUT_NOME);
-                const cpf = this.peloId(ID_INPUT_CPF);
-                const cnpj = this.peloId(ID_INPUT_CNPJ);
-                let oComboBox = this.peloId(ID_COMBO_BOX);
+                const nome = this.getView().byId(ID_INPUT_NOME);
+                const cpf = this.getView().byId(ID_INPUT_CPF);
+                const cnpj = this.getView().byId(ID_INPUT_CNPJ);
+                let oComboBox = this.getView().byId(ID_COMBO_BOX);
                 const tipoPessoa = oComboBox.getSelectedKey();
 
 				let aInputs = [
@@ -234,10 +235,10 @@ sap.ui.define([
         },  
         
         _limparCampos: function() {
-            this.peloId(ID_INPUT_NOME).setValue(undefined);
-            this.peloId(ID_INPUT_CPF).setValue(undefined);
-            this.peloId(ID_INPUT_CNPJ).setValue(undefined);
-            this.peloId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
+            this.getView().byId(ID_INPUT_NOME).setValue(undefined);
+            this.getView().byId(ID_INPUT_CPF).setValue(undefined);
+            this.getView().byId(ID_INPUT_CNPJ).setValue(undefined);
+            this.getView().byId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
         },
         
     });
