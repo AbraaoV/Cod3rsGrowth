@@ -22,8 +22,8 @@ sap.ui.define([
     const ID_LABEL_CPNJ = "labelCnpj"
     const ID_INPUT_CNPJ = "inputCnpj"
     const ID_INPUT_NOME = "inputNome"
-    const KEY_PESSOA_FISICA = "1"
-    const KEY_PESSOA_JURIDICA = "2"
+    const KEY_PESSOA_FISICA = "Fisica"
+    const KEY_PESSOA_JURIDICA = "Juridica"
     const PARAMETRO_ITEM_SELECIONADO = "selectedItem"
     const MSG_DE_ERRO_DE_VALIDACAO = "Ocorreu um ou mais erros de validação."
     const INDEX_CPF = 1
@@ -39,7 +39,8 @@ sap.ui.define([
     const ID_PANEL = "container-codersgrowth---adicionarCliente--panelCliente"
     const PROPRIEDADE_NOME = "/nome"
     const PROPRIEDADE_CPF = "/cpf"
-    const PROPRIEDADE_CNPJ = "/cpnj"
+    const PROPRIEDADE_CNPJ = "/cnpj"
+    const PROPRIEDADE_TIPO = "/tipo"
     const ROTA_EDITAR = "editar"
     const INDEX_DO_NOME_DA_ROTA = 2
 
@@ -72,11 +73,16 @@ sap.ui.define([
         },
 
         _prencherCliente: function(){
+            let comboBox = this.peloId(ID_COMBO_BOX);
+
             const modeloCliente = this.obterModelo(NOME_DO_MODELO_DO_CLIENTE)
             this.peloId(ID_INPUT_NOME).setValue(modeloCliente.getProperty(PROPRIEDADE_NOME));
+            comboBox.setSelectedKey(modeloCliente.getProperty(PROPRIEDADE_TIPO)).fireSelectionChange({
+                selectedItem: comboBox.getSelectedItem(),
+                key: comboBox.getSelectedItem().getKey()
+            });
             this.peloId(ID_INPUT_CPF).setValue(formatter.formatarCpf(modeloCliente.getProperty(PROPRIEDADE_CPF)));
             this.peloId(ID_INPUT_CNPJ).setValue(formatter.formatarCpf(modeloCliente.getProperty(PROPRIEDADE_CNPJ)));
-            this.peloId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
         },
 
         _registarModeloParaVailidacao: function(){
