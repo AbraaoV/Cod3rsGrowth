@@ -87,7 +87,7 @@ sap.ui.define([
             Detalhes: ${data.detail}
             Erros: ${detalhesDoErro}`;
     
-            MessageBox.error(`${MSG_ERRO_ADICIONAR_CLIENTE}\n${mensagemErro}`);
+            MessageBox.error(`${MSG_DE_ERRO}\n${mensagemErro}`);
         },
     });
 });
