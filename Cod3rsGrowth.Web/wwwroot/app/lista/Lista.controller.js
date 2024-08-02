@@ -4,7 +4,10 @@ sap.ui.define([
    "ui5/codersgrowth/common/ConstantesLayoutDoApp",
    "ui5/codersgrowth/common/ConstantesDaRota",
    "../model/formatter",
-], function (ControllerBase, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, formatter) {
+   "ui5/codersgrowth/common/HttpRequest",
+   "ui5/codersgrowth/common/ConstatesDasRequests"
+
+], function (ControllerBase, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, formatter, HttpRequest, ConstatesDasRequests) {
    "use strict";
    let _filtroTipo = null;
    let _filtroNome = "";
@@ -45,7 +48,7 @@ sap.ui.define([
       _aoCoincidirRota: async function(){
          this._filtrarPelaRota();
          this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
-         this._modelo(await this._get(urlFinal), NOME_DO_MODELO_DA_LISTA);
+         this._modelo(await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, urlFinal), NOME_DO_MODELO_DA_LISTA);
       },
 
       aoClicarEmFiltro: async function(){
@@ -130,7 +133,7 @@ sap.ui.define([
          }
          window.history.pushState({}, '', url);
          urlFinal = ConstantesDoBanco.CAMINHO_PARA_API + "?" + urlParams;
-         this._modelo(await this._get(urlFinal), NOME_DO_MODELO_DA_LISTA);
+         this._modelo(await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, urlFinal), NOME_DO_MODELO_DA_LISTA);
       },
 
    });

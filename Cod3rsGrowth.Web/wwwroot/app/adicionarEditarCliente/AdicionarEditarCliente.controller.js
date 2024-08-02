@@ -6,8 +6,11 @@ sap.ui.define([
     "ui5/codersgrowth/common/ConstantesDoBanco",
     "ui5/codersgrowth/common/ConstantesLayoutDoApp",
     "ui5/codersgrowth/common/ConstantesDaRota",
-    "../model/formatter"
-], (Messaging, ControllerBase, JSONModel, MessageBox, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, formatter) => {
+    "../model/formatter",
+    "ui5/codersgrowth/common/HttpRequest",
+    "ui5/codersgrowth/common/ConstatesDasRequests",
+
+], (Messaging, ControllerBase, JSONModel, MessageBox, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, formatter, HttpRequest, ConstatesDasRequests) => {
     "use strict";
     const CAMINHO_PARA_API_ENUM = "/api/EnumTipo"
     const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
@@ -47,23 +50,31 @@ sap.ui.define([
     return ControllerBase.extend("ui5.codersgrowth.app.adicionarEditarCliente.AdicionarEditarCliente", {
         onInit: async function() {
             this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_ADICIONAR_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
-            this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_EDITAR_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
             this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_EDITAR_CLIENTE).attachPatternMatched(this._aoCoincidirRotaEditar, this);
         },
 
         _aoCoincidirRota: async function(){
-            this._modelo(await this._get(CAMINHO_PARA_API_ENUM), NOME_DO_MODELO_DA_COMBOX_BOX)
+           this._exibirEspera(async () => await this._definirValoresPadroes());
+        },
+
+        _aoCoincidirRotaEditar: async function(){
+            this._exibirEspera(async () =>{
+                await this._definirValoresPadroes()
+                let resultado = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, ConstantesDoBanco.CAMINHO_PARA_API + "/38");
+                this._modelo(new JSONModel(resultado), NOME_DO_MODELO_DO_CLIENTE);
+                this._prencherCliente();
+                this._definirTituloEdicao();
+            })
+        },
+
+        _definirValoresPadroes: async function(){
+            let retorno = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, CAMINHO_PARA_API_ENUM);
+            this._modelo(new JSONModel(retorno), NOME_DO_MODELO_DA_COMBOX_BOX)
             this.aoSelecionarTipoPessoa();
             this._registarModeloParaVailidacao()
             this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
             this.getView().byId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
             this._definitTituloCadastro();
-        },
-
-        _aoCoincidirRotaEditar: async function(){
-            this._modelo(await this._get(ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA]), NOME_DO_MODELO_DO_CLIENTE);
-            this._prencherCliente();
-            this._definirTituloEdicao();
         },
 
         _definirTituloEdicao: function(){
@@ -182,7 +193,7 @@ sap.ui.define([
         },
 
         aoClicarEmSalvar: function(){
-            this._exibirEspera(() => {
+            this._exibirEspera(async () => {
                 const nome = this.getView().byId(ID_INPUT_NOME);
                 const cpf = this.getView().byId(ID_INPUT_CPF);
                 const cnpj = this.getView().byId(ID_INPUT_CNPJ);
@@ -217,21 +228,22 @@ sap.ui.define([
                     tipo: tipoPessoa
                 };
                 if(this.obterParametros()[INDEX_DO_NOME_DA_ROTA] === ROTA_EDITAR){
-                    this._atualizarCliente(cliente);
+                    await this._atualizarCliente(cliente);
                 }else{
-                    this._adicionarCliente(cliente);
+                    await this._adicionarCliente(cliente);
                 }
                 
                 
             });    
         },
 
-        _adicionarCliente: function(cliente){
-            this._post(ConstantesDoBanco.CAMINHO_PARA_API, cliente, () => this._sucessoNaRequicao(MSG_SUCESSO_CADASATRO_CLIENTE), this._falhaNaRequicao);
+        _adicionarCliente: async function(cliente){
+            await HttpRequest._request("POST", ConstantesDoBanco.CAMINHO_PARA_API, cliente, this._falhaNaRequicao);
         },
 
-        _atualizarCliente: function(cliente){
-            this._put(ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA], cliente, () => this._sucessoNaRequicao(MSG_SUCESSO_EDITAR_CLIENTE, true), this._falhaNaRequicao);
+        _atualizarCliente: async function(cliente){
+            var editar = await HttpRequest._request("PUT", ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA], cliente, this._falhaNaRequicao);
+            this._sucessoNaRequicao(MSG_SUCESSO_EDITAR_CLIENTE, true)
         },  
         
         _limparCampos: function() {

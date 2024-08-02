@@ -40,7 +40,7 @@ namespace Cod3rsGrowth.Web.Controllers
             return Created("Cliente", cliente);
         }
         [HttpPut(ConstantesDaController.PARAMETRO_ID)]
-        public IActionResult Atualizar(int id, Dominio.Cliente cliente)
+        public async Task<IActionResult> Atualizar(int id, Dominio.Cliente cliente)
         {
             _servicoCliente.Atualizar(id, cliente);
             return Ok();
