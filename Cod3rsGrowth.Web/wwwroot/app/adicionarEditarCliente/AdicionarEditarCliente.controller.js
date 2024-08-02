@@ -54,7 +54,7 @@ sap.ui.define([
         },
 
         _aoCoincidirRota: async function(){
-           this._exibirEspera(async () => await this._definirValoresPadroes());
+            this._exibirEspera(async () => await this._definirValoresPadroes());
         },
 
         _aoCoincidirRotaEditar: async function(){
@@ -121,23 +121,13 @@ sap.ui.define([
                         () => this._limparCampos(); 
                     } else if (sAction === OPCAO_VOLTAR_PARA_PAGINA_INICIAL) {
                         () => this._limparCampos(); 
-                        () => this.getOwnerComponent().getRouter().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
+                        this.getOwnerComponent().getRouter().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
                     }
                 }
             });
         },
 
-        _falhaNaRequicao: function(data){
-            const detalhesDoErro = data.extensions.errors.join('\n');
-            const mensagemErro = `
-            Tipo: ${data.type}
-            Título: ${data.title}
-            Status: ${data.status}
-            Detalhes: ${data.detail}
-            Erros: ${detalhesDoErro}`;
-    
-            MessageBox.error(`${MSG_ERRO_ADICIONAR_CLIENTE}\n${mensagemErro}`);
-        },
+        
 
         _validarInput: function (oInput) {
 			let sEstadoDoValor = VALOR_PADRAO;
@@ -238,11 +228,12 @@ sap.ui.define([
         },
 
         _adicionarCliente: async function(cliente){
-            await HttpRequest._request("POST", ConstantesDoBanco.CAMINHO_PARA_API, cliente, this._falhaNaRequicao);
+            await HttpRequest._request("POST", ConstantesDoBanco.CAMINHO_PARA_API, cliente);
+            this._sucessoNaRequicao(MSG_SUCESSO_CADASATRO_CLIENTE)
         },
 
         _atualizarCliente: async function(cliente){
-            var editar = await HttpRequest._request("PUT", ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA], cliente, this._falhaNaRequicao);
+            await HttpRequest._request("PUT", ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA], cliente);
             this._sucessoNaRequicao(MSG_SUCESSO_EDITAR_CLIENTE, true)
         },  
         

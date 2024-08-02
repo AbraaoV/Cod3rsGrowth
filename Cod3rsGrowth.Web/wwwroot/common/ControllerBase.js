@@ -44,36 +44,50 @@ sap.ui.define([
         _exibirEspera: function (funcao) {
             this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", true);
 
-            return Promise.resolve(funcao()).catch(x => {
+            return Promise.resolve(funcao())
+                .catch(x => {
                 const reader = x.body.getReader()
-                let a = new ReadableStream({
-                    start(controller) {
-                        function enqueueValues() {
-                            reader.read()
-                            .then(({ done, value }) => {
-                                if (done) {
-                                    controller.close()
-                                    return
-                                }
-                                controller.enqueue(value)
-
-                                enqueueValues();
-                            })
-                        }
-                        enqueueValues()
-                    }})
-                    return new Response(a).json().then((x)=>{
-                        debugger
-                         MessageBox.error(x)
-                    })
-            })
-            .finally(()=>{
-                this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", false);
-            });
+                    let a = new ReadableStream({
+                        start(controller) {
+                            function enqueueValues() {
+                                reader.read()
+                                .then(({ done, value }) => {
+                                    if (done) {
+                                        controller.close()
+                                        return
+                                    }
+                                    controller.enqueue(value)
+    
+                                    enqueueValues();
+                                })
+                            }
+                            enqueueValues()
+                        }})
+                        return new Response(a).json().then((x)=>{
+                            this._falhaNaRequicao(x)
+                        })
+                
+                })
+                .finally(()=>{
+                    this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", false);
+                });
+            
         },
 
         _modelo: function (oModel, sNomeModelo) {
             return this.getView().setModel(oModel, sNomeModelo);
+        },
+
+        _falhaNaRequicao: function(data){
+            const detalhesDoErro = data.extensions.errors.join('\n');
+            const mensagemErro = `
+            Tipo: ${data.type}
+            Título: ${data.title}
+            Status: ${data.status}
+            Detalhes: ${data.detail}
+            Erros: ${detalhesDoErro}`;
+    
+            MessageBox.error(`${MSG_ERRO_ADICIONAR_CLIENTE}\n${mensagemErro}`);
         },
     });
 });

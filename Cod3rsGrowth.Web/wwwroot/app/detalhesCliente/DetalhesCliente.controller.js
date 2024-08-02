@@ -6,7 +6,8 @@ sap.ui.define([
 	"ui5/codersgrowth/common/ConstantesDaRota",
 	"ui5/codersgrowth/common/HttpRequest",
     "ui5/codersgrowth/common/ConstatesDasRequests",
-], function (formatter, ControllerBase, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, HttpRequest, ConstatesDasRequests) {
+	'sap/ui/model/json/JSONModel'
+], function (formatter, ControllerBase, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, HttpRequest, ConstatesDasRequests, JSONModel) {
 	"use strict";
 	const ID_BOTAO_TELA_CHEIA = "botaoTelaCheia"
 	const ID_BOTAO_SAIR_TELA_CHEIA = "botaoSairTelaCheia"
@@ -53,8 +54,11 @@ sap.ui.define([
         },
 
 		_aoCoincidirRota: async function () {
-			this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_DUAS_COLUNAS_DIVIDAS)
-			this._modelo(await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[ID_DO_CLIENTE_NA_ROTA]), NOME_DO_MODELO_DO_CLIENTE);
+			this._exibirEspera(async () => {
+				this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_DUAS_COLUNAS_DIVIDAS)
+				let retorno = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[ID_DO_CLIENTE_NA_ROTA])
+				this._modelo(new JSONModel(retorno), NOME_DO_MODELO_DO_CLIENTE);
+			})
 		}
 	});
 });
