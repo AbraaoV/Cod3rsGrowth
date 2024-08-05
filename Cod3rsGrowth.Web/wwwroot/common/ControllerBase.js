@@ -64,7 +64,7 @@ sap.ui.define([
                             enqueueValues()
                         }})
                         return new Response(a).json().then((x)=>{
-                            this._falhaNaRequicao(x)
+                            this._formatarMensagemDeErro(x)
                         })
                 
                 })
@@ -78,7 +78,7 @@ sap.ui.define([
             return this.getView().setModel(oModel, sNomeModelo);
         },
 
-        _falhaNaRequicao: function(data){
+        _formatarMensagemDeErro: function(data){
             const detalhesDoErro = data.extensions.errors.join('\n');
             const mensagemErro = `
             Tipo: ${data.type}
