@@ -129,10 +129,9 @@ sap.ui.define([
                querry.tipo = _filtroTipo;
             }
             const urlParams = new URLSearchParams(querry);
-            const urlBase =  window.location.origin
+            const urlBase =  window.location.origin + window.location.pathname;
             
             let url = `${urlBase}?${urlParams.toString()}`;
-
             if(window.location.hash){
                url += window.location.hash;
             }

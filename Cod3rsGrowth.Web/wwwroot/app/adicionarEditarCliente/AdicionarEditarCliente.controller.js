@@ -54,7 +54,10 @@ sap.ui.define([
         },
 
         _aoCoincidirRota: async function(){
-            this._exibirEspera(async () => await this._definirValoresPadroes());
+            this._exibirEspera(async () => {
+                await this._definirValoresPadroes();
+                this._limparCampos();
+            })
         },
 
         _aoCoincidirRotaEditar: async function(){
@@ -78,11 +81,11 @@ sap.ui.define([
         },
 
         _definirTituloEdicao: function(){
-            sap.ui.getCore().byId(ID_PANEL).setHeaderText(TITULO_DO_PANEL_EDITAR)
+            this.getView().byId("panelCliente").setHeaderText(TITULO_DO_PANEL_EDITAR)
         },
 
         _definitTituloCadastro: function(){
-            sap.ui.getCore().byId(ID_PANEL).setHeaderText(TITULO_DO_PANEL_CADASTRO)
+            this.getView().byId("panelCliente").setHeaderText(TITULO_DO_PANEL_CADASTRO)
         },
 
         _prencherCliente: function(){
@@ -121,7 +124,7 @@ sap.ui.define([
                         () => this._limparCampos(); 
                     } else if (sAction === OPCAO_VOLTAR_PARA_PAGINA_INICIAL) {
                         () => this._limparCampos(); 
-                        this.getOwnerComponent().getRouter().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
+                        () => this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
                     }
                 }
             });
@@ -238,9 +241,9 @@ sap.ui.define([
         },  
         
         _limparCampos: function() {
-            this.getView().byId(ID_INPUT_NOME).setValue(undefined);
-            this.getView().byId(ID_INPUT_CPF).setValue(undefined);
-            this.getView().byId(ID_INPUT_CNPJ).setValue(undefined);
+            this.getView().byId(ID_INPUT_NOME).setValue(undefined).setValueState(undefined);
+            this.getView().byId(ID_INPUT_CPF).setValue(undefined).setValueState(undefined);
+            this.getView().byId(ID_INPUT_CNPJ).setValue(undefined).setValueState(undefined);
             this.getView().byId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
         },
         

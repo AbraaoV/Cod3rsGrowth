@@ -43,51 +43,72 @@ sap.ui.define([
 
         _exibirEspera: function (funcao) {
             this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", true);
-
+        
             return Promise.resolve(funcao())
-                .catch(x => {
-                const reader = x.body.getReader()
-                    let a = new ReadableStream({
-                        start(controller) {
-                            function enqueueValues() {
-                                reader.read()
-                                .then(({ done, value }) => {
-                                    if (done) {
-                                        controller.close()
-                                        return
-                                    }
-                                    controller.enqueue(value)
-    
-                                    enqueueValues();
-                                })
+                .catch(error => {
+                    if (error.body && error.body.getReader) {
+                        const leitor = error.body.getReader();
+                        let mensagemDeErro = new ReadableStream({
+                            start(controller) {
+                                function enfileirarValores() {
+                                    leitor.read()
+                                        .then(({ done, value }) => {
+                                            if (done) {
+                                                controller.close();
+                                                return;
+                                            }
+                                            controller.enqueue(value);
+                                            enfileirarValores();
+                                        })
+                                        .catch(err => {
+                                            console.error('Erro ao ler conteúdo da resposta:', err);
+                                            controller.error(err);
+                                        });
+                                }
+                                enfileirarValores();
                             }
-                            enqueueValues()
-                        }})
-                        return new Response(a).json().then((x)=>{
-                            this._formatarMensagemDeErro(x)
-                        })
-                
+                        });
+                        return new Response(mensagemDeErro).json().then(error => {
+                            this._formatarMensagemDeErro(error);
+                        });
+                    } else {
+                        return MessageBox.error(MSG_DE_ERRO + error.message, {
+                            details: error.stack,
+                            contentWidth: "25%",
+                        });
+                    }
                 })
-                .finally(()=>{
+                .finally(() => {
                     this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", false);
                 });
-            
         },
+        
 
         _modelo: function (oModel, sNomeModelo) {
             return this.getView().setModel(oModel, sNomeModelo);
         },
 
-        _formatarMensagemDeErro: function(data){
-            const detalhesDoErro = data.extensions.errors.join('\n');
+        _formatarMensagemDeErro: function(data) {
+            let detalhesDoErro = '';
+            if (data.extensions && data.extensions.errors) {
+                detalhesDoErro = data.extensions.errors.join('\n');
+            }
+        
+            const tituloErro = data.title;
+        
             const mensagemErro = `
-            Tipo: ${data.type}
-            Título: ${data.title}
-            Status: ${data.status}
-            Detalhes: ${data.detail}
-            Erros: ${detalhesDoErro}`;
-    
-            MessageBox.error(`${MSG_DE_ERRO}\n${mensagemErro}`);
+                Tipo: ${data.type}<br>
+                Título: ${data.title}<br>
+                Status: ${data.status}<br>
+                Detalhes: ${data.detail}<br>
+                Erros: ${detalhesDoErro}<br>
+            `;
+        
+            MessageBox.error(tituloErro, {
+                details: mensagemErro,
+                contentWidth: "25%",
+            });
+            
         },
     });
 });

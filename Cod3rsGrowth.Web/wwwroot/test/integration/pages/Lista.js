@@ -27,9 +27,10 @@ sap.ui.define([
 					return this.waitFor({
 						id: "filtroPesquisa",
 						viewName: sViewName,
-						actions: new EnterText({
-							text: sNomeCliente
-						}),
+						actions: function (oMenuItem) {
+							oMenuItem.setValue(sNomeCliente);
+							oMenuItem.fireLiveChange()
+						},
 						errorMessage: "Barra de pesquisa não encontrada."
 					});
 				},
