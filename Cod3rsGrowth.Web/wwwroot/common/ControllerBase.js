@@ -61,8 +61,7 @@ sap.ui.define([
                                             enfileirarValores();
                                         })
                                         .catch(err => {
-                                            console.error('Erro ao ler conteúdo da resposta:', err);
-                                            controller.error(err);
+                                            MessageBox.error(MSG_DE_ERRO + err)
                                         });
                                 }
                                 enfileirarValores();

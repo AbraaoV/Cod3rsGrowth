@@ -10,11 +10,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentMigrator" Version="5.2.0" />
     <PackageReference Include="FluentMigrator.Runner" Version="5.2.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="7.0.20" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.1" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.23.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="127.0.6533.8800" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="Xunit.Microsoft.DependencyInjection" Version="7.0.10" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
@@ -31,6 +38,7 @@
     <ProjectReference Include="..\Cod3rsGrowth.Dominio\Cod3rsGrowth.Dominio.csproj" />
     <ProjectReference Include="..\Cod3rsGrowth.Infra\Cod3rsGrowth.Infra.csproj" />
     <ProjectReference Include="..\Cod3rsGrowth.Servico\Cod3rsGrowth.Servico.csproj" />
+    <ProjectReference Include="..\Cod3rsGrowth.Web\Cod3rsGrowth.Web.csproj" />
   </ItemGroup>
 
 </Project>

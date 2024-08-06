@@ -16,7 +16,6 @@ namespace Cod3rsGrowth.Testes
     public class TesteServicoCliente : TesteBase
     {
         private readonly ServicoCliente _servicosCliente;
-        private readonly DataConnection _dataConnection;
         public TesteServicoCliente()
         {
             _servicosCliente = ServiceProvider.GetService<ServicoCliente>();
