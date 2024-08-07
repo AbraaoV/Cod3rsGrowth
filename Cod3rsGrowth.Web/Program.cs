@@ -1,69 +1,21 @@
-using Cod3rsGrowth.Dominio;
-using Cod3rsGrowth.Dominio.Migracoes;
-using Cod3rsGrowth.Infra;
-using Cod3rsGrowth.Servico.Servicos;
-using FluentMigrator.Runner;
-using FluentValidation;
-using Microsoft.Extensions.FileProviders;
-using System.Text.Json.Serialization;
-using ConfigurationManager = System.Configuration.ConfigurationManager;
+using Cod3rsGrowth.Web;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
-
-var builder = WebApplication.CreateBuilder(args);
-
-var appSettings = ConfigurationManager.AppSettings;
-string result = appSettings[ConstantesDosRepositorios.CONNECTION_STRING];
-
-builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
-    .AddSqlServer()
-    .WithGlobalConnectionString(result)
-    .ScanIn(typeof(AtualizarTabela).Assembly).For.Migrations()
-).AddLogging(lb => lb.AddFluentMigratorConsole());
-
-builder.Services.AddMvc().AddJsonOptions(x =>
+namespace Cod3rsGrowth
 {
-    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDirectoryBrowser();
-builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<ServicoCliente>();   
-builder.Services.AddScoped<ServicoPedido>();
-builder.Services.AddScoped<IClienteRepositorio, ClienteRepositorio>();
-builder.Services.AddScoped<IPedidoRepositorio, PedidoRepositorio>();
-builder.Services.AddScoped<IValidator<Cliente>, ValidacaoCliente>();
-builder.Services.AddScoped<IValidator<Pedido>, ValidacaoPedido>();
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
 
-
-
-var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+    }
 }
-
-using(var scope = app.Services.CreateScope())
-{
-    var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
-    runner.MigrateUp();
-}
-app.UseHttpsRedirection();
-
-app.UseFileServer(new FileServerOptions()
-{
-    EnableDirectoryBrowsing = true
-});
-app.UseStaticFiles(new StaticFileOptions() 
-{ 
-    ServeUnknownFileTypes = true 
-});
-
-app.UseProblemDetailsExceptionHandler(app.Services.GetRequiredService<ILoggerFactory>());
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
