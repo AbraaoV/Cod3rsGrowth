@@ -16,7 +16,6 @@ sap.ui.define([
     const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
     const MSG_SUCESSO_CADASATRO_CLIENTE = "Cliente cadastrado com sucesso."
     const MSG_SUCESSO_EDITAR_CLIENTE = "Cliente editado com sucesso."
-    const MSG_ERRO_ADICIONAR_CLIENTE = "Erro ao adicionar cliente:"
     const OPCAO_NOVO_CADASTRO = "Novo Cadastro"
     const OPCAO_VOLTAR_PARA_PAGINA_INICIAL = "Voltar à Página Inicial"
     const ID_COMBO_BOX = "comboxTipo"
@@ -39,7 +38,7 @@ sap.ui.define([
     const INDEX_DO_ID_DO_CLIENTE_NA_ROTA = 1
     const TITULO_DO_PANEL_CADASTRO = "Cadastro de Cliente"
     const TITULO_DO_PANEL_EDITAR = "Editar Cliente"
-    const ID_PANEL = "container-codersgrowth---adicionarEditarCliente--panelCliente"
+    const ID_PANEL = "panelCliente"
     const PROPRIEDADE_NOME = "/nome"
     const PROPRIEDADE_CPF = "/cpf"
     const PROPRIEDADE_CNPJ = "/cnpj"
@@ -63,7 +62,7 @@ sap.ui.define([
         _aoCoincidirRotaEditar: async function(){
             this._exibirEspera(async () =>{
                 await this._definirValoresPadroes()
-                let resultado = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, ConstantesDoBanco.CAMINHO_PARA_API + "/38");
+                let resultado = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, ConstantesDoBanco.CAMINHO_PARA_API + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA]);
                 this._modelo(new JSONModel(resultado), NOME_DO_MODELO_DO_CLIENTE);
                 this._prencherCliente();
                 this._definirTituloEdicao();
@@ -81,11 +80,11 @@ sap.ui.define([
         },
 
         _definirTituloEdicao: function(){
-            this.getView().byId("panelCliente").setHeaderText(TITULO_DO_PANEL_EDITAR)
+            this.getView().byId(ID_PANEL).setHeaderText(TITULO_DO_PANEL_EDITAR)
         },
 
         _definitTituloCadastro: function(){
-            this.getView().byId("panelCliente").setHeaderText(TITULO_DO_PANEL_CADASTRO)
+            this.getView().byId(ID_PANEL).setHeaderText(TITULO_DO_PANEL_CADASTRO)
         },
 
         _prencherCliente: function(){
@@ -105,7 +104,7 @@ sap.ui.define([
             let oView = this.getView(),
             oMM = Messaging;
 
-            oView.setModel(new JSONModel({ name: undefined, cpf: undefined, cnpj: undefined}), NOME_DO_MODELO_DOS_FILTROS);
+            oView.setModel(new JSONModel({ name: "", cpf: "", cnpj: ""}), NOME_DO_MODELO_DOS_FILTROS);
 
             oMM.registerObject(oView.byId(ID_INPUT_NOME), true);
             oMM.registerObject(oView.byId(ID_INPUT_CPF), true);
@@ -129,8 +128,6 @@ sap.ui.define([
                 }
             });
         },
-
-        
 
         _validarInput: function (oInput) {
 			let sEstadoDoValor = VALOR_PADRAO;

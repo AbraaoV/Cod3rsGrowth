@@ -32,7 +32,11 @@ sap.ui.define([
       formatter: formatter,
       onInit: async function() {
          this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
-         this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._filtrarPelaRota, this);
+         this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._aoCoincidirRotaComFltro, this);
+      },
+
+      _aoCoincidirRotaComFltro: function(){
+         this._exibirEspera(()=> this._filtrarPelaRota())
       },
 
       _filtrarPelaRota: function(){
