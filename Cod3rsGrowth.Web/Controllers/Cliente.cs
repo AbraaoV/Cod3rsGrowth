@@ -6,6 +6,7 @@ using Cod3rsGrowth.Dominio;
 using System.Data;
 using Cod3rsGrowth.Servico.Servicos;
 using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace Cod3rsGrowth.Web.Controllers
 {
@@ -36,11 +37,12 @@ namespace Cod3rsGrowth.Web.Controllers
         [HttpPost]
         public IActionResult Adicionar(Dominio.Cliente cliente)
         {
+
             _servicoCliente.Adicionar(cliente);
             return Created("Cliente", cliente);
         }
         [HttpPut(ConstantesDaController.PARAMETRO_ID)]
-        public IActionResult Atualizar(int id, Dominio.Cliente cliente)
+        public async Task<IActionResult> Atualizar(int id, Dominio.Cliente cliente)
         {
             _servicoCliente.Atualizar(id, cliente);
             return Ok();

@@ -23,7 +23,7 @@ public static class ProblemDetailsExtensions
                     {
                         Instance = context.Request.HttpContext.Request.Path,
                         Title = ConstantesDaController.TITULO,
-                        Detail = ConstantesDaController.DETALHE,
+                        Detail = exception.StackTrace,
                         Type = ConstantesDaController.TIPO,
                         Status = StatusCodes.Status400BadRequest
                     };

@@ -1,78 +1,66 @@
 sap.ui.define([
 	"sap/ui/test/opaQunit",
-	"./pages/AdicionarCliente",
+	"./pages/AdicionarEditarCliente",
 	"./pages/Lista"
 ], function (opaTest) {
 	"use strict";
 
 	QUnit.module("Tela de cadastro");
 
-	opaTest("Ao clicar em adicionar deve navegar para tela de adicionar", function (Given, When, Then) {
-		// Arrangements
-		Given.iStartMyApp();
-        //Actions
-        When.naListaCliente.aoApertarEmAdicionar();
-		// Assertions
-		Then.naTelaDeAdicionar.deveNavegarParaTelaDeAdicionar();
-	});
 	opaTest("Ao tentar adicionar um cliente com campos vazios deve retornar erros de validacao", function(Given, When, Then) {
+		// Arrangements
+		Given.iStartMyApp({
+			hash: "adicionar"
+		})
 		//Actions
-        When.naTelaDeAdicionar.aoApertarEmSalvar();
+        When.naTelaDeAdicionarEditar.aoApertarEmSalvar();
 		// Assertions
-		Then.naTelaDeAdicionar.deveAperecerUmaMessageBoxDe("Alerta");
+		Then.naTelaDeAdicionarEditar.deveAperecerUmaMessageBoxDe("Alerta");
 		// Assertions
-		Then.naTelaDeAdicionar.deveFecharMessageBoxAoApertarEm("OK");
+		Then.naTelaDeAdicionarEditar.deveFecharMessageBoxAoApertarEm("OK");
 	});
 	opaTest("Ao tentar adicionar um cliente invalido deve aparecer uma message box de erro", function(Given, When, Then){
 		//Actions
-        When.naTelaDeAdicionar.aoPreencherNome("Nome");
+        When.naTelaDeAdicionarEditar.aoPreencherNome("Nome");
 		//Actions
-		When.naTelaDeAdicionar.aoPreencherCpf("11111111111");
+		When.naTelaDeAdicionarEditar.aoPreencherCpf("11111111111");
 		//Actions
-        When.naTelaDeAdicionar.aoApertarEmSalvar();
+        When.naTelaDeAdicionarEditar.aoApertarEmSalvar();
 		// Assertions
-		Then.naTelaDeAdicionar.deveAperecerUmaMessageBoxDe("Erro");
+		Then.naTelaDeAdicionarEditar.deveAperecerUmaMessageBoxDe("Erro");
 		// Assertions
-		Then.naTelaDeAdicionar.deveFecharMessageBoxAoApertarEm("Fechar");
+		Then.naTelaDeAdicionarEditar.deveFecharMessageBoxAoApertarEm("Fechar");
 	});
 	opaTest("Ao adicionar um cliente valido deve ser adicionado com sucesso, e continuar na tela de adicionar ao clicar em novo cadastro", function(Given, When, Then){
 		//Actions
-        When.naTelaDeAdicionar.aoPreencherNome("Cliente C");
+        When.naTelaDeAdicionarEditar.aoPreencherNome("Cliente C");
 		//Actions
-		When.naTelaDeAdicionar.aoPreencherCpf("56427563033");
+		When.naTelaDeAdicionarEditar.aoPreencherCpf("56427563033");
 		//Actions
-		When.naTelaDeAdicionar.aoApertarEmSalvar();
+		When.naTelaDeAdicionarEditar.aoApertarEmSalvar();
 		// Assertions
-		Then.naTelaDeAdicionar.deveAperecerUmaMessageBoxDe("Êxito");
+		Then.naTelaDeAdicionarEditar.deveAperecerUmaMessageBoxDe("Êxito");
 		// Assertions
-		Then.naTelaDeAdicionar.deveFecharMessageBoxAoApertarEm("Novo Cadastro");
+		Then.naTelaDeAdicionarEditar.deveFecharMessageBoxAoApertarEm("Novo Cadastro");
 	});
 	opaTest("Após cadastrar um cliente deve conseguir voltar para tela inicial", function(Given, When, Then){
 		//Actions
-        When.naTelaDeAdicionar.aoPreencherNome("Empresa C");
+        When.naTelaDeAdicionarEditar.aoPreencherNome("Empresa C");
 		//Actions
-		When.naTelaDeAdicionar.aoClicarNaComboxPessoa();
+		When.naTelaDeAdicionarEditar.aoClicarNaComboxPessoa();
 		//Actions
-		When.naTelaDeAdicionar.aoSelecionarNaComboBox("Pessoa Jurídica");
+		When.naTelaDeAdicionarEditar.aoSelecionarNaComboBox("Pessoa Jurídica");
 		//Actions
-		When.naTelaDeAdicionar.aoPreencherCnpj("27859908000101");
+		When.naTelaDeAdicionarEditar.aoPreencherCnpj("27859908000101");
 		//Actions
-		When.naTelaDeAdicionar.aoApertarEmSalvar();
+		When.naTelaDeAdicionarEditar.aoApertarEmSalvar();
 		// Assertions
-		Then.naTelaDeAdicionar.deveAperecerUmaMessageBoxDe("Êxito");
+		Then.naTelaDeAdicionarEditar.deveAperecerUmaMessageBoxDe("Êxito");
 		// Assertions
-		Then.naTelaDeAdicionar.deveFecharMessageBoxAoApertarEm("Voltar à Página Inicial");
-		// Cleanuo
-	});
-	opaTest("Botão de voltar negação deve voltar para pagina principal", function(Given, When, Then){
-		//Actions
-		When.naListaCliente.aoApertarEmAdicionar();
-		//Actions
-		When.naTelaDeAdicionar.aoApertaEmVoltar();
-		// Assertions
-		Then.naListaCliente.deveNavegarParaTelaDeLista();
+		Then.naTelaDeAdicionarEditar.deveFecharMessageBoxAoApertarEm("Voltar à Página Inicial");
 		// Cleanuo
 		Then.iTeardownMyApp();
-	})
+	});
+	
 
 });

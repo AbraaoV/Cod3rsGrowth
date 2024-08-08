@@ -4,7 +4,11 @@ sap.ui.define([
    "ui5/codersgrowth/common/ConstantesLayoutDoApp",
    "ui5/codersgrowth/common/ConstantesDaRota",
    "../model/formatter",
-], function (ControllerBase, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, formatter) {
+   "ui5/codersgrowth/common/HttpRequest",
+   "ui5/codersgrowth/common/ConstatesDasRequests",
+   "sap/ui/model/json/JSONModel"
+
+], function (ControllerBase, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, formatter, HttpRequest, ConstatesDasRequests, JSONModel) {
    "use strict";
    let _filtroTipo = null;
    let _filtroNome = "";
@@ -28,7 +32,11 @@ sap.ui.define([
       formatter: formatter,
       onInit: async function() {
          this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
-         this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._aoCoincidirRota, this);
+         this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._aoCoincidirRotaComFltro, this);
+      },
+
+      _aoCoincidirRotaComFltro: function(){
+         this._exibirEspera(()=> this._filtrarPelaRota())
       },
 
       _filtrarPelaRota: function(){
@@ -37,13 +45,18 @@ sap.ui.define([
          _filtroNome = urlParams.get(PARAMETRO_FILTRO_NOME);
          _filtroTipo = urlParams.has(PARAMETRO_FILTRO_TIPO) ? parseInt(urlParams.get(PARAMETRO_FILTRO_TIPO)) : null;
          urlFinal = ConstantesDoBanco.CAMINHO_PARA_API + "?" + urlParams;
-         const prencherCampoPequisa = this.byId(ID_FILTRO_DE_PESQUISA).setValue(_filtroNome);
+         this.byId(ID_FILTRO_DE_PESQUISA).setValue(_filtroNome);
+
+         this._adicionarParametros();
       },
 
       _aoCoincidirRota: async function(){
-         this._filtrarPelaRota();
-         this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
-         this._modelo(await this._get(urlFinal), NOME_DO_MODELO_DA_LISTA);
+         this._exibirEspera(async () =>{
+            this._filtrarPelaRota();
+            this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
+            let retorno = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, urlFinal)
+            this._modelo(new JSONModel(retorno), NOME_DO_MODELO_DA_LISTA);
+         })
       },
 
       aoClicarEmFiltro: async function(){
@@ -111,24 +124,26 @@ sap.ui.define([
       },
 
       _adicionarParametros: async function(){
-         let querry = {};
-         if (_filtroNome) {
-            querry.nome = _filtroNome;
-         }
-         if (_filtroTipo !== null) {
-            querry.tipo = _filtroTipo;
-         }
-         const urlParams = new URLSearchParams(querry);
-         const urlBase =  window.location.origin
-         
-         let url = `${urlBase}?${urlParams.toString()}`;
-
-         if(window.location.hash){
-            url += window.location.hash;
-         }
-         window.history.pushState({}, '', url);
-         urlFinal = ConstantesDoBanco.CAMINHO_PARA_API + "?" + urlParams;
-         this._modelo(await this._get(urlFinal), NOME_DO_MODELO_DA_LISTA);
+         this._exibirEspera(async () => {
+            let querry = {};
+            if (_filtroNome) {
+               querry.nome = _filtroNome;
+            }
+            if (_filtroTipo !== null) {
+               querry.tipo = _filtroTipo;
+            }
+            const urlParams = new URLSearchParams(querry);
+            const urlBase =  window.location.origin + window.location.pathname;
+            
+            let url = `${urlBase}?${urlParams.toString()}`;
+            if(window.location.hash){
+               url += window.location.hash;
+            }
+            window.history.pushState({}, '', url);
+            urlFinal = ConstantesDoBanco.CAMINHO_PARA_API + "?" + urlParams;
+            let retorno = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, urlFinal)
+            this._modelo(new JSONModel(retorno), NOME_DO_MODELO_DA_LISTA);
+         });   
       },
 
    });

@@ -14,7 +14,7 @@ namespace Cod3rsGrowth.Web.Controllers
                                  .Cast<Dominio.Cliente.TipoDeCliente>()
                                  .Select(e => new
                                  {
-                                     Key = (int)e,
+                                     Key = e.ToString(),
                                      Descricao = Dominio.Cliente.capturarDescricaoEnum(e)
                                  })
                                  .ToList();
