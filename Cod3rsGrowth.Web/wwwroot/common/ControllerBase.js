@@ -93,19 +93,14 @@ sap.ui.define([
                 detalhesDoErro = data.extensions.errors.join('\n');
             }
         
-            const tituloErro = data.title;
-        
             const mensagemErro = `
-                Tipo: ${data.type}<br>
-                Título: ${data.title}<br>
-                Status: ${data.status}<br>
-                Detalhes: ${data.detail}<br>
                 Erros: ${detalhesDoErro}<br>
+                Detalhes: ${data.detail}<br>
             `;
         
-            MessageBox.error(tituloErro, {
+            MessageBox.error(data.title, {
                 details: mensagemErro,
-                contentWidth: "25%",
+                contentWidth: "40%",
             });
             
         },

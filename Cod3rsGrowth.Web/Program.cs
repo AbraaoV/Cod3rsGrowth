@@ -2,9 +2,9 @@ using Cod3rsGrowth.Dominio;
 using Cod3rsGrowth.Dominio.Migracoes;
 using Cod3rsGrowth.Infra;
 using Cod3rsGrowth.Servico.Servicos;
+using Cod3rsGrowth.Web;
 using FluentMigrator.Runner;
 using FluentValidation;
-using Microsoft.Extensions.FileProviders;
 using System.Text.Json.Serialization;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
 
@@ -12,11 +12,16 @@ using ConfigurationManager = System.Configuration.ConfigurationManager;
 var builder = WebApplication.CreateBuilder(args);
 
 var appSettings = ConfigurationManager.AppSettings;
-string result = appSettings[ConstantesDosRepositorios.CONNECTION_STRING];
+string connectionString = appSettings[ConstantesDosRepositorios.CONNECTION_STRING];
+
+if (builder.Environment.EnvironmentName == ConstantesApi.NOME_DO_PERFIL_DE_TESTE)
+{
+    connectionString = appSettings[ConstantesDosRepositorios.CONNECTION_STRING_TESTE];
+}
 
 builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
     .AddSqlServer()
-    .WithGlobalConnectionString(result)
+    .WithGlobalConnectionString(connectionString)
     .ScanIn(typeof(AtualizarTabela).Assembly).For.Migrations()
 ).AddLogging(lb => lb.AddFluentMigratorConsole());
 
