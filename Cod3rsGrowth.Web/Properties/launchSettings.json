@@ -24,6 +24,7 @@
       "dotnetRunMessages": false,
       "launchBrowser": false,
       "launchUrl": "",
+      "commandLineArgs": "BancoDeDadosDeProducao",
       "applicationUrl": "https://localhost:7205;http://localhost:5094",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -34,9 +35,10 @@
       "dotnetRunMessages": false,
       "launchBrowser": false,
       "launchUrl": "",
+      "commandLineArgs": "BancoDeDadosDeTestes",
       "applicationUrl": "https://localhost:7205;http://localhost:5094",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "TesteOpa"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "IIS Express": {

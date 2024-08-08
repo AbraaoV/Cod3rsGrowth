@@ -2,6 +2,6 @@
 {
     public static class ConstantesApi
     {
-        public const string NOME_DO_PERFIL_DE_TESTE = "TesteOpa";
+        public const string VALOR_DO_COMMAND_LINE_ARGS_PERFIL_DE_TESTE = "BancoDeDadosDeTestes";
     }
 }

@@ -12,12 +12,13 @@ using ConfigurationManager = System.Configuration.ConfigurationManager;
 var builder = WebApplication.CreateBuilder(args);
 
 var appSettings = ConfigurationManager.AppSettings;
-string connectionString = appSettings[ConstantesDosRepositorios.CONNECTION_STRING];
 
-if (builder.Environment.EnvironmentName == ConstantesApi.NOME_DO_PERFIL_DE_TESTE)
+if (Environment.GetCommandLineArgs()[1] == ConstantesApi.VALOR_DO_COMMAND_LINE_ARGS_PERFIL_DE_TESTE)
 {
-    connectionString = appSettings[ConstantesDosRepositorios.CONNECTION_STRING_TESTE];
+    ConnectionString.connectionString = ConstantesDosRepositorios.CONNECTION_STRING_TESTE;
 }
+
+string connectionString = appSettings[ConnectionString.connectionString];
 
 builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
     .AddSqlServer()
