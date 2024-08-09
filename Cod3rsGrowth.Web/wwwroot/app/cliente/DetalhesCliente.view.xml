@@ -1,5 +1,5 @@
 <mvc:View 
-	controllerName="ui5.codersgrowth.app.detalhesCliente.DetalhesCliente"
+	controllerName="ui5.codersgrowth.app.cliente.DetalhesCliente"
 	displayBlock="true" 
 	xmlns="sap.uxap"
 	xmlns:mvc="sap.ui.core.mvc"

@@ -16,7 +16,7 @@ sap.ui.define([
 	const ID_DO_CLIENTE_NA_ROTA = 1
 	const PROPRIEDADE_ID_DO_CLIENTE = "/id"
 
-	return ControllerBase.extend("ui5.codersgrowth.app.detalhesCliente.DetalhesCliente", {
+	return ControllerBase.extend("ui5.codersgrowth.app.cliente.DetalhesCliente", {
 		formatter: formatter,
 		onInit: function () {
 			this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._aoCoincidirRota, this);

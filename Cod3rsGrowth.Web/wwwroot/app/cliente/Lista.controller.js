@@ -21,14 +21,14 @@ sap.ui.define([
    const VALOR_FILTRO_PESSOA_JURIDICA = 2;
    const ID_FILTRO_PESSOA_FISICA = "pessoaFisica";
    const ID_FILTRO_PESSOA_JURIDICA = "pessoaJuridica";
-   const FRAGMENTO_FILTRO = "ui5.codersgrowth.app.lista.Filtro";
+   const FRAGMENTO_FILTRO = "ui5.codersgrowth.app.cliente.Filtro";
    const PARAMETRO_DA_PAGINA_DE_ITENS_DO_FILTRO = "filterItems";
    const PARAMETRO_FILTRO_NOME = "nome";
    const PARAMETRO_FILTRO_TIPO = "tipo";
    const ID_FILTRO_DE_PESQUISA = "filtroPesquisa";
    const PROPRIEDADE_ID_DO_CLIENTE_DA_LISTA = "id";
    
-   return ControllerBase.extend("ui5.codersgrowth.app.lista.Lista", {
+   return ControllerBase.extend("ui5.codersgrowth.app.cliente.Lista", {
       formatter: formatter,
       onInit: async function() {
          this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);

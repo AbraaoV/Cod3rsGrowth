@@ -9,7 +9,7 @@ sap.ui.define([
 ], (Opa5, Press, AggregationLengthEquals, EnterText, I18NText, PropertyStrictEquals, BindingPath) => {
 	"use strict";
 
-	const sViewName = "lista.Lista",
+	const sViewName = "cliente.Lista",
 	sIdLista = "listaClientes"
 
 	Opa5.createPageObjects({

@@ -46,7 +46,7 @@ sap.ui.define([
     const ROTA_EDITAR = "editar"
     const INDEX_DO_NOME_DA_ROTA = 2
 
-    return ControllerBase.extend("ui5.codersgrowth.app.adicionarEditarCliente.AdicionarEditarCliente", {
+    return ControllerBase.extend("ui5.codersgrowth.app.cliente.AdicionarEditarCliente", {
         onInit: async function() {
             this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_ADICIONAR_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
             this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_EDITAR_CLIENTE).attachPatternMatched(this._aoCoincidirRotaEditar, this);
@@ -62,7 +62,7 @@ sap.ui.define([
         _aoCoincidirRotaEditar: async function(){
             this._exibirEspera(async () =>{
                 await this._definirValoresPadroes()
-                let resultado = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, ConstantesDoBanco.CAMINHO_PARA_API + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA]);
+                let resultado = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA]);
                 this._modelo(new JSONModel(resultado), NOME_DO_MODELO_DO_CLIENTE);
                 this._prencherCliente();
                 this._definirTituloEdicao();

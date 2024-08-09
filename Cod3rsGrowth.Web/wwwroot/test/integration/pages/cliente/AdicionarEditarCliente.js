@@ -8,7 +8,7 @@ sap.ui.define([
 ], (Opa5, Press, Properties, Ancestor, EnterText, PropertyStrictEquals) => {
 	"use strict";
 
-	const sViewName = "adicionarEditarCliente.AdicionarEditarCliente",
+	const sViewName = "cliente.AdicionarEditarCliente",
 	sIdPagina = "paginaAdicionar"
 
 	Opa5.createPageObjects({

@@ -13,11 +13,9 @@ namespace Cod3rsGrowth.Infra
 
         public ClienteRepositorio()
         {
-            var appSettings = ConfigurationManager.AppSettings;
-            string result = appSettings[ConnectionString.connectionString];
             _dataConnection = new DataConnection(
             new DataOptions()
-               .UseSqlServer(result));
+               .UseSqlServer(ConnectionString.connectionString));
         }
 
         public virtual List<Cliente> ObterTodos(FiltroCliente? filtro)

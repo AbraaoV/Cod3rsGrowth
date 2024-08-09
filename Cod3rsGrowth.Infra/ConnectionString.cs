@@ -8,6 +8,6 @@ namespace Cod3rsGrowth.Infra
 {
     public sealed class ConnectionString
     {
-        public static string connectionString { get; set; } = "ConnectionString";
+        public static string connectionString { get; set; } = ConstantesDosRepositorios.CONNECTION_STRING;
     }
 }

@@ -88,20 +88,20 @@
 		],
 		"targets": {
 			"lista": {
-				"path" : "ui5.codersgrowth.app.lista",
+				"path" : "ui5.codersgrowth.app.cliente",
 				"id": "lista",
 				"name": "Lista",
 				"level" : 1
 			},
 			"detalhesCliente": {
-					"path" : "ui5.codersgrowth.app.detalhesCliente",
+					"path" : "ui5.codersgrowth.app.cliente",
 					"name": "DetalhesCliente",
 					"id": "detalhesCliente",
 					"level": 1,
 					"controlAggregation": "midColumnPages"
 			},
 			"adicionarEditarCliente":{
-				"path" : "ui5.codersgrowth.app.adicionarEditarCliente",
+				"path" : "ui5.codersgrowth.app.cliente",
 				"id": "adicionarEditarCliente",
 				"name": "AdicionarEditarCliente",
 				"level" : 1

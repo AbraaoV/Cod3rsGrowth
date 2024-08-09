@@ -18,11 +18,9 @@ namespace Cod3rsGrowth.Infra
 
         public PedidoRepositorio()
         {
-            var appSettings = ConfigurationManager.AppSettings;
-            string result = appSettings[ConnectionString.connectionString];
             _dataConnection = new DataConnection(
            new DataOptions()
-               .UseSqlServer(result));
+               .UseSqlServer(ConnectionString.connectionString));
         }
 
         public virtual List<Pedido> ObterTodos(FiltroPedido? filtro)
