@@ -111,24 +111,6 @@ sap.ui.define([
             oMM.registerObject(oView.byId(ID_INPUT_CNPJ), true);
         },
 
-        _sucessoNaRequicao: function(msgSucesso, requicaoPuT){
-            let opcoes = [OPCAO_NOVO_CADASTRO, OPCAO_VOLTAR_PARA_PAGINA_INICIAL]
-            if(requicaoPuT){
-                opcoes = [OPCAO_VOLTAR_PARA_PAGINA_INICIAL]
-            }
-            MessageBox.success(msgSucesso, {
-                actions: opcoes,
-                onClose: (sAction) => {
-                    if (sAction === OPCAO_NOVO_CADASTRO) {
-                        () => this._limparCampos(); 
-                    } else if (sAction === OPCAO_VOLTAR_PARA_PAGINA_INICIAL) {
-                        () => this._limparCampos(); 
-                        () => this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
-                    }
-                }
-            });
-        },
-
         _validarInput: function (oInput) {
 			let sEstadoDoValor = VALOR_PADRAO;
 			let bErroDeVaidacao = false;
@@ -228,13 +210,13 @@ sap.ui.define([
         },
 
         _adicionarCliente: async function(cliente){
-            await HttpRequest._request("POST", ConstantesDoBanco.CAMINHO_PARA_API, cliente);
-            this._sucessoNaRequicao(MSG_SUCESSO_CADASATRO_CLIENTE)
+            await HttpRequest._request(ConstatesDasRequests.REQUISICAO_POST, ConstantesDoBanco.CAMINHO_PARA_API, cliente);
+            this._sucessoNaRequicao(MSG_SUCESSO_CADASATRO_CLIENTE, true)
         },
 
         _atualizarCliente: async function(cliente){
-            await HttpRequest._request("PUT", ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA], cliente);
-            this._sucessoNaRequicao(MSG_SUCESSO_EDITAR_CLIENTE, true)
+            await HttpRequest._request(ConstatesDasRequests.REQUISICAO_PUT, ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA], cliente);
+            this._sucessoNaRequicao(MSG_SUCESSO_EDITAR_CLIENTE)
         },  
         
         _limparCampos: function() {

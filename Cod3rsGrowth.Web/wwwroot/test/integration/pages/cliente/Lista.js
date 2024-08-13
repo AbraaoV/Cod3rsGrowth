@@ -219,7 +219,19 @@ sap.ui.define([
                         },
                         errorMessage: "Falha ao navegar a pagina de lista"
                     });
-				}
+				},
+				clienteDeveEstarRemovidoDaLista: function(sNomeDoCliente){
+					return this.waitFor({
+						controlType: "sap.m.CustomList",
+						success: function (oList) {
+							let items = oList.getItems();
+							let cliente = items.some(function (oItem) {
+								return oItem.getBindingContext("listaDeClientes").getProperty("nome") === sNomeDoCliente;
+							});
+							Opa5.assert.ok(!cliente, "O cliente com ID " + sNomeDoCliente + " foi removido da lista.");
+						}
+					});
+				},
 			}
 		}
 	});

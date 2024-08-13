@@ -1,15 +1,17 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
-    "sap/ui/core/UIComponent",
     "sap/m/MessageBox",
-    "sap/ui/model/json/JSONModel"
-], function (Controller, History, UIComponent, MessageBox, JSONModel) {
+    "ui5/codersgrowth/common/ConstantesDaRota",
+], function (Controller, History, MessageBox, ConstantesDaRota) {
     "use strict";
 
     const MSG_DE_ERRO = "Ocorreu um erro: "
     const ROTA_PAGINA_PRINCIPAL = "lista"
     const NOME_MODELO_DO_APP = "appView"
+    const OPCAO_VOLTAR_PARA_PAGINA_INICIAL = "Voltar à Página Inicial"
+    const OPCAO_NOVO_CADASTRO = "Novo Cadastro"
+    
 
     return Controller.extend("ui5.codersgrowth.common.ControllerBase", {
         obterRota: function () {
@@ -90,7 +92,10 @@ sap.ui.define([
         _formatarMensagemDeErro: function(data) {
             let detalhesDoErro = '';
             if (data.extensions && data.extensions.errors) {
-                detalhesDoErro = data.extensions.errors.join('\n');
+                detalhesDoErro = data.extensions.errors
+                if(data.extensions.errors.join){
+                    detalhesDoErro = data.extensions.errors.join('\n');
+                }
             }
         
             const mensagemErro = `
@@ -103,6 +108,24 @@ sap.ui.define([
                 contentWidth: "40%",
             });
             
+        },
+
+        _sucessoNaRequicao: function(msgSucesso, requicaoPost){
+            let opcoes = [OPCAO_VOLTAR_PARA_PAGINA_INICIAL]
+            if(requicaoPost){
+                opcoes = [OPCAO_NOVO_CADASTRO, OPCAO_VOLTAR_PARA_PAGINA_INICIAL]
+            }
+            MessageBox.success(msgSucesso, {
+                actions: opcoes,
+                onClose: (sAction) => {
+                    if (sAction === OPCAO_NOVO_CADASTRO) {
+                        () => this._limparCampos(); 
+                    } else if (sAction === OPCAO_VOLTAR_PARA_PAGINA_INICIAL) {
+                        () => this._limparCampos(); 
+                        this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
+                    }
+                }
+            });
         },
     });
 });

@@ -4,7 +4,8 @@ sap.ui.define([
 	"./pages/cliente/ListaJourney",
 	"./pages/cliente/AdicionarClienteJourney",
 	"./pages/cliente/DetalhesClienteJourney",
-	"./pages/cliente/EditarClienteJourney"
+	"./pages/cliente/EditarClienteJourney",
+	"./pages/cliente/DeletarClienteJourney"
 ], function (Opa5, Startup) {
 	"use strict";
 

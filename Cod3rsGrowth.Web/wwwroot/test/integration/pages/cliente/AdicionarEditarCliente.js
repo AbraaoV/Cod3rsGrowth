@@ -124,7 +124,19 @@ sap.ui.define([
 						},
 						errorMessage: "Falhar ao clicar no botao Ok"
                     });
-				}
+				},
+
+				deveEstarNaTelaDeEditar: function(sIdCliente){
+					return this.waitFor({
+						id: sIdPagina,
+						viewName: sViewName,
+						success: function () {
+							sap.ui.test.Opa5.getWindow().location.hash = "cliente/1/editar";
+							Opa5.assert.ok(true, "Sucesso ao navegar para tela editar");
+						},
+						errorMessage: "Falha ao navegar a pagina de adicionar"
+					});
+				},
 				
 			}
 		}

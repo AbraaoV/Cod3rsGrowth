@@ -27,8 +27,8 @@
 					<m:OverflowToolbarButton id= "botaoFecharDetalhes" type="Transparent" icon="sap-icon://decline" press=".aoFecharDetalhes"/>
 				</navigationActions>
 				<actions>
-					<m:Button text="{i18n>editBtnText}" type="Emphasized" press=".aoClicarEmEditar"/>
-					<m:Button text="{i18n>deleteBtnText}" type="Transparent"/>
+					<m:Button text="{i18n>editBtnText}" type="Emphasized" id="botaoEditar" press=".aoClicarEmEditar"/>
+					<m:Button text="{i18n>deleteBtnText}" type="Transparent" id="botaoDeletar" press=".aoClicarEmDeletar"/>
 				</actions>
 			</ObjectPageDynamicHeaderTitle>
 		</headerTitle>
