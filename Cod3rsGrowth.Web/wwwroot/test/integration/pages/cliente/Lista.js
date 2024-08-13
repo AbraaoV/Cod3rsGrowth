@@ -9,7 +9,7 @@ sap.ui.define([
 ], (Opa5, Press, AggregationLengthEquals, EnterText, I18NText, PropertyStrictEquals, BindingPath) => {
 	"use strict";
 
-	const sViewName = "lista.Lista",
+	const sViewName = "cliente.Lista",
 	sIdLista = "listaClientes"
 
 	Opa5.createPageObjects({
@@ -27,9 +27,10 @@ sap.ui.define([
 					return this.waitFor({
 						id: "filtroPesquisa",
 						viewName: sViewName,
-						actions: new EnterText({
-							text: sNomeCliente
-						}),
+						actions: function (oMenuItem) {
+							oMenuItem.setValue(sNomeCliente);
+							oMenuItem.fireLiveChange()
+						},
 						errorMessage: "Barra de pesquisa não encontrada."
 					});
 				},
@@ -76,8 +77,8 @@ sap.ui.define([
 						searchOpenDialogs: true,
 						controlType: "sap.m.Button",
 						matchers: new PropertyStrictEquals({
-							name: "id",
-							value: "__component0---lista--filtroFragment-acceptbutton"
+							name: "text",
+							value: "OK"
 						}),
 						actions: function (oMenuItem) {
 							oMenuItem.firePress();
@@ -90,8 +91,8 @@ sap.ui.define([
 						searchOpenDialogs: true,
 						controlType: "sap.m.Button",
 						matchers: new PropertyStrictEquals({
-							name: "id",
-							value: "__component0---lista--filtroFragment-detailresetbutton"
+							name: "text",
+							value: "Reinicializar"
 						}),
 						actions: function (oMenuItem) {
 							oMenuItem.firePress();

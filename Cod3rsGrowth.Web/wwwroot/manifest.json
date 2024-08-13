@@ -70,7 +70,7 @@
 			{
 				"pattern": "adicionar",
 				"name": "adicionarCliente",
-				"target": "adicionarCliente"
+				"target": "adicionarEditarCliente"
 			},
 			{
 				"pattern": "cliente/{clienteId}/:?queryFiltro:",
@@ -79,26 +79,31 @@
 					"lista",
 					"detalhesCliente"
 				]
+			},
+			{
+				"pattern": "cliente/{clienteId}/editar",
+				"name": "editarCliente",
+				"target": "adicionarEditarCliente"
 			}
 		],
 		"targets": {
 			"lista": {
-				"path" : "ui5.codersgrowth.app.lista",
+				"path" : "ui5.codersgrowth.app.cliente",
 				"id": "lista",
 				"name": "Lista",
 				"level" : 1
 			},
 			"detalhesCliente": {
-					"path" : "ui5.codersgrowth.app.detalhesCliente",
+					"path" : "ui5.codersgrowth.app.cliente",
 					"name": "DetalhesCliente",
 					"id": "detalhesCliente",
 					"level": 1,
 					"controlAggregation": "midColumnPages"
 			},
-			"adicionarCliente":{
-				"path" : "ui5.codersgrowth.app.adicionarCliente",
-				"id": "adicionarCliente",
-				"name": "AdicionarCliente",
+			"adicionarEditarCliente":{
+				"path" : "ui5.codersgrowth.app.cliente",
+				"id": "adicionarEditarCliente",
+				"name": "AdicionarEditarCliente",
 				"level" : 1
 			},
 			"notFound": {

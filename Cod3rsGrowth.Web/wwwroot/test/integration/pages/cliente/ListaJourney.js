@@ -1,6 +1,6 @@
 sap.ui.define([
 	"sap/ui/test/opaQunit",
-	"./pages/Lista"
+	"./Lista"
 ], function (opaTest) {
 	"use strict";
 
@@ -42,6 +42,27 @@ sap.ui.define([
 		When.naListaCliente.aoApertarBotaoOkNoFiltro();
 		// Assertion
 		Then.naListaCliente.listaDeveConterDezClientesNaPagina();
+		
+	});
+	opaTest("Ao clicar em adicionar deve navegar para tela de adicionar", function (Given, When, Then) {
+        //Actions
+        When.naListaCliente.aoApertarEmAdicionar();
+		// Assertions
+		Then.naTelaDeAdicionarEditar.deveNavegarParaTelaDeAdicionar();
+	});
+	opaTest("Botão de voltar negação deve voltar para pagina principal", function(Given, When, Then){
+		//Actions
+		When.naTelaDeAdicionarEditar.aoApertaEmVoltar();
+		// Assertions
+		Then.naListaCliente.deveNavegarParaTelaDeLista();
+	})
+	opaTest("Deve ser capaz de navegar para tela de detalhes", function (Given, When, Then) {
+        //Actions
+        When.naListaCliente.aoClicarNaLista();
+        //Actions
+        When.naListaCliente.aoClicarNoClienteDaPosicao(1);
+		// Assertions
+		Then.naTelaDeDetalhes.deveEstarNaTelaDeDetalhes();
 		// Cleanuo
 		Then.iTeardownMyApp();
 	});

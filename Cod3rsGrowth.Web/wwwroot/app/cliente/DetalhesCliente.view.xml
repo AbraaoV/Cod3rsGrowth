@@ -1,5 +1,5 @@
 <mvc:View 
-	controllerName="ui5.codersgrowth.app.detalhesCliente.DetalhesCliente"
+	controllerName="ui5.codersgrowth.app.cliente.DetalhesCliente"
 	displayBlock="true" 
 	xmlns="sap.uxap"
 	xmlns:mvc="sap.ui.core.mvc"
@@ -27,7 +27,7 @@
 					<m:OverflowToolbarButton id= "botaoFecharDetalhes" type="Transparent" icon="sap-icon://decline" press=".aoFecharDetalhes"/>
 				</navigationActions>
 				<actions>
-					<m:Button text="{i18n>editBtnText}" type="Emphasized" press="toggleAreaPriority"/>
+					<m:Button text="{i18n>editBtnText}" type="Emphasized" press=".aoClicarEmEditar"/>
 					<m:Button text="{i18n>deleteBtnText}" type="Transparent"/>
 				</actions>
 			</ObjectPageDynamicHeaderTitle>

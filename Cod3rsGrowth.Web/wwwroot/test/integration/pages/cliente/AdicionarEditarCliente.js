@@ -8,11 +8,11 @@ sap.ui.define([
 ], (Opa5, Press, Properties, Ancestor, EnterText, PropertyStrictEquals) => {
 	"use strict";
 
-	const sViewName = "adicionarCliente.AdicionarCliente",
+	const sViewName = "cliente.AdicionarEditarCliente",
 	sIdPagina = "paginaAdicionar"
 
 	Opa5.createPageObjects({
-		naTelaDeAdicionar: {
+		naTelaDeAdicionarEditar: {
 			actions: {
 				aoApertarEmSalvar: function(){
 					return this.waitFor({

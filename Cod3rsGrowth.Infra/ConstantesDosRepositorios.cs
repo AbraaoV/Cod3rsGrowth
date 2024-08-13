@@ -10,6 +10,7 @@ namespace Cod3rsGrowth.Infra
     public static class ConstantesDosRepositorios
     {
         public const string CONNECTION_STRING = "ConnectionString";
+        public const string CONNECTION_STRING_TESTE = "ConnectionStringTeste";
         public const int VALOR_INICIAL = 0;
     }
 }

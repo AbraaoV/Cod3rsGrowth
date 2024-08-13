@@ -5,7 +5,7 @@ sap.ui.define([
 ], (Opa5, Press) => {
 	"use strict";
 
-	const sViewName = "detalhesCliente.DetalhesCliente"
+	const sViewName = "cliente.DetalhesCliente"
 
 	Opa5.createPageObjects({
 		naTelaDeDetalhes: {
