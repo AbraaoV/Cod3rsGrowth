@@ -221,15 +221,28 @@ sap.ui.define([
                     });
 				},
 				clienteDeveEstarRemovidoDaLista: function(sNomeDoCliente){
+					function fnCheckFilter(oList) {
+						var fnIsFiltered = function (oElement) {
+							if (!oElement.getBindingContext("listaDeClientes")) {
+								return false;
+							} else {
+								var sNome = oElement.getBindingContext("listaDeClientes").getProperty("nome");
+								debugger
+								return sNome === sNomeDoCliente;
+							}
+						};
+				
+						return oList.getItems().every(fnIsFiltered);
+					}
+
 					return this.waitFor({
-						controlType: "sap.m.CustomList",
-						success: function (oList) {
-							let items = oList.getItems();
-							let cliente = items.some(function (oItem) {
-								return oItem.getBindingContext("listaDeClientes").getProperty("nome") === sNomeDoCliente;
-							});
-							Opa5.assert.ok(!cliente, "O cliente com ID " + sNomeDoCliente + " foi removido da lista.");
-						}
+						id: sIdLista,
+						viewName: sViewName,
+						matchers: !fnCheckFilter,
+						success: function () {
+							Opa5.assert.ok(true, "Cliente removido com sucesso");
+						},
+						errorMessage: "Falha ao remover cliente"
 					});
 				},
 			}

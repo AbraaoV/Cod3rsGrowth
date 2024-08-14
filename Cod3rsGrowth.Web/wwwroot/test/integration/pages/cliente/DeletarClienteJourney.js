@@ -9,7 +9,7 @@ sap.ui.define([
 
     opaTest("Deve aparecer uma messageBox de aviso ao tentar deletar um cliente", function (Given, When, Then) {
         Given.iStartMyApp({
-			hash: "cliente/116/"
+			hash: "cliente/1"
 		})
         //Actions
         When.naTelaDeDetalhes.aoClicarNoBotaoDe("botaoDeletar");
@@ -28,6 +28,8 @@ sap.ui.define([
         When.naTelaDeDetalhes.aoClicarNaOpacaoDaMessageBox("Sim");
         When.naTelaDeDetalhes.aoClicarNaOpacaoDaMessageBox("Voltar à Página Inicial")
         // Assertions
-        Then.naListaCliente.clienteDeveEstarRemovidoDaLista();
+        Then.naListaCliente.clienteDeveEstarRemovidoDaLista("João Silva");
+
+        Then.iTeardownMyApp();
     });
 })

@@ -11,7 +11,7 @@ sap.ui.define([
 	
     opaTest("Deve ser capaz de filtrar por nome com a pagina de detalhes aberta ao lado", function(Given, When, Then) {
 		Given.iStartMyApp({
-			hash: "cliente/1/"
+			hash: "cliente/2/"
 		})
 		//Actions
 		When.naListaCliente.aoPesquisarNome("Empresa");

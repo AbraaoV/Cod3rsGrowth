@@ -16,8 +16,6 @@ sap.ui.define([
     const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
     const MSG_SUCESSO_CADASATRO_CLIENTE = "Cliente cadastrado com sucesso."
     const MSG_SUCESSO_EDITAR_CLIENTE = "Cliente editado com sucesso."
-    const OPCAO_NOVO_CADASTRO = "Novo Cadastro"
-    const OPCAO_VOLTAR_PARA_PAGINA_INICIAL = "Voltar à Página Inicial"
     const ID_COMBO_BOX = "comboxTipo"
     const ID_LABEL_CPF = "labelCpf"
     const ID_INPUT_CPF = "inputCpf"
