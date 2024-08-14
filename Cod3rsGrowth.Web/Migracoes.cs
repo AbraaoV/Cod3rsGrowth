@@ -17,7 +17,7 @@ namespace Cod3rsGrowth.Web
 
             var serviceProvider = builder.Services.BuildServiceProvider(false);
             var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-            runner.MigrateUp(20240606135200);
+            runner.MigrateUp(ConstantesApi.MIGRACAO_TABELA);
         }
 
         public static void rodarMigracaoDosTestes(WebApplicationBuilder builder)
