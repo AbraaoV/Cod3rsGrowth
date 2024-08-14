@@ -83,7 +83,6 @@ sap.ui.define([
                     this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", false);
                 });
         },
-        
 
         _modelo: function (oModel, sNomeModelo) {
             return this.getView().setModel(oModel, sNomeModelo);

@@ -1,6 +1,8 @@
 ﻿using Cod3rsGrowth.Dominio.Migracoes;
+using Cod3rsGrowth.Dominio.MigracoesBancoDeTeste;
 using Cod3rsGrowth.Infra;
 using FluentMigrator.Runner;
+using FluentMigrator.Runner.Initialization;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 namespace Cod3rsGrowth.Web
@@ -17,7 +19,7 @@ namespace Cod3rsGrowth.Web
 
             var serviceProvider = builder.Services.BuildServiceProvider(false);
             var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-            runner.MigrateUp(ConstantesApi.MIGRACAO_TABELA);
+            runner.MigrateUp();
         }
 
         public static void rodarMigracaoDosTestes(WebApplicationBuilder builder)
@@ -25,16 +27,15 @@ namespace Cod3rsGrowth.Web
             builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
             .AddSqlServer()
             .WithGlobalConnectionString(ConfigurationManager.AppSettings[ConnectionString.connectionString])
-            .ScanIn(typeof(_20240813141300_SeedClientes).Assembly).For.Migrations()
-            ).AddLogging(lb => lb.AddFluentMigratorConsole());
+            .ScanIn(typeof(AtualizarTabela).Assembly).For.Migrations()
+            ).AddLogging(lb => lb.AddFluentMigratorConsole()).Configure<RunnerOptions>(cfg =>
+            {
+                cfg.Profile = ConstantesMigracao.PERFIL_POPULAR_BANCO_DE_TESTES;
+            });
 
             var serviceProvider = builder.Services.BuildServiceProvider(false);
             var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-
-            runner.MigrateDown(ConstantesApi.MIGRACAO_TABELA);
             runner.MigrateUp();
-
         }
-
     }
 }

@@ -5,18 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cod3rsGrowth.Dominio.Migracoes
+namespace Cod3rsGrowth.Dominio.MigracoesBancoDeTeste
 {
-    [Migration(20240813141300)]
-    public class _20240813141300_SeedClientes : Migration
+    [Profile(ConstantesMigracao.PERFIL_POPULAR_BANCO_DE_TESTES)]
+    public class SeedClientes : Migration
     {
         public override void Down()
         {
-            Execute.Sql("DELETE FROM Cliente");
+            
         }
 
         public override void Up()
         {
+            Execute.Sql("DELETE FROM Cliente");
+
             Execute.Sql("SET IDENTITY_INSERT Cliente ON");
 
             Execute.Sql(
