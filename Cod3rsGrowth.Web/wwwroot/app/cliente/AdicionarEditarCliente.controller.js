@@ -14,8 +14,9 @@ sap.ui.define([
     "use strict";
     const CAMINHO_PARA_API_ENUM = "/api/EnumTipo"
     const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
-    const MSG_SUCESSO_CADASATRO_CLIENTE = "Cliente cadastrado com sucesso."
-    const MSG_SUCESSO_EDITAR_CLIENTE = "Cliente editado com sucesso."
+    const MSG_DE_SUCESSO_NO_CADASTRO_I18N = "sucessCustumerRegister"
+    const MSG_DE_SUCESSO_NA_EDICAO_I18N = "sucessCustumerEdit"
+    const NOME_DO_MODELO_I18N = "i18n"
     const ID_COMBO_BOX = "comboxTipo"
     const ID_LABEL_CPF = "labelCpf"
     const ID_INPUT_CPF = "inputCpf"
@@ -208,11 +209,13 @@ sap.ui.define([
         },
 
         _adicionarCliente: async function(cliente){
+            const MSG_SUCESSO_CADASATRO_CLIENTE = this.obterTextoI18n(MSG_DE_SUCESSO_NO_CADASTRO_I18N);
             await HttpRequest._request(ConstatesDasRequests.REQUISICAO_POST, ConstantesDoBanco.CAMINHO_PARA_API, cliente);
             this._sucessoNaRequicao(MSG_SUCESSO_CADASATRO_CLIENTE, true)
         },
 
         _atualizarCliente: async function(cliente){
+            const MSG_SUCESSO_EDITAR_CLIENTE = this.obterTextoI18n(MSG_DE_SUCESSO_NA_EDICAO_I18N);
             await HttpRequest._request(ConstatesDasRequests.REQUISICAO_PUT, ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA], cliente);
             this._sucessoNaRequicao(MSG_SUCESSO_EDITAR_CLIENTE)
         },  

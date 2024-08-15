@@ -131,7 +131,7 @@ sap.ui.define([
 						id: sIdPagina,
 						viewName: sViewName,
 						success: function () {
-							sap.ui.test.Opa5.getWindow().location.hash = "cliente/1/editar";
+							sap.ui.test.Opa5.getWindow().location.hash = "cliente/2/editar";
 							Opa5.assert.ok(true, "Sucesso ao navegar para tela editar");
 						},
 						errorMessage: "Falha ao navegar a pagina de adicionar"

@@ -41,7 +41,7 @@ namespace Cod3rsGrowth.Forms
                 .ConfigureRunner(rb => rb
                     .AddSqlServer()
                     .WithGlobalConnectionString(result)
-                    .ScanIn(typeof(AtualizarTabela).Assembly).For.Migrations())
+                    .ScanIn(typeof(_20240606135200_Editar_Coluna_Cpf_Cpnj_e_Cartao).Assembly).For.Migrations())
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 .BuildServiceProvider(false);
         }

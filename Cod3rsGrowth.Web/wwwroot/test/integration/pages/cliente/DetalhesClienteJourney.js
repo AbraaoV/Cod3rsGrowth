@@ -57,25 +57,24 @@ sap.ui.define([
 		// Assertions
 		Then.naPaginaDoApp.oFlexibleColumnLayoutDoAppDeveSer("TwoColumnsMidExpanded");
 	});
-    opaTest("Deve ser capaz de fechar a tela de detalhes", function (Given, When, Then) {
-        //Actions
-        When.naTelaDeDetalhes.aoClicarNoBotaoDe("botaoFecharDetalhes");
-		//Assertions
-		Then.naListaCliente.listaDeveConterDezClientesNaPagina();
-	});
 	opaTest("Deve ser capaz de navegar para e tela de edicao de cliente, ao clicar em editar", function (Given, When, Then) {
-        //Actions
+		//Actions
         When.naTelaDeDetalhes.aoClicarNoBotaoDe("botaoEditar");
 		//Assertions
 		Then.naTelaDeAdicionarEditar.deveEstarNaTelaDeEditar();
-        //Cleanuo
 	});
 	opaTest("Deve ser capaz de voltar para a tela de detalhes ao clicar em voltar", function (Given, When, Then) {
 		//Actions
 		When.naTelaDeAdicionarEditar.aoApertaEmVoltar();
 		//Assertions
-		When.naTelaDeDetalhes.deveEstarNaTelaDeDetalhes()
-		 //Cleanuo
+		Then.naTelaDeDetalhes.deveEstarNaTelaDeDetalhes()
+	});
+	opaTest("Deve ser capaz de fechar a tela de detalhes", function (Given, When, Then) {
+		//Actions
+		When.naTelaDeDetalhes.aoClicarNoBotaoDe("botaoFecharDetalhes");
+		//Assertions
+		Then.naListaCliente.listaDeveConterDezClientesNaPagina();
+		//Cleanuo
 		Then.iTeardownMyApp();
 	});
 });

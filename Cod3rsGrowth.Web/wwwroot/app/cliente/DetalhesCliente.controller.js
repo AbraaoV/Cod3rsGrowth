@@ -16,8 +16,8 @@ sap.ui.define([
 	const NOME_DO_MODELO_DO_APP = "appView"
 	const ID_DO_CLIENTE_NA_ROTA = 1
 	const PROPRIEDADE_ID_DO_CLIENTE = "/id"
-	const MSG_DE_SUCESSO_AO_DELETAR = "Cliente deletado com sucesso"
-	const MSG_DE_AVISO_AO_DELETAR = "Tem certeza que deseja excluir este cliente"
+	const MSG_DE_SUCESSO_AO_DELETAR_I18N = "sucessOnCustumerDelete"
+	const MSG_DE_AVISO_AO_DELETAR_I18N = "warningMessageWhenDeleteCustomer"
 	const OPCAO_SIM = "Sim"
 	const OPCAO_NAO = "Não"
 
@@ -59,13 +59,13 @@ sap.ui.define([
         },
 
 		aoClicarEmDeletar: function(){ 
-			MessageBox.warning(MSG_DE_AVISO_AO_DELETAR, {
+			MessageBox.warning(this.obterTextoI18n(MSG_DE_AVISO_AO_DELETAR_I18N), {
 				actions: [ OPCAO_SIM,  OPCAO_NAO],
 				onClose: async (sAction) => {
 					if (sAction ===  OPCAO_SIM) {
 						this._exibirEspera(async () => {
 							await HttpRequest._request(ConstatesDasRequests.REQUISICAO_DELETE, ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[ID_DO_CLIENTE_NA_ROTA])
-							this._sucessoNaRequicao(MSG_DE_SUCESSO_AO_DELETAR)
+							this._sucessoNaRequicao(this.obterTextoI18n(MSG_DE_SUCESSO_AO_DELETAR_I18N))
 						});
 					} 
 				}

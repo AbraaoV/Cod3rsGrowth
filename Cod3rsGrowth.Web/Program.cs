@@ -1,25 +1,26 @@
 using Cod3rsGrowth.Dominio;
 using Cod3rsGrowth.Dominio.Migracoes;
+using Cod3rsGrowth.Dominio.MigracoesBancoDeTeste;
 using Cod3rsGrowth.Infra;
 using Cod3rsGrowth.Servico.Servicos;
 using Cod3rsGrowth.Web;
 using FluentMigrator.Runner;
 using FluentValidation;
+using System.Reflection;
 using System.Text.Json.Serialization;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 if (args.FirstOrDefault() == ConstantesApi.VALOR_DO_COMMAND_LINE_ARGS_PERFIL_DE_TESTE)
 {
     ConnectionString.connectionString = ConstantesDosRepositorios.CONNECTION_STRING_TESTE;
-    Migracoes.rodarMigracaoDosTestes(builder);
+    Migracoes.Executar(builder, typeof(_20240606135200_Editar_Coluna_Cpf_Cpnj_e_Cartao).Assembly, ConstantesMigracao.PERFIL_POPULAR_BANCO_DE_TESTES);
 }
 else
 {
-    Migracoes.rodarMigracao(builder);
+    Migracoes.Executar(builder, typeof(_20240606135200_Editar_Coluna_Cpf_Cpnj_e_Cartao).Assembly);
 }
 
 builder.Services.AddMvc().AddJsonOptions(x =>

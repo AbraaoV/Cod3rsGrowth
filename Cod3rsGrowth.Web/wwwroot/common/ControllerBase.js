@@ -6,11 +6,12 @@ sap.ui.define([
 ], function (Controller, History, MessageBox, ConstantesDaRota) {
     "use strict";
 
-    const MSG_DE_ERRO = "Ocorreu um erro: "
+    const MSG_DE_ERRO_I18N = "errorMenssage"
     const ROTA_PAGINA_PRINCIPAL = "lista"
     const NOME_MODELO_DO_APP = "appView"
-    const OPCAO_VOLTAR_PARA_PAGINA_INICIAL = "Voltar à Página Inicial"
-    const OPCAO_NOVO_CADASTRO = "Novo Cadastro"
+    const TEXTO_VOLTAR_PARA_PAGINA_INCIAL_I18N = "returnToInitialPage"
+    const TEXTO_NOVO_CADASTRO_I18N = "newRegistrationMessage"
+    const NOME_DO_MODELO_I18N = "i18n"
     
 
     return Controller.extend("ui5.codersgrowth.common.ControllerBase", {
@@ -20,6 +21,10 @@ sap.ui.define([
 
         obterParametros: function () {
             return this.obterRota().getHashChanger().getHash().split("/");
+        },
+
+        obterTextoI18n: function(tituloDoTexto){
+            return this.getView().getModel(NOME_DO_MODELO_I18N).getResourceBundle().getText(tituloDoTexto);
         },
 
         aoClicarEmVoltar: function () {
@@ -73,7 +78,7 @@ sap.ui.define([
                             this._formatarMensagemDeErro(error);
                         });
                     } else {
-                        return MessageBox.error(MSG_DE_ERRO + error.message, {
+                        return MessageBox.error(this.obterTextoI18n(MSG_DE_ERRO_I18N) + error.message, {
                             details: error.stack,
                             contentWidth: "25%",
                         });
@@ -110,16 +115,16 @@ sap.ui.define([
         },
 
         _sucessoNaRequicao: function(msgSucesso, requicaoPost){
-            let opcoes = [OPCAO_VOLTAR_PARA_PAGINA_INICIAL]
+            let opcoes = [this.obterTextoI18n(TEXTO_VOLTAR_PARA_PAGINA_INCIAL_I18N)]
             if(requicaoPost){
-                opcoes = [OPCAO_NOVO_CADASTRO, OPCAO_VOLTAR_PARA_PAGINA_INICIAL]
+                opcoes = [this.obterTextoI18n(TEXTO_NOVO_CADASTRO_I18N), this.obterTextoI18n(TEXTO_VOLTAR_PARA_PAGINA_INCIAL_I18N)]
             }
             MessageBox.success(msgSucesso, {
                 actions: opcoes,
                 onClose: (sAction) => {
-                    if (sAction === OPCAO_NOVO_CADASTRO) {
+                    if (sAction === this.obterTextoI18n(TEXTO_NOVO_CADASTRO_I18N)) {
                         () => this._limparCampos(); 
-                    } else if (sAction === OPCAO_VOLTAR_PARA_PAGINA_INICIAL) {
+                    } else if (sAction === this.obterTextoI18n(TEXTO_VOLTAR_PARA_PAGINA_INCIAL_I18N)) {
                         () => this._limparCampos(); 
                         this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
                     }
