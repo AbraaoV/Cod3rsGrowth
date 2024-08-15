@@ -14,7 +14,7 @@ namespace Cod3rsGrowth.Web
             builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
             .AddSqlServer()
             .WithGlobalConnectionString(ConfigurationManager.AppSettings[ConnectionString.connectionString])
-            .ScanIn(typeof(AtualizarTabela).Assembly).For.Migrations()
+            .ScanIn(typeof(_20240606135200_Editar_Coluna_Cpf_Cpnj_e_Cartao).Assembly).For.Migrations()
             ).AddLogging(lb => lb.AddFluentMigratorConsole());
 
             var serviceProvider = builder.Services.BuildServiceProvider(false);
@@ -27,7 +27,7 @@ namespace Cod3rsGrowth.Web
             builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
             .AddSqlServer()
             .WithGlobalConnectionString(ConfigurationManager.AppSettings[ConnectionString.connectionString])
-            .ScanIn(typeof(AtualizarTabela).Assembly).For.Migrations()
+            .ScanIn(typeof(_20240606135200_Editar_Coluna_Cpf_Cpnj_e_Cartao).Assembly).For.Migrations()
             ).AddLogging(lb => lb.AddFluentMigratorConsole()).Configure<RunnerOptions>(cfg =>
             {
                 cfg.Profile = ConstantesMigracao.PERFIL_POPULAR_BANCO_DE_TESTES;
