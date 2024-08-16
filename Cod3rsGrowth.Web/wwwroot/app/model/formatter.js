@@ -6,13 +6,25 @@ sap.ui.define([], () => {
             if(sCpf != undefined){
                 return sCpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
             }
-            return sCpf
+            return sCpf;
         },
-		formatarCnpj: function(sCnpj){
+        formatarCnpj: function(sCnpj){
             if(sCnpj != undefined){
                 return sCnpj.replace(/^(\d{2})(\d{3})?(\d{3})?(\d{4})?(\d{2})?/, "$1.$2.$3/$4-$5");
             }
-            return sCnpj
-		}
+            return sCnpj;
+        },
+        formatarData: function(sData) {
+            if(sData != undefined) {
+                return sData.slice(0, 10);
+            }
+            return sData;
+        },
+        formatarCartao: function(sCartao) {
+            if(sCartao != undefined) {
+                return sCartao.replace(/(\d{4})(\d{4})(\d{4})(\d{4})/, '$1 $2 $3 $4');
+            }
+            return sCartao;
+        }
     };
 });

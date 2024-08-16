@@ -26,15 +26,5 @@ namespace Cod3rsGrowth.Dominio
             [Description("Pessoa Jurídica")]
             Juridica = 2
         }
-        public static string capturarDescricaoEnum(Enum value)
-        {
-            FieldInfo field = value.GetType().GetField(value.ToString());
-
-            DescriptionAttribute[] attributes =
-                (DescriptionAttribute[])field.GetCustomAttributes(
-                typeof(DescriptionAttribute), false);
-
-            return attributes.Length > 0 ? attributes[0].Description : value.ToString();
-        }
     }
 }
