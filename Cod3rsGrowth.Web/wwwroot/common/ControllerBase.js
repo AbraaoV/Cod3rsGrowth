@@ -23,9 +23,14 @@ sap.ui.define([
             return this.obterRota().getHashChanger().getHash().split("/");
         },
 
-        obterTextoI18n: function(tituloDoTexto){
-            return this.getView().getModel(NOME_DO_MODELO_I18N).getResourceBundle().getText(tituloDoTexto);
+        obterTextoI18n: function(tituloDoTexto) {
+            var oModel = this.getView().getModel(NOME_DO_MODELO_I18N);
+            if (!oModel) {
+                return "";
+            }
+            return oModel.getResourceBundle().getText(tituloDoTexto);
         },
+        
 
         aoClicarEmVoltar: function () {
             var oHistory, sPreviousHash;
@@ -55,7 +60,7 @@ sap.ui.define([
                 .catch(error => {
                     if (error.body && error.body.getReader) {
                         const leitor = error.body.getReader();
-                        let mensagemDeErro = new ReadableStream({
+                        let readableStream = new ReadableStream({
                             start(controller) {
                                 function enfileirarValores() {
                                     leitor.read()
@@ -74,7 +79,7 @@ sap.ui.define([
                                 enfileirarValores();
                             }
                         });
-                        return new Response(mensagemDeErro).json().then(error => {
+                        return new Response(readableStream).json().then(error => {
                             this._formatarMensagemDeErro(error);
                         });
                     } else {
@@ -126,7 +131,7 @@ sap.ui.define([
                         () => this._limparCampos(); 
                     } else if (sAction === this.obterTextoI18n(TEXTO_VOLTAR_PARA_PAGINA_INCIAL_I18N)) {
                         () => this._limparCampos(); 
-                        this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
+                        this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE)
                     }
                 }
             });

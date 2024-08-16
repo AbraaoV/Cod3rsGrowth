@@ -33,7 +33,7 @@ sap.ui.define([
 		When.naListaCliente.aoSelecionarOTipoDePessoaAFiltrar("Pessoa Jurídica");
 		When.naListaCliente.aoApertarBotaoOkNoFiltro();
 		// Assertion
-		Then.naListaCliente.listaDeveEstarFiltradaPorTipoDePessoa("Juridica");
+		Then.naListaCliente.listaDeveEstarFiltradaPorTipoDePessoa("Pessoa Jurídica");
 	});
 	opaTest("Deve ser capaz de resetar os filtro do tipo de pessoa", function(Given, When, Then) {
 		// Action
@@ -58,11 +58,21 @@ sap.ui.define([
 	})
 	opaTest("Deve ser capaz de navegar para tela de detalhes", function (Given, When, Then) {
         //Actions
-        When.naListaCliente.aoClicarNaLista();
-        //Actions
         When.naListaCliente.aoClicarNoClienteDaPosicao(1);
 		// Assertions
 		Then.naTelaDeDetalhes.deveEstarNaTelaDeDetalhes();
+	});
+	opaTest("Deve ser capaz de navegar para e tela de edicao de cliente, ao clicar em editar", function (Given, When, Then) {
+		//Actions
+        When.naTelaDeDetalhes.aoClicarNoBotaoDe("botaoEditar");
+		//Assertions
+		Then.naTelaDeAdicionarEditar.deveEstarNaTelaDeEditar();
+	});
+	opaTest("Deve ser capaz de voltar para a tela de detalhes ao clicar em voltar", function (Given, When, Then) {
+		//Assertions
+		When.naTelaDeAdicionarEditar.aoApertaEmVoltar();
+		When.naTelaDeAdicionarEditar.aoApertaEmVoltarSegundoClique();
+		Then.naTelaDeDetalhes.deveEstarNaTelaDeDetalhes()
 		// Cleanuo
 		Then.iTeardownMyApp();
 	});

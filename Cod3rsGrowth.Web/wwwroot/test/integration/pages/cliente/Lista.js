@@ -144,7 +144,7 @@ sap.ui.define([
 							length: 20
 						}),
 						success: function () {
-							Opa5.assert.ok(true, "A lista tem 13 items");
+							Opa5.assert.ok(true, "A lista tem 20 exibidos items");
 						},
 						errorMessage: "A lista não contem todos os items"
 					});

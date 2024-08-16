@@ -81,11 +81,23 @@ sap.ui.define([
 					return this.waitFor({
 						id: "botaoVoltar",
 						viewName: sViewName,
-						actions: new Press(),
+						actions: function (oMenuItem) {
+							oMenuItem.firePress();
+						},
 						errorMessage: "Falha ao apertar o botão de Voltar"
 					});
-				}
+				},
 
+				aoApertaEmVoltarSegundoClique: function(){
+					return this.waitFor({
+						id: "botaoVoltar",
+						viewName: sViewName,
+						actions: function (oMenuItem) {
+							oMenuItem.firePress();
+						},
+						errorMessage: "Falha ao apertar o botão de Voltar"
+					});
+				},
 			},
 
 			assertions: {

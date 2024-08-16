@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Cod3rsGrowth.Dominio.MigracoesBancoDeTeste
 {
     [Profile(ConstantesMigracao.PERFIL_POPULAR_BANCO_DE_TESTES)]
-    public class Criar_Cliente_Para_Teste : Migration
+    public class Criar_Cliente_e_Pedido_Para_Teste : Migration
     {
         public override void Down()
         {
