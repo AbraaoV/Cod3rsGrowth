@@ -1,15 +1,18 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/routing/History",
-    "sap/ui/core/UIComponent",
     "sap/m/MessageBox",
-    "sap/ui/model/json/JSONModel"
-], function (Controller, History, UIComponent, MessageBox, JSONModel) {
+    "ui5/codersgrowth/common/ConstantesDaRota",
+], function (Controller, History, MessageBox, ConstantesDaRota) {
     "use strict";
 
-    const MSG_DE_ERRO = "Ocorreu um erro: "
+    const MSG_DE_ERRO_I18N = "errorMenssage"
     const ROTA_PAGINA_PRINCIPAL = "lista"
     const NOME_MODELO_DO_APP = "appView"
+    const TEXTO_VOLTAR_PARA_PAGINA_INCIAL_I18N = "returnToInitialPage"
+    const TEXTO_NOVO_CADASTRO_I18N = "newRegistrationMessage"
+    const NOME_DO_MODELO_I18N = "i18n"
+    
 
     return Controller.extend("ui5.codersgrowth.common.ControllerBase", {
         obterRota: function () {
@@ -18,6 +21,10 @@ sap.ui.define([
 
         obterParametros: function () {
             return this.obterRota().getHashChanger().getHash().split("/");
+        },
+
+        obterTextoI18n: function(tituloDoTexto){
+            return this.getView().getModel(NOME_DO_MODELO_I18N).getResourceBundle().getText(tituloDoTexto);
         },
 
         aoClicarEmVoltar: function () {
@@ -71,7 +78,7 @@ sap.ui.define([
                             this._formatarMensagemDeErro(error);
                         });
                     } else {
-                        return MessageBox.error(MSG_DE_ERRO + error.message, {
+                        return MessageBox.error(this.obterTextoI18n(MSG_DE_ERRO_I18N) + error.message, {
                             details: error.stack,
                             contentWidth: "25%",
                         });
@@ -81,7 +88,6 @@ sap.ui.define([
                     this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", false);
                 });
         },
-        
 
         _modelo: function (oModel, sNomeModelo) {
             return this.getView().setModel(oModel, sNomeModelo);
@@ -90,7 +96,10 @@ sap.ui.define([
         _formatarMensagemDeErro: function(data) {
             let detalhesDoErro = '';
             if (data.extensions && data.extensions.errors) {
-                detalhesDoErro = data.extensions.errors.join('\n');
+                detalhesDoErro = data.extensions.errors
+                if(data.extensions.errors.join){
+                    detalhesDoErro = data.extensions.errors.join('\n');
+                }
             }
         
             const mensagemErro = `
@@ -103,6 +112,24 @@ sap.ui.define([
                 contentWidth: "40%",
             });
             
+        },
+
+        _sucessoNaRequicao: function(msgSucesso, requicaoPost){
+            let opcoes = [this.obterTextoI18n(TEXTO_VOLTAR_PARA_PAGINA_INCIAL_I18N)]
+            if(requicaoPost){
+                opcoes = [this.obterTextoI18n(TEXTO_NOVO_CADASTRO_I18N), this.obterTextoI18n(TEXTO_VOLTAR_PARA_PAGINA_INCIAL_I18N)]
+            }
+            MessageBox.success(msgSucesso, {
+                actions: opcoes,
+                onClose: (sAction) => {
+                    if (sAction === this.obterTextoI18n(TEXTO_NOVO_CADASTRO_I18N)) {
+                        () => this._limparCampos(); 
+                    } else if (sAction === this.obterTextoI18n(TEXTO_VOLTAR_PARA_PAGINA_INCIAL_I18N)) {
+                        () => this._limparCampos(); 
+                        this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
+                    }
+                }
+            });
         },
     });
 });

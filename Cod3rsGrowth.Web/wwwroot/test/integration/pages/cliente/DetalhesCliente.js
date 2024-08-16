@@ -1,8 +1,9 @@
 sap.ui.define([
 	"sap/ui/test/Opa5",
     "sap/ui/test/actions/Press",
-
-], (Opa5, Press) => {
+	"sap/ui/test/matchers/Properties",
+	"sap/ui/test/matchers/Ancestor"
+], (Opa5, Press, Properties, Ancestor) => {
 	"use strict";
 
 	const sViewName = "cliente.DetalhesCliente"
@@ -18,6 +19,21 @@ sap.ui.define([
 						errorMessage: "Não foi possível encontrar o botão de id: " + sBotaoId
 					});
                 },
+
+				aoClicarNaOpacaoDaMessageBox: function(sTextoBotao){
+					return this.waitFor({
+						controlType: "sap.m.Button",
+						matchers: [
+							new Properties({ text: sTextoBotao }),
+							new Ancestor(Opa5.getContext().dialog, false) 
+						],
+						actions: new Press(),
+						success: function () {
+							Opa5.assert.ok(true, "Sucesso ao clicar no botao");
+						},
+						errorMessage: "Falhar ao clicar no botao"
+                    });
+				},				
                 
 			},
 			
@@ -30,7 +46,19 @@ sap.ui.define([
                         },
                         errorMessage: "Falha ao navegar a pagina de detalhes"
                     });
-                }
+                },
+
+				deveAparecerMessagemBoxDeAvisoComOTexto: function(sTexto){
+					return this.waitFor({
+						controlType: "sap.m.Dialog",
+						controlType: "sap.m.Text",
+						matchers: new Properties({ text: sTexto}),
+						success: function () {
+							Opa5.assert.ok("A MessageBox apareceu");
+						},
+						errorMessage: "A MessageBox não apareceu"
+					});
+				},
 			}
 		}
 	});

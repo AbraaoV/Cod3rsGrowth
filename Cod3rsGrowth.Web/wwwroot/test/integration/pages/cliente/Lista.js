@@ -219,7 +219,32 @@ sap.ui.define([
                         },
                         errorMessage: "Falha ao navegar a pagina de lista"
                     });
-				}
+				},
+				clienteDeveEstarRemovidoDaLista: function(sNomeDoCliente){
+					function fnCheckFilter(oList) {
+						var fnIsFiltered = function (oElement) {
+							if (!oElement.getBindingContext("listaDeClientes")) {
+								return false;
+							} else {
+								var sNome = oElement.getBindingContext("listaDeClientes").getProperty("nome");
+								debugger
+								return sNome === sNomeDoCliente;
+							}
+						};
+				
+						return oList.getItems().every(fnIsFiltered);
+					}
+
+					return this.waitFor({
+						id: sIdLista,
+						viewName: sViewName,
+						matchers: !fnCheckFilter,
+						success: function () {
+							Opa5.assert.ok(true, "Cliente removido com sucesso");
+						},
+						errorMessage: "Falha ao remover cliente"
+					});
+				},
 			}
 		}
 	});

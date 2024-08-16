@@ -14,10 +14,9 @@ sap.ui.define([
     "use strict";
     const CAMINHO_PARA_API_ENUM = "/api/EnumTipo"
     const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
-    const MSG_SUCESSO_CADASATRO_CLIENTE = "Cliente cadastrado com sucesso."
-    const MSG_SUCESSO_EDITAR_CLIENTE = "Cliente editado com sucesso."
-    const OPCAO_NOVO_CADASTRO = "Novo Cadastro"
-    const OPCAO_VOLTAR_PARA_PAGINA_INICIAL = "Voltar à Página Inicial"
+    const MSG_DE_SUCESSO_NO_CADASTRO_I18N = "sucessCustumerRegister"
+    const MSG_DE_SUCESSO_NA_EDICAO_I18N = "sucessCustumerEdit"
+    const NOME_DO_MODELO_I18N = "i18n"
     const ID_COMBO_BOX = "comboxTipo"
     const ID_LABEL_CPF = "labelCpf"
     const ID_INPUT_CPF = "inputCpf"
@@ -109,24 +108,6 @@ sap.ui.define([
             oMM.registerObject(oView.byId(ID_INPUT_NOME), true);
             oMM.registerObject(oView.byId(ID_INPUT_CPF), true);
             oMM.registerObject(oView.byId(ID_INPUT_CNPJ), true);
-        },
-
-        _sucessoNaRequicao: function(msgSucesso, requicaoPuT){
-            let opcoes = [OPCAO_NOVO_CADASTRO, OPCAO_VOLTAR_PARA_PAGINA_INICIAL]
-            if(requicaoPuT){
-                opcoes = [OPCAO_VOLTAR_PARA_PAGINA_INICIAL]
-            }
-            MessageBox.success(msgSucesso, {
-                actions: opcoes,
-                onClose: (sAction) => {
-                    if (sAction === OPCAO_NOVO_CADASTRO) {
-                        () => this._limparCampos(); 
-                    } else if (sAction === OPCAO_VOLTAR_PARA_PAGINA_INICIAL) {
-                        () => this._limparCampos(); 
-                        () => this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
-                    }
-                }
-            });
         },
 
         _validarInput: function (oInput) {
@@ -228,13 +209,15 @@ sap.ui.define([
         },
 
         _adicionarCliente: async function(cliente){
-            await HttpRequest._request("POST", ConstantesDoBanco.CAMINHO_PARA_API, cliente);
-            this._sucessoNaRequicao(MSG_SUCESSO_CADASATRO_CLIENTE)
+            const MSG_SUCESSO_CADASATRO_CLIENTE = this.obterTextoI18n(MSG_DE_SUCESSO_NO_CADASTRO_I18N);
+            await HttpRequest._request(ConstatesDasRequests.REQUISICAO_POST, ConstantesDoBanco.CAMINHO_PARA_API, cliente);
+            this._sucessoNaRequicao(MSG_SUCESSO_CADASATRO_CLIENTE, true)
         },
 
         _atualizarCliente: async function(cliente){
-            await HttpRequest._request("PUT", ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA], cliente);
-            this._sucessoNaRequicao(MSG_SUCESSO_EDITAR_CLIENTE, true)
+            const MSG_SUCESSO_EDITAR_CLIENTE = this.obterTextoI18n(MSG_DE_SUCESSO_NA_EDICAO_I18N);
+            await HttpRequest._request(ConstatesDasRequests.REQUISICAO_PUT, ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA], cliente);
+            this._sucessoNaRequicao(MSG_SUCESSO_EDITAR_CLIENTE)
         },  
         
         _limparCampos: function() {

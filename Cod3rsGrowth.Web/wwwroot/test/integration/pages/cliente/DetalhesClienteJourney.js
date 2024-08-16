@@ -11,7 +11,7 @@ sap.ui.define([
 	
     opaTest("Deve ser capaz de filtrar por nome com a pagina de detalhes aberta ao lado", function(Given, When, Then) {
 		Given.iStartMyApp({
-			hash: "cliente/1/"
+			hash: "cliente/2/"
 		})
 		//Actions
 		When.naListaCliente.aoPesquisarNome("Empresa");
@@ -57,12 +57,24 @@ sap.ui.define([
 		// Assertions
 		Then.naPaginaDoApp.oFlexibleColumnLayoutDoAppDeveSer("TwoColumnsMidExpanded");
 	});
-    opaTest("Deve ser capaz de fechar a tela de detalhes", function (Given, When, Then) {
-        //Actions
-        When.naTelaDeDetalhes.aoClicarNoBotaoDe("botaoFecharDetalhes");
-		// Assertions
+	opaTest("Deve ser capaz de navegar para e tela de edicao de cliente, ao clicar em editar", function (Given, When, Then) {
+		//Actions
+        When.naTelaDeDetalhes.aoClicarNoBotaoDe("botaoEditar");
+		//Assertions
+		Then.naTelaDeAdicionarEditar.deveEstarNaTelaDeEditar();
+	});
+	opaTest("Deve ser capaz de voltar para a tela de detalhes ao clicar em voltar", function (Given, When, Then) {
+		//Actions
+		When.naTelaDeAdicionarEditar.aoApertaEmVoltar();
+		//Assertions
+		Then.naTelaDeDetalhes.deveEstarNaTelaDeDetalhes()
+	});
+	opaTest("Deve ser capaz de fechar a tela de detalhes", function (Given, When, Then) {
+		//Actions
+		When.naTelaDeDetalhes.aoClicarNoBotaoDe("botaoFecharDetalhes");
+		//Assertions
 		Then.naListaCliente.listaDeveConterDezClientesNaPagina();
-        // Cleanuo
-        Then.iTeardownMyApp();
+		//Cleanuo
+		Then.iTeardownMyApp();
 	});
 });
