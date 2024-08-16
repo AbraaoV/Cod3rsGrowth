@@ -16,15 +16,14 @@ sap.ui.define([
     const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
     const MSG_DE_SUCESSO_NO_CADASTRO_I18N = "sucessCustumerRegister"
     const MSG_DE_SUCESSO_NA_EDICAO_I18N = "sucessCustumerEdit"
-    const NOME_DO_MODELO_I18N = "i18n"
     const ID_COMBO_BOX = "comboxTipo"
     const ID_LABEL_CPF = "labelCpf"
     const ID_INPUT_CPF = "inputCpf"
     const ID_LABEL_CPNJ = "labelCnpj"
     const ID_INPUT_CNPJ = "inputCnpj"
     const ID_INPUT_NOME = "inputNome"
-    const KEY_PESSOA_FISICA = "Fisica"
-    const KEY_PESSOA_JURIDICA = "Juridica"
+    const KEY_PESSOA_FISICA = "1"
+    const KEY_PESSOA_JURIDICA = "2"
     const PARAMETRO_ITEM_SELECIONADO = "selectedItem"
     const MSG_DE_ERRO_DE_VALIDACAO = "Ocorreu um ou mais erros de validação."
     const INDEX_CPF = 1
@@ -91,7 +90,7 @@ sap.ui.define([
 
             const modeloCliente = this.obterModelo(NOME_DO_MODELO_DO_CLIENTE)
             this.getView().byId(ID_INPUT_NOME).setValue(modeloCliente.getProperty(PROPRIEDADE_NOME));
-            controleDoComboBox.setSelectedKey(modeloCliente.getProperty(PROPRIEDADE_TIPO)).fireSelectionChange({
+            controleDoComboBox.setSelectedKey(modeloCliente.getProperty(PROPRIEDADE_TIPO).toString()).fireSelectionChange({
                 selectedItem: controleDoComboBox.getSelectedItem(),
                 key: controleDoComboBox.getSelectedItem().getKey()
             });

@@ -5,6 +5,7 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:m="sap.m"
 	xmlns:f="sap.f"
+	xmlns:item="sap.ui.core.Item"
 	xmlns:form="sap.ui.layout.form"
 	xmlns:core="sap.ui.core">
 
@@ -27,8 +28,8 @@
 					<m:OverflowToolbarButton id= "botaoFecharDetalhes" type="Transparent" icon="sap-icon://decline" press=".aoFecharDetalhes"/>
 				</navigationActions>
 				<actions>
-					<m:Button text="{i18n>editBtnText}" type="Emphasized" id="botaoEditar" press=".aoClicarEmEditar"/>
-					<m:Button text="{i18n>deleteBtnText}" type="Transparent" id="botaoDeletar" press=".aoClicarEmDeletar"/>
+					<m:Button text="{i18n>editBtnText}" type="Emphasized" press=".aoClicarEmEditar"/>
+					<m:Button text="{i18n>deleteBtnText}" type="Transparent"/>
 				</actions>
 			</ObjectPageDynamicHeaderTitle>
 		</headerTitle>
@@ -53,10 +54,10 @@
 								<m:Text  text="{clienteSelecionado>/nome}" />
 								<m:Label text="Pessoa" design="Bold"/>
 								<m:Text text="{clienteSelecionado>/tipo}"/>
-								<m:Label design="Bold" text="{= ${clienteSelecionado>/tipo} === 'Fisica' ? 'CPF' : 'CNPJ'}"/>
-								<m:Text text="{= ${clienteSelecionado>/tipo} === 'Fisica' ? ${path: 'clienteSelecionado>/cpf', formatter: '.formatter.formatarCpf'} : ${path: 'clienteSelecionado>/cnpj', formatter: '.formatter.formatarCnpj'}}"/>
+								<m:Label design="Bold" text="{= ${clienteSelecionado>/tipo} === 'Pessoa Física' ? 'CPF' : 'CNPJ'}"/>
+								<m:Text text="{= ${clienteSelecionado>/tipo} === 'Pessoa Física' ? ${path: 'clienteSelecionado>/cpf', formatter: '.formatter.formatarCpf'} : ${path: 'clienteSelecionado>/cnpj', formatter: '.formatter.formatarCnpj'}}"/>
 								<core:Title text="{i18n>iconTitle}" class="sapUiResponsiveMargin"/>
-								<m:Image src="{= ${clienteSelecionado>/tipo} === 'Fisica' ? 'images/iconePadraoFisica.png' : 'images/iconePadraoJuridica.png'}" width="25%" height="25%" class="centered-image"/>
+								<m:Image src="{= ${clienteSelecionado>/tipo} === 'Pessoa Física' ? 'images/iconePadraoFisica.png' : 'images/iconePadraoJuridica.png'}" width="25%" height="25%" class="centered-image"/>
 							</form:content>
 						</form:SimpleForm>
 					</blocks>
@@ -69,15 +70,86 @@
 					<blocks>
 						<m:Table
 							id="tabelaPedidos"
-							mode="SingleSelectMaster"
-							items="{path : ''}">
+							items="{path : 'listaDePedidos>/'}"
+							class="sapUiResponsiveMargin"
+							width="auto">
+							<m:headerToolbar>
+								<m:Toolbar>
+									<m:Title text="Filtros"/>
+									<m:ToolbarSpacer/>
+									<m:ComboBox
+									id="comboBoxFormaDePagamento"
+									selectedKey="todos"
+									placeholder="Forma de pagamento"
+									items="{path: 'formasDePagamento>/'}"
+									width="22%"
+									change=".aoSelecionarFormaDePagamento">
+									<m:items>
+										<core:ListItem key="{formasDePagamento>key}" text="{formasDePagamento>descricao}"/>
+									</m:items>
+								</m:ComboBox>
+								<m:DatePicker
+									id="filtroDataPicker"
+									placeholder="Data do pedido"
+									width="16%"
+									valueFormat="yyyy-MM-dd"
+									change=".aoFiltrarPelaData"/>
+								<m:Input
+										id="inputValorMin"
+										width="11%"
+										liveChange=".aoDigitarValorMin"
+										placeholder="Valor míninimo"/>
+								<m:Input
+									id="inputValorMax"
+									width="11%"
+									liveChange=".aoDigitarValorMax"
+									placeholder="Valor máximo"/>
+								<m:Button
+									id="botaoAdicionar"
+									text="Adicionar"
+									press=".aoClicarEmAdicionar"
+									type="Emphasized"/>
+								</m:Toolbar>
+							</m:headerToolbar>
 							<m:columns>
-								<m:Column />
+								<m:Column>
+									<m:Text text="{i18n>orderDate}"/>
+								</m:Column>
+								<m:Column
+									hAlign="Begin">
+									<m:Text text="{i18n>orderPaymentMethod}"/>
+								</m:Column>
+								<m:Column
+									hAlign="Begin">
+									<m:Text text="{i18n>orderCard}"/>
+								</m:Column>
+								<m:Column
+									hAlign="End">
+									<m:Text text="{i18n>orderValue}"/>
+								</m:Column>
 							</m:columns>
 							<m:items>
 								<m:ColumnListItem>
 									<m:cells>
-										
+										<m:ObjectIdentifier
+											title="{path: 'listaDePedidos>data', formatter: '.formatter.formatarData'}"/>
+										<m:ObjectIdentifier
+											title="{listaDePedidos>formaPagamento}"/>
+										<m:ObjectIdentifier
+											title="{path: 'listaDePedidos>numeroCartao', formatter: '.formatter.formatarCartao'}"/>
+										<m:ObjectNumber
+											number="{
+													parts: [
+														'listaDePedidos>valor',
+														'modeloMoeda>/currency'
+													],
+													type: 'sap.ui.model.type.Currency',
+													formatOptions: {
+														showMeasure: false
+													}
+												}"
+											unit="{modeloMoeda>/currency}"
+											state="{= ${listaDePedidos>valor} > 50 ? 'Success' : 'Error' }"/>	
 									</m:cells>
 								</m:ColumnListItem>
 							</m:items>

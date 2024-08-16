@@ -8,6 +8,7 @@ using FluentMigrator.Runner;
 using FluentValidation;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using static Cod3rsGrowth.Dominio.Cliente;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 
@@ -25,7 +26,7 @@ else
 
 builder.Services.AddMvc().AddJsonOptions(x =>
 {
-    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    x.JsonSerializerOptions.Converters.Add(new ConverterDescricaoEnum<TipoDeCliente>());
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDirectoryBrowser();
