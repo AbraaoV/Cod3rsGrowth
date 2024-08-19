@@ -10,7 +10,7 @@ namespace Cod3rsGrowth.Web
 {
     public static class Migracoes
     {
-        public static void Executar(WebApplicationBuilder builder, Assembly migracao, string? profile = null, string? profile2 = null)
+        public static void Executar(WebApplicationBuilder builder, Assembly migracao, string? profile = null)
         {
             builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
                 .AddSqlServer()
