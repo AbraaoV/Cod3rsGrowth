@@ -14,7 +14,7 @@ namespace Cod3rsGrowth.Web
 
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(ObterDescriacao.capturarDescricaoEnum(value));
+            writer.WriteStringValue(ObterDescriacao.CapturarDescricaoEnum(value));
         }
     }
 }

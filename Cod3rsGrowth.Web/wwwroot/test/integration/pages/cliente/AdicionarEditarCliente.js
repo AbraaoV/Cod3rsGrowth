@@ -77,7 +77,7 @@ sap.ui.define([
 					})
 				},
 
-				aoApertaEmVoltar: function(){
+				aoClicarEmVoltar: function(){
 					return this.waitFor({
 						id: "botaoVoltar",
 						viewName: sViewName,
@@ -88,7 +88,7 @@ sap.ui.define([
 					});
 				},
 
-				aoApertaEmVoltarSegundoClique: function(){
+				aoClicarEmVoltarSegundoClique: function(){
 					return this.waitFor({
 						id: "botaoVoltar",
 						viewName: sViewName,

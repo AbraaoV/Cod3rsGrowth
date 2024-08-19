@@ -17,7 +17,6 @@ sap.ui.define([
     const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
     const MSG_DE_SUCESSO_NO_CADASTRO_I18N = "sucessCustumerRegister"
     const MSG_DE_SUCESSO_NA_EDICAO_I18N = "sucessCustumerEdit"
-    const NOME_DO_MODELO_I18N = "i18n"
     const ID_COMBO_BOX = "comboxTipo"
     const ID_LABEL_CPF = "labelCpf"
     const ID_INPUT_CPF = "inputCpf"
@@ -69,20 +68,6 @@ sap.ui.define([
             })
         },
 
-        aoClicarEmVoltars: function () {
-            var oHistory, sPreviousHash;
-
-            oHistory = History.getInstance();
-            sPreviousHash = oHistory.getPreviousHash();
-
-            if (sPreviousHash !== undefined) {
-                window.history.go(-1);
-            } else {
-                this.obterRota().navTo(ROTA_PAGINA_PRINCIPAL, {}, true);
-            }
-        },
-
-
         _definirValoresPadroes: async function(){
             let retorno = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, CAMINHO_PARA_API_ENUM);
             this._modelo(new JSONModel(retorno), NOME_DO_MODELO_DA_COMBOX_BOX)
@@ -117,7 +102,7 @@ sap.ui.define([
                 key: item.getKey()
             });
             this.getView().byId(ID_INPUT_CPF).setValue(formatter.formatarCpf(modeloCliente.getProperty(PROPRIEDADE_CPF)));
-            this.getView().byId(ID_INPUT_CNPJ).setValue(formatter.formatarCpf(modeloCliente.getProperty(PROPRIEDADE_CNPJ)));
+            this.getView().byId(ID_INPUT_CNPJ).setValue(formatter.formatarCnpj(modeloCliente.getProperty(PROPRIEDADE_CNPJ)));
         },
 
         _registarModeloParaVailidacao: function(){

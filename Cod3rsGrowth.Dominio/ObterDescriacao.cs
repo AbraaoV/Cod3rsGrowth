@@ -10,7 +10,7 @@ namespace Cod3rsGrowth.Dominio
 {
     public class ObterDescriacao
     {
-        public static string capturarDescricaoEnum(Enum value)
+        public static string CapturarDescricaoEnum(Enum value)
         {
             FieldInfo field = value.GetType().GetField(value.ToString());
 

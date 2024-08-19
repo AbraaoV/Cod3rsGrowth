@@ -16,7 +16,7 @@ namespace Cod3rsGrowth.Web.Controllers
                                  .Select(e => new
                                  {
                                      Key = (int)e,
-                                     Descricao = ObterDescriacao.capturarDescricaoEnum(e)
+                                     Descricao = ObterDescriacao.CapturarDescricaoEnum(e)
                                  })
                                  .ToList();
 

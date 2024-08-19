@@ -45,7 +45,8 @@
                             constraints: {
                                 minLength: 11,
                                 maxLength: 14
-                            }
+                            },
+                            formatter: '.formatter.formatarCpf'
                         }"
                         change=".aoDigitarNoInpunt"/>
                         <Label id="labelCnpj" text="CNPJ" visible="false"/>

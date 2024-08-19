@@ -52,7 +52,7 @@ sap.ui.define([
 	});
 	opaTest("Botão de voltar negação deve voltar para pagina principal", function(Given, When, Then){
 		//Actions
-		When.naTelaDeAdicionarEditar.aoApertaEmVoltar();
+		When.naTelaDeAdicionarEditar.aoClicarEmVoltar();
 		// Assertions
 		Then.naListaCliente.deveNavegarParaTelaDeLista();
 	})
@@ -70,8 +70,8 @@ sap.ui.define([
 	});
 	opaTest("Deve ser capaz de voltar para a tela de detalhes ao clicar em voltar", function (Given, When, Then) {
 		//Assertions
-		When.naTelaDeAdicionarEditar.aoApertaEmVoltar();
-		When.naTelaDeAdicionarEditar.aoApertaEmVoltarSegundoClique();
+		When.naTelaDeAdicionarEditar.aoClicarEmVoltar();
+		When.naTelaDeAdicionarEditar.aoClicarEmVoltarSegundoClique();
 		Then.naTelaDeDetalhes.deveEstarNaTelaDeDetalhes()
 		// Cleanuo
 		Then.iTeardownMyApp();
