@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 if (args.FirstOrDefault() == ConstantesApi.VALOR_DO_COMMAND_LINE_ARGS_PERFIL_DE_TESTE)
 {
     ConnectionString.connectionString = ConstantesDosRepositorios.CONNECTION_STRING_TESTE;
-    Migracoes.Executar(builder, typeof(_20240606135200_Editar_Coluna_Cpf_Cpnj_e_Cartao).Assembly, ConstantesMigracao.PERFIL_POPULAR_BANCO_DE_TESTES, "Pedidos");
+    Migracoes.Executar(builder, typeof(_20240606135200_Editar_Coluna_Cpf_Cpnj_e_Cartao).Assembly, ConstantesMigracao.PERFIL_POPULAR_BANCO_DE_TESTES);
 }
 else
 {

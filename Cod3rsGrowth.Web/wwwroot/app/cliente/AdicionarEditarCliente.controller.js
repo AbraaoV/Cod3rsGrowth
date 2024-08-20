@@ -32,7 +32,6 @@ sap.ui.define([
     const VALOR_PADRAO = "None"
     const VALOR_DE_ERRO = "Error"
     const VALOR_PROPRIEDAE = "value"
-    const NOME_DO_MODELO_DOS_FILTROS = "modeloFiltro"
     const NOME_DO_MODELO_DO_CLIENTE = "clienteSelecionado"
     const INDEX_DO_ID_DO_CLIENTE_NA_ROTA = 1
     const TITULO_DO_PANEL_CADASTRO = "Cadastro de Cliente"
@@ -46,6 +45,7 @@ sap.ui.define([
     const INDEX_DO_NOME_DA_ROTA = 2
 
     return ControllerBase.extend("ui5.codersgrowth.app.cliente.AdicionarEditarCliente", {
+        formatter: formatter,
         onInit: async function() {
             this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_ADICIONAR_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
             this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_EDITAR_CLIENTE).attachPatternMatched(this._aoCoincidirRotaEditar, this);
@@ -101,16 +101,13 @@ sap.ui.define([
                 selectedItem: item,
                 key: item.getKey()
             });
-            this.getView().byId(ID_INPUT_CPF).setValue(formatter.formatarCpf(modeloCliente.getProperty(PROPRIEDADE_CPF)));
-            this.getView().byId(ID_INPUT_CNPJ).setValue(formatter.formatarCnpj(modeloCliente.getProperty(PROPRIEDADE_CNPJ)));
+            this.getView().byId(ID_INPUT_CPF).setValue(modeloCliente.getProperty(PROPRIEDADE_CPF));
+            this.getView().byId(ID_INPUT_CNPJ).setValue(modeloCliente.getProperty(PROPRIEDADE_CNPJ));
         },
 
         _registarModeloParaVailidacao: function(){
             let oView = this.getView(),
             oMM = Messaging;
-
-            oView.setModel(new JSONModel({ name: "", cpf: "", cnpj: ""}), NOME_DO_MODELO_DOS_FILTROS);
-
             oMM.registerObject(oView.byId(ID_INPUT_NOME), true);
             oMM.registerObject(oView.byId(ID_INPUT_CPF), true);
             oMM.registerObject(oView.byId(ID_INPUT_CNPJ), true);
