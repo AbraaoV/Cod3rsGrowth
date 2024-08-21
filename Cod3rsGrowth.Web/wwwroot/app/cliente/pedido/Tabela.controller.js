@@ -221,19 +221,13 @@ sap.ui.define([
 				const numeroCartao = this.getView().byId(ID_INPUT_NUMERO_CARTAO)
 				const valor = this.getView().byId(ID_INPUT_VALOR)
 
-				let aInputs = [
-					data,
-					valor,
-				],
-				bErroDeVaidacao = false;
-
-				if(formaPagamento.getSelectedKey === CHAVE_ITEM_CARTAO_COMBOX){
-					aInputs[2] = numeroCartao
+				let bErroDeVaidacao = false;
+				if(formaPagamento.getSelectedKey() === CHAVE_ITEM_CARTAO_COMBOX){
+					bErroDeVaidacao = this._validarInputCartao(numeroCartao)
 				};
+				bErroDeVaidacao = this._validarInputDataEValor(data)
+				bErroDeVaidacao = this._validarInputDataEValor(valor)
 				
-				aInputs.forEach(function (oInput) {
-					bErroDeVaidacao = this._validarInput(oInput) || bErroDeVaidacao;
-				}   , this);
 				if (bErroDeVaidacao) {
 					MessageBox.alert(this.obterTextoI18n(MSG_DE_ERRO_DE_VALIDACAO));
 					return;
@@ -252,8 +246,10 @@ sap.ui.define([
 		},
 
 		_removerItemTodosDaComboBox: function(){
-			let controleComboBox = this.byId(ID_COMBOBOX_PAGAMENTO_ADICIONAR);
-			let oItemToRemove = controleComboBox.getItems().find(item => item.getKey() === CHAVE_PADRAO_DA_COMBOBOX);
+			debugger
+			let modeloComboBox = this.obterModelo(NOME_DO_MODELO_DA_COMBO_BOX);
+			modeloComboBox.getProprety()
+			let oItemToRemove = modeloComboBox.getItems().find(item => item.getKey() === CHAVE_PADRAO_DA_COMBOBOX);
 			if (oItemToRemove) {
 				controleComboBox.removeItem(oItemToRemove);
 			}
@@ -265,40 +261,47 @@ sap.ui.define([
 			this.oDialog.close();
 		},
 
-		aoDigitarValor: function(oEvent){
-			let oInput = oEvent.getSource();
-			this._validarInput(oInput);
+		aoDigitarNoInputValor: function(oEvent){
+			let oInput = oEvent.getSource().getValue();
+			this._validarInputDataEValor(oInput)
 			this._mascararMoeda(oEvent);
 		},
 
-		_validarInput: function (oInput) {
-			let inputNumeroDoCartao = this.getView().byId(ID_INPUT_NUMERO_CARTAO);
+		aoDigitarNoInputCartao: function(oEvent){
+			let oInput = oEvent.getSource().getValue();
+			this._validarInputCartao(oInput);
+		},
+
+		_validarInputCartao: function(oInput){
+			let sEstadoDoValor = VALOR_PADRAO;
+			let bErroDeVaidacao = false;
+			let valorDoInput = oInput.replace(/\D/g, '');
+
+			if (valorDoInput.length !== 16) {
+				sEstadoDoValor = VALOR_DE_ERRO;
+				bErroDeVaidacao = true;
+			}
+
+			oInput.setValueState(sEstadoDoValor);
+			return bErroDeVaidacao;
+		},
+
+		_validarInputDataEValor: function(oInput){
 			let sEstadoDoValor = VALOR_PADRAO;
 			let bErroDeVaidacao = false;
 
-			let sInput = oInput.getValue();
-			
-			if (oInput === inputNumeroDoCartao) {
-				sInput = sInput.replace(/\D/g, '');
-			}
-
-			if (oInput === inputNumeroDoCartao && inputNumeroDoCartao.length !== 16) {
+			if (oInput === "") {
 				sEstadoDoValor = VALOR_DE_ERRO;
 				bErroDeVaidacao = true;
 			}
 
-			if(sInput === ""){
-				sEstadoDoValor = VALOR_DE_ERRO;
-				bErroDeVaidacao = true;
-			}
 			oInput.setValueState(sEstadoDoValor);
-
 			return bErroDeVaidacao;
 		},
 
 		aoSelecionarData: function(oEvent){
-			let oInput = oEvent.getSource();
-			this._validarInput(oInput);
+			let oInput = oEvent.getSource().getValue();
+			this._validarInputDataEValor(oInput)
 		},
 
 		_registarModeloParaVailidacao: function(){
@@ -339,6 +342,6 @@ sap.ui.define([
 			this._removerItemTodosDaComboBox();
 			this._registarModeloParaVailidacao();
 			this.aoSelecionarPagamentoDoPedido();
-		}
+		},
 	});
 });

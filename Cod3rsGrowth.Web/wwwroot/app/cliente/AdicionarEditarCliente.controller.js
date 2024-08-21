@@ -113,27 +113,13 @@ sap.ui.define([
             oMM.registerObject(oView.byId(ID_INPUT_CNPJ), true);
         },
 
-        _validarInput: function (oInput) {
+        _validarInputCpf: function(oInput){
             let sEstadoDoValor = VALOR_PADRAO;
             let bErroDeVaidacao = false;
-            let oBinding = oInput.getBinding(VALOR_PROPRIEDAE);
-            let inputCpf = this.getView().byId(ID_INPUT_CPF)
-            let inputCnpj = this.getView().byId(ID_INPUT_CNPJ)
 
-            let sInputSemMascara = oInput.getValue();
+            let sInputSemMascara = oInput.replace(/\D/g, '');
             
-            if (oInput === inputCpf || oInput === inputCnpj) {
-                sInputSemMascara = sInputSemMascara.replace(/\D/g, '');
-            }
-            if(sInputSemMascara === ""){
-                sEstadoDoValor = VALOR_DE_ERRO;
-                bErroDeVaidacao = true;
-            }
-            if(oInput === inputCpf && sInputSemMascara.length !== 11){
-                sEstadoDoValor = VALOR_DE_ERRO;
-                bErroDeVaidacao = true;
-            }
-            if(oInput === inputCnpj && sInputSemMascara.length !== 14){
+            if(sInputSemMascara !== 11){
                 sEstadoDoValor = VALOR_DE_ERRO;
                 bErroDeVaidacao = true;
             }
@@ -143,10 +129,54 @@ sap.ui.define([
             return bErroDeVaidacao;
         },
 
-        aoDigitarNoInpunt: function(oEvent) {
+        _validarInputCnpj: function(){
+            let sEstadoDoValor = VALOR_PADRAO;
+            let bErroDeVaidacao = false;
+
+            let sInputSemMascara = oInput.replace(/\D/g, '');
+            
+            if(sInputSemMascara !== 14){
+                sEstadoDoValor = VALOR_DE_ERRO;
+                bErroDeVaidacao = true;
+            }
+
+            oInput.setValueState(sEstadoDoValor);
+
+            return bErroDeVaidacao;
+        },
+
+        _validarInputNome: function(oInput){
+            let sEstadoDoValor = VALOR_PADRAO;
+            let bErroDeVaidacao = false;
+            
+            if(oInput === ""){
+                sEstadoDoValor = VALOR_DE_ERRO;
+                bErroDeVaidacao = true;
+            }
+
+            oInput.setValueState(sEstadoDoValor);
+
+            return bErroDeVaidacao;
+        },
+
+        aoDigitarNoInpuntCpf: function(oEvent) {
             this._exibirEspera(() => {
-                let oInput = oEvent.getSource();
-                this._validarInput(oInput);
+                let oInput = oEvent.getSource().getValue();
+                this._validarInputCpf(oInput);
+            });
+		},
+
+        aoDigitarNoInpuntCnpj: function(oEvent) {
+            this._exibirEspera(() => {
+                let oInput = oEvent.getSource().getValue();
+                this._validarInputCnpj(oInput);
+            });
+		},
+
+        aoDigitarNoInpuntNome: function(oEvent) {
+            this._exibirEspera(() => {
+                let oInput = oEvent.getSource().getValue();
+                this._validarInputNome(oInput);
             });
 		},
 
@@ -178,22 +208,16 @@ sap.ui.define([
                 let oComboBox = this.getView().byId(ID_COMBO_BOX);
                 const tipoPessoa = oComboBox.getSelectedKey();
 
-				let aInputs = [
-                    nome,
-                    cpf,
-                    cnpj
-                ],
-				bErroDeVaidacao = false;
+				let bErroDeVaidacao = false;
                 
                 if(oComboBox.getSelectedKey() === KEY_PESSOA_FISICA){
-                    delete aInputs[INDEX_CPNJ]
+                    this._validarInputCpf(cpf)
                 }
                 if(oComboBox.getSelectedKey() === KEY_PESSOA_JURIDICA){
-                    delete aInputs[INDEX_CPF]
+                    this._validarInputCnpj(cnpj)
                 }
-                aInputs.forEach(function (oInput) {
-                    bErroDeVaidacao = this._validarInput(oInput) || bErroDeVaidacao;
-                }   , this);
+                this._validarInputNome(nome)
+                
                 if (bErroDeVaidacao) {
                     MessageBox.alert(this.obterTextoI18n(MSG_DE_ERRO_DE_VALIDACAO));
                     return;
@@ -210,8 +234,6 @@ sap.ui.define([
                 }else{
                     await this._adicionarCliente(cliente);
                 }
-                
-                
             });    
         },
 

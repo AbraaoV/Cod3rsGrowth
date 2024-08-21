@@ -37,26 +37,27 @@
                         id="comboxAdicionarPagamento"
                         selectedKey="1"
                         width="90%"
-                        items="{path: 'formasDePagamento>/'}"
+                        items="{path: 'formasDePagamentoDialogo>/'}"
                         change=".aoSelecionarPagamentoDoPedido">
                         <items>
-                            <core:ListItem key="{formasDePagamento>key}" text="{formasDePagamento>descricao}"/>
+                            <core:ListItem key="{formasDePagamentoDialogo>key}" text="{formasDePagamentoDialogo>descricao}"/>
                         </items>
                     </Select>
-                    <Label text="Número do Cartão" width="90%" id="labelCartao" visible="true" class="sapUiSmallMarginBeginEnd"/>
+                    <Label text="Número do Cartão" width="90%" id="labelCartao" visible="{formasDePagamentoDialogo>key === 1}" class="sapUiSmallMarginBeginEnd"/>
                     <MaskInput
                         class="sapUiSmallMarginBeginEnd"
                         id="inputNumeroDoCartao"
                         width="90%"
                         placeholder="Número do Cartão"
                         mask="9999 9999 9999 9999"
+                        liveChange=".aoDigitarNoInputCartao"
                         valueStateText="Informe o numero de cartão para essa forma de pagamento"
-                        visible="true"/>
+                        visible="{= ${formasDePagamentoDialogo>key} === 1 ? true : false}"/>
                     <Label text="Valor" width="90%" class="sapUiSmallMarginBeginEnd"/>
                     <Input
                         class="sapUiSmallMarginBeginEnd"
                         id="inputValorDoPedido"
-                        liveChange=".aoDigitarValor"
+                        liveChange=".aoDigitarNoInputValor"
                         width="90%"
                         placeholder="Valor"
                         valueStateText="Informe o valor do pedido"/>
