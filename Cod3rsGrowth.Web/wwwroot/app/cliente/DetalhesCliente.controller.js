@@ -10,6 +10,7 @@ sap.ui.define([
 	"sap/m/MessageBox",
 ], function (formatter, ControllerBase, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, HttpRequest, ConstatesDasRequests, JSONModel, MessageBox){
 	"use strict";
+
 	const ID_BOTAO_TELA_CHEIA = "botaoTelaCheia"
 	const ID_BOTAO_SAIR_TELA_CHEIA = "botaoSairTelaCheia"
 	const NOME_DO_MODELO_DO_CLIENTE = "clienteSelecionado"
@@ -20,13 +21,21 @@ sap.ui.define([
 	const MSG_DE_AVISO_AO_DELETAR_I18N = "warningMessageWhenDeleteCustomer"
 	const OPCAO_SIM = "Sim"
 	const OPCAO_NAO = "Não"
-
+	
 	return ControllerBase.extend("ui5.codersgrowth.app.cliente.DetalhesCliente", {
 		formatter: formatter,
 		onInit: function () {
 			this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._aoCoincidirRota, this);
 		},
 		
+		_aoCoincidirRota: async function () {
+			this._exibirEspera(async () => {
+				this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_DUAS_COLUNAS_DIVIDAS)
+				let retorno = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[ID_DO_CLIENTE_NA_ROTA])
+				this._modelo(new JSONModel(retorno), NOME_DO_MODELO_DO_CLIENTE);
+			})
+		},
+
         aoFecharDetalhes: function () {
 			this._exibirEspera(() => {
 				this.obterModelo(NOME_DO_MODELO_DO_APP).setProperty(ConstantesLayoutDoApp.LAYOUT_SAIR_TELA_CHEIA, false);
@@ -69,14 +78,6 @@ sap.ui.define([
 						});
 					} 
 				}
-			})
-		},
-
-		_aoCoincidirRota: async function () {
-			this._exibirEspera(async () => {
-				this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_DUAS_COLUNAS_DIVIDAS)
-				let retorno = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[ID_DO_CLIENTE_NA_ROTA])
-				this._modelo(new JSONModel(retorno), NOME_DO_MODELO_DO_CLIENTE);
 			})
 		}
 	});

@@ -10,7 +10,7 @@ sap.ui.define([
 	opaTest("Ao tentar editar um cliente com campos vazios deve retornar erros de validacao", function(Given, When, Then) {
 		// Arrangements
 		Given.iStartMyApp({
-			hash: "cliente/2/editar"
+			hash: "cliente/3/editar"
 		})
 		//Actions
         When.naTelaDeAdicionarEditar.aoPreencherNome("");

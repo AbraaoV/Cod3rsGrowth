@@ -43,7 +43,7 @@
          </headerToolbar>
          <CustomListItem type="Navigation" press=".aoClicarEmDetalhe">
             <HBox>
-               <core:Icon size="3rem" src="{= ${listaDeClientes>tipo} === 'Fisica' ? 'sap-icon://customer' : 'sap-icon://customer-and-supplier'}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
+               <core:Icon size="3rem" src="{= ${listaDeClientes>tipo} === 'Pessoa Física' ? 'sap-icon://customer' : 'sap-icon://customer-and-supplier'}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
                <VBox width="100%" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
                   <Title text="{listaDeClientes>nome}"/>
                   <Label text="{path: 'listaDeClientes>cpf', formatter: '.formatter.formatarCpf'}{path: 'listaDeClientes>cnpj', formatter: '.formatter.formatarCnpj'}"/>
@@ -53,7 +53,7 @@
                   height="60px"
                   alignItems="Center"
                   justifyContent="End">
-                  <Title text="Pessoa {listaDeClientes>tipo}"/>
+                  <Title text="{listaDeClientes>tipo}"/>
                </FlexBox>
             </HBox>
          </CustomListItem>

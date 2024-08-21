@@ -17,10 +17,10 @@ namespace Cod3rsGrowth.Dominio.MigracoesBancoDeTeste
 
         public override void Up()
         {
+            Execute.Sql("DELETE FROM Pedido");
             Execute.Sql("DELETE FROM Cliente");
 
             Execute.Sql("SET IDENTITY_INSERT Cliente ON");
-
             Execute.Sql(
                 @"INSERT INTO Cliente (Id, Nome, Cpf, Cnpj, Tipo) VALUES
                 (1, 'João Silva', '12345678901', '', 1),
@@ -48,8 +48,9 @@ namespace Cod3rsGrowth.Dominio.MigracoesBancoDeTeste
                 (23, 'Tatiane Souza', '34567890210', '', 1),
                 (24, 'Daniela Campos', '45678901321', '', 1),
                 (25, 'Roberto Castro', '56789012432', '', 1)");
-
             Execute.Sql("SET IDENTITY_INSERT Cliente OFF");
+
+        
         }
     }
 }

@@ -9,22 +9,22 @@ sap.ui.define([
     "../model/formatter",
     "ui5/codersgrowth/common/HttpRequest",
     "ui5/codersgrowth/common/ConstatesDasRequests",
+    "sap/ui/core/routing/History",
 
-], (Messaging, ControllerBase, JSONModel, MessageBox, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, formatter, HttpRequest, ConstatesDasRequests) => {
+], (Messaging, ControllerBase, JSONModel, MessageBox, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, formatter, HttpRequest, ConstatesDasRequests, History) => {
     "use strict";
     const CAMINHO_PARA_API_ENUM = "/api/EnumTipo"
     const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
     const MSG_DE_SUCESSO_NO_CADASTRO_I18N = "sucessCustumerRegister"
     const MSG_DE_SUCESSO_NA_EDICAO_I18N = "sucessCustumerEdit"
-    const NOME_DO_MODELO_I18N = "i18n"
     const ID_COMBO_BOX = "comboxTipo"
     const ID_LABEL_CPF = "labelCpf"
     const ID_INPUT_CPF = "inputCpf"
     const ID_LABEL_CPNJ = "labelCnpj"
     const ID_INPUT_CNPJ = "inputCnpj"
     const ID_INPUT_NOME = "inputNome"
-    const KEY_PESSOA_FISICA = "Fisica"
-    const KEY_PESSOA_JURIDICA = "Juridica"
+    const KEY_PESSOA_FISICA = "1"
+    const KEY_PESSOA_JURIDICA = "2"
     const PARAMETRO_ITEM_SELECIONADO = "selectedItem"
     const MSG_DE_ERRO_DE_VALIDACAO = "Ocorreu um ou mais erros de validação."
     const INDEX_CPF = 1
@@ -32,7 +32,6 @@ sap.ui.define([
     const VALOR_PADRAO = "None"
     const VALOR_DE_ERRO = "Error"
     const VALOR_PROPRIEDAE = "value"
-    const NOME_DO_MODELO_DOS_FILTROS = "modeloFiltro"
     const NOME_DO_MODELO_DO_CLIENTE = "clienteSelecionado"
     const INDEX_DO_ID_DO_CLIENTE_NA_ROTA = 1
     const TITULO_DO_PANEL_CADASTRO = "Cadastro de Cliente"
@@ -46,6 +45,7 @@ sap.ui.define([
     const INDEX_DO_NOME_DA_ROTA = 2
 
     return ControllerBase.extend("ui5.codersgrowth.app.cliente.AdicionarEditarCliente", {
+        formatter: formatter,
         onInit: async function() {
             this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_ADICIONAR_CLIENTE).attachPatternMatched(this._aoCoincidirRota, this);
             this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_EDITAR_CLIENTE).attachPatternMatched(this._aoCoincidirRotaEditar, this);
@@ -91,50 +91,57 @@ sap.ui.define([
 
             const modeloCliente = this.obterModelo(NOME_DO_MODELO_DO_CLIENTE)
             this.getView().byId(ID_INPUT_NOME).setValue(modeloCliente.getProperty(PROPRIEDADE_NOME));
-            controleDoComboBox.setSelectedKey(modeloCliente.getProperty(PROPRIEDADE_TIPO)).fireSelectionChange({
-                selectedItem: controleDoComboBox.getSelectedItem(),
-                key: controleDoComboBox.getSelectedItem().getKey()
+            for(var i = 0; i < 2; i++){
+                if(controleDoComboBox.getItems()[i].getText() == modeloCliente.getProperty(PROPRIEDADE_TIPO)){
+                    controleDoComboBox.setSelectedItem(controleDoComboBox.getItems()[i], true)
+                }
+            }
+            let item = controleDoComboBox.getSelectedItem()
+            controleDoComboBox.setSelectedItem(modeloCliente.getProperty(PROPRIEDADE_TIPO)).fireSelectionChange({
+                selectedItem: item,
+                key: item.getKey()
             });
-            this.getView().byId(ID_INPUT_CPF).setValue(formatter.formatarCpf(modeloCliente.getProperty(PROPRIEDADE_CPF)));
-            this.getView().byId(ID_INPUT_CNPJ).setValue(formatter.formatarCpf(modeloCliente.getProperty(PROPRIEDADE_CNPJ)));
+            this.getView().byId(ID_INPUT_CPF).setValue(modeloCliente.getProperty(PROPRIEDADE_CPF));
+            this.getView().byId(ID_INPUT_CNPJ).setValue(modeloCliente.getProperty(PROPRIEDADE_CNPJ));
         },
 
         _registarModeloParaVailidacao: function(){
             let oView = this.getView(),
             oMM = Messaging;
-
-            oView.setModel(new JSONModel({ name: "", cpf: "", cnpj: ""}), NOME_DO_MODELO_DOS_FILTROS);
-
             oMM.registerObject(oView.byId(ID_INPUT_NOME), true);
             oMM.registerObject(oView.byId(ID_INPUT_CPF), true);
             oMM.registerObject(oView.byId(ID_INPUT_CNPJ), true);
         },
 
         _validarInput: function (oInput) {
-			let sEstadoDoValor = VALOR_PADRAO;
-			let bErroDeVaidacao = false;
-			let oBinding = oInput.getBinding(VALOR_PROPRIEDAE);
+            let sEstadoDoValor = VALOR_PADRAO;
+            let bErroDeVaidacao = false;
+            let oBinding = oInput.getBinding(VALOR_PROPRIEDAE);
+            let inputCpf = this.getView().byId(ID_INPUT_CPF)
+            let inputCnpj = this.getView().byId(ID_INPUT_CNPJ)
 
             let sInputSemMascara = oInput.getValue();
             
-            if (oInput === this.getView().byId(ID_INPUT_CPF) || oInput === this.getView().byId(ID_INPUT_CNPJ)) {
+            if (oInput === inputCpf || oInput === inputCnpj) {
                 sInputSemMascara = sInputSemMascara.replace(/\D/g, '');
             }
             if(sInputSemMascara === ""){
-				sEstadoDoValor = VALOR_DE_ERRO;
+                sEstadoDoValor = VALOR_DE_ERRO;
                 bErroDeVaidacao = true;
             }
-			try {
-				oBinding.getType().validateValue(sInputSemMascara);
-			} catch (oException) {
-				sEstadoDoValor = VALOR_DE_ERRO;
-				bErroDeVaidacao = true;
-			}
+            if(oInput === inputCpf && sInputSemMascara.length !== 11){
+                sEstadoDoValor = VALOR_DE_ERRO;
+                bErroDeVaidacao = true;
+            }
+            if(oInput === inputCnpj && sInputSemMascara.length !== 14){
+                sEstadoDoValor = VALOR_DE_ERRO;
+                bErroDeVaidacao = true;
+            }
 
-			oInput.setValueState(sEstadoDoValor);
+            oInput.setValueState(sEstadoDoValor);
 
-			return bErroDeVaidacao;
-		},
+            return bErroDeVaidacao;
+        },
 
         aoDigitarNoInpunt: function(oEvent) {
             this._exibirEspera(() => {
@@ -196,7 +203,7 @@ sap.ui.define([
                     nome: nome.getValue(),
                     cpf: cpf.getValue().replace(/\D/g, ''),
                     cnpj: cnpj.getValue().replace(/\D/g, ''),
-                    tipo: tipoPessoa
+                    tipo: parseInt(tipoPessoa)
                 };
                 if(this.obterParametros()[INDEX_DO_NOME_DA_ROTA] === ROTA_EDITAR){
                     await this._atualizarCliente(cliente);

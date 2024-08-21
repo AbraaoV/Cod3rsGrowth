@@ -6,13 +6,13 @@ namespace Cod3rsGrowth.Web.Controllers
 {
     [Route(ConstantesDaController.ROTA)]
     [ApiController]
-    public class EnumTipo : ControllerBase
+    public class EnumFormaPagamento : ControllerBase
     {
         [HttpGet]
         public IActionResult Get()
         {
-            var tiposCliente = Enum.GetValues(typeof(Dominio.Cliente.TipoDeCliente))
-                                 .Cast<Dominio.Cliente.TipoDeCliente>()
+            var tiposCliente = Enum.GetValues(typeof(Dominio.Pedido.Pagamentos))
+                                 .Cast<Dominio.Pedido.Pagamentos> ()
                                  .Select(e => new
                                  {
                                      Key = (int)e,

@@ -23,7 +23,6 @@
                         width="100%"
                         valueStateText="Nome não pode estar vazio. Máximo de 50 caracteres."
                         value="{
-                            path : 'modeloFiltro>/nome',
                             type : 'sap.ui.model.type.String'
                         }"
                         change=".aoDigitarNoInpunt"/>
@@ -40,12 +39,8 @@
                         visible="true"
                         valueStateText="Cpf deve conter 11 caracteres"
                         value="{
-                            path : 'modeloFiltro>/cpf',
                             type : 'sap.ui.model.type.String',
-                            constraints: {
-                                minLength: 11,
-                                maxLength: 14
-                            }
+                            formatter: '.formatter.formatarInputCpf'
                         }"
                         change=".aoDigitarNoInpunt"/>
                         <Label id="labelCnpj" text="CNPJ" visible="false"/>
@@ -56,12 +51,9 @@
                         valueStateText="Cnpj deve conter 14 caracteres."
                         required="true"
                         value="{
-                            path : 'modeloFiltro>/cnpj',
+                            path : 'clienteSelecionado>/cnpj',
                             type : 'sap.ui.model.type.String',
-                            constraints: {
-                                minLength: 14,
-                                maxLength: 18
-                            }
+                            formatter: '.formatter.formatarInputCnpj'
                         }"
                         change=".aoDigitarNoInpunt"/>
                     </VBox>

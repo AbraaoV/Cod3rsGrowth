@@ -1,91 +1,78 @@
 <mvc:View 
-	controllerName="ui5.codersgrowth.app.cliente.DetalhesCliente"
-	displayBlock="true" 
-	xmlns="sap.uxap"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:m="sap.m"
-	xmlns:f="sap.f"
-	xmlns:form="sap.ui.layout.form"
-	xmlns:core="sap.ui.core">
+    controllerName="ui5.codersgrowth.app.cliente.DetalhesCliente"
+    displayBlock="true" 
+    xmlns="sap.uxap"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns:f="sap.f"
+    xmlns:item="sap.ui.core.Item"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
 
-	<ObjectPageLayout id="ObjectPageLayout"
-					showTitleInHeaderContent="true"
-					alwaysShowContentHeader="false"
-					preserveHeaderStateOnScroll="true"
-					headerContentPinnable="true"
-					isChildPage="true"
-					upperCaseAnchorBar="false">
-		<headerTitle>
-			<ObjectPageDynamicHeaderTitle>
-				<expandedHeading>
-					<m:Title text="{i18n>detailPageTitle}" wrapping="true" class="sapUiSmallMarginEnd"/>
-				</expandedHeading>
+    <ObjectPageLayout id="ObjectPageLayout"
+        showTitleInHeaderContent="true"
+        alwaysShowContentHeader="false"
+        preserveHeaderStateOnScroll="true"
+        headerContentPinnable="true"
+        isChildPage="true"
+        upperCaseAnchorBar="false">
+        <headerTitle>
+            <ObjectPageDynamicHeaderTitle>
+                <expandedHeading>
+                    <m:Title text="{i18n>detailPageTitle}" wrapping="true" class="sapUiSmallMarginEnd"/>
+                </expandedHeading>
 
-				<navigationActions>
-					<m:OverflowToolbarButton id= "botaoTelaCheia" type="Transparent" icon="sap-icon://full-screen" press=".aoClicarEmTelaCheia"/>
-					<m:OverflowToolbarButton id= "botaoSairTelaCheia" type="Transparent" icon="sap-icon://exit-full-screen" press=".aoClicarEmFecharTelaCheia" visible="false"/>
-					<m:OverflowToolbarButton id= "botaoFecharDetalhes" type="Transparent" icon="sap-icon://decline" press=".aoFecharDetalhes"/>
-				</navigationActions>
-				<actions>
-					<m:Button text="{i18n>editBtnText}" type="Emphasized" id="botaoEditar" press=".aoClicarEmEditar"/>
-					<m:Button text="{i18n>deleteBtnText}" type="Transparent" id="botaoDeletar" press=".aoClicarEmDeletar"/>
-				</actions>
-			</ObjectPageDynamicHeaderTitle>
-		</headerTitle>
-				<sections>
-		<ObjectPageSection title="{i18n>customerInfoTitle}">
-			<subSections>
-				<ObjectPageSubSection>
-					<blocks>
-						<form:SimpleForm
-							maxContainerCols="2"
-							editable="false"
-							layout="ResponsiveGridLayout"
-							labelSpanL="12"
-							labelSpanM="12"
-							emptySpanL="0"
-							emptySpanM="0"
-							columnsL="2"
-							columnsM="2">
-							<form:content>
-								<core:Title text="{i18n>customerInfoTitle}"/>
-								<m:Label text="Nome" design="Bold"/>
-								<m:Text  text="{clienteSelecionado>/nome}" />
-								<m:Label text="Pessoa" design="Bold"/>
-								<m:Text text="{clienteSelecionado>/tipo}"/>
-								<m:Label design="Bold" text="{= ${clienteSelecionado>/tipo} === 'Fisica' ? 'CPF' : 'CNPJ'}"/>
-								<m:Text text="{= ${clienteSelecionado>/tipo} === 'Fisica' ? ${path: 'clienteSelecionado>/cpf', formatter: '.formatter.formatarCpf'} : ${path: 'clienteSelecionado>/cnpj', formatter: '.formatter.formatarCnpj'}}"/>
-								<core:Title text="{i18n>iconTitle}" class="sapUiResponsiveMargin"/>
-								<m:Image src="{= ${clienteSelecionado>/tipo} === 'Fisica' ? 'images/iconePadraoFisica.png' : 'images/iconePadraoJuridica.png'}" width="25%" height="25%" class="centered-image"/>
-							</form:content>
-						</form:SimpleForm>
-					</blocks>
-				</ObjectPageSubSection>
-			</subSections>
-		</ObjectPageSection>
-		<ObjectPageSection title="{i18n>titleOrdersList}" titleUppercase="false">
-			<subSections>
-				<ObjectPageSubSection>
-					<blocks>
-						<m:Table
-							id="tabelaPedidos"
-							mode="SingleSelectMaster"
-							items="{path : ''}">
-							<m:columns>
-								<m:Column />
-							</m:columns>
-							<m:items>
-								<m:ColumnListItem>
-									<m:cells>
-										
-									</m:cells>
-								</m:ColumnListItem>
-							</m:items>
-						</m:Table>
-					</blocks>
-				</ObjectPageSubSection>
-			</subSections>
-		</ObjectPageSection>
-	</sections>
-	</ObjectPageLayout>
+                <navigationActions>
+                    <m:OverflowToolbarButton id="botaoTelaCheia" type="Transparent" icon="sap-icon://full-screen" press=".aoClicarEmTelaCheia"/>
+                    <m:OverflowToolbarButton id="botaoSairTelaCheia" type="Transparent" icon="sap-icon://exit-full-screen" press=".aoClicarEmFecharTelaCheia" visible="false"/>
+                    <m:OverflowToolbarButton id="botaoFecharDetalhes" type="Transparent" icon="sap-icon://decline" press=".aoFecharDetalhes"/>
+                </navigationActions>
+                <actions>
+                    <m:Button text="{i18n>editBtnText}" type="Emphasized" press=".aoClicarEmEditar" id="botaoEditar"/>
+                    <m:Button text="{i18n>deleteBtnText}" type="Transparent" press=".aoClicarEmDeletar" id="botaoDeletar"/>
+                </actions>
+            </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+        <sections>
+            <ObjectPageSection title="{i18n>customerInfoTitle}">
+                <subSections>
+                    <ObjectPageSubSection>
+                        <blocks>
+                            <form:SimpleForm
+                                maxContainerCols="2"
+                                editable="false"
+                                layout="ResponsiveGridLayout"
+                                labelSpanL="12"
+                                labelSpanM="12"
+                                emptySpanL="0"
+                                emptySpanM="0"
+                                columnsL="2"
+                                columnsM="2">
+                                <form:content>
+                                    <core:Title text="{i18n>customerInfoTitle}"/>
+                                    <m:Label text="Nome" design="Bold"/>
+                                    <m:Text text="{clienteSelecionado>/nome}" />
+                                    <m:Label text="Pessoa" design="Bold"/>
+                                    <m:Text text="{clienteSelecionado>/tipo}"/>
+                                    <m:Label design="Bold" text="{= ${clienteSelecionado>/tipo} === 'Pessoa Física' ? 'CPF' : 'CNPJ'}"/>
+                                    <m:Text text="{= ${clienteSelecionado>/tipo} === 'Pessoa Física' ? ${path: 'clienteSelecionado>/cpf', formatter: '.formatter.formatarCpf'} : ${path: 'clienteSelecionado>/cnpj', formatter: '.formatter.formatarCnpj'}}"/>
+                                    <core:Title text="{i18n>iconTitle}" class="sapUiResponsiveMargin"/>
+                                    <m:Image src="{= ${clienteSelecionado>/tipo} === 'Pessoa Física' ? 'images/iconePadraoFisica.png' : 'images/iconePadraoJuridica.png'}" width="25%" height="25%" class="centered-image"/>
+                                </form:content>
+                            </form:SimpleForm>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+            <ObjectPageSection title="{i18n>titleOrdersList}" titleUppercase="false">
+                <subSections>
+                    <ObjectPageSubSection>
+                        <blocks>
+                            <mvc:XMLView viewName="ui5.codersgrowth.app.cliente.pedido.Tabela" />
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+    </ObjectPageLayout>
 </mvc:View>
