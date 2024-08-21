@@ -114,30 +114,34 @@ sap.ui.define([
         },
 
         _validarInput: function (oInput) {
-			let sEstadoDoValor = VALOR_PADRAO;
-			let bErroDeVaidacao = false;
-			let oBinding = oInput.getBinding(VALOR_PROPRIEDAE);
+            let sEstadoDoValor = VALOR_PADRAO;
+            let bErroDeVaidacao = false;
+            let oBinding = oInput.getBinding(VALOR_PROPRIEDAE);
+            let inputCpf = this.getView().byId(ID_INPUT_CPF)
+            let inputCnpj = this.getView().byId(ID_INPUT_CNPJ)
 
             let sInputSemMascara = oInput.getValue();
             
-            if (oInput === this.getView().byId(ID_INPUT_CPF) || oInput === this.getView().byId(ID_INPUT_CNPJ)) {
+            if (oInput === inputCpf || oInput === inputCnpj) {
                 sInputSemMascara = sInputSemMascara.replace(/\D/g, '');
             }
             if(sInputSemMascara === ""){
-				sEstadoDoValor = VALOR_DE_ERRO;
+                sEstadoDoValor = VALOR_DE_ERRO;
                 bErroDeVaidacao = true;
             }
-			try {
-				oBinding.getType().validateValue(sInputSemMascara);
-			} catch (oException) {
-				sEstadoDoValor = VALOR_DE_ERRO;
-				bErroDeVaidacao = true;
-			}
+            if(oInput === inputCpf && sInputSemMascara.length !== 11){
+                sEstadoDoValor = VALOR_DE_ERRO;
+                bErroDeVaidacao = true;
+            }
+            if(oInput === inputCnpj && sInputSemMascara.length !== 14){
+                sEstadoDoValor = VALOR_DE_ERRO;
+                bErroDeVaidacao = true;
+            }
 
-			oInput.setValueState(sEstadoDoValor);
+            oInput.setValueState(sEstadoDoValor);
 
-			return bErroDeVaidacao;
-		},
+            return bErroDeVaidacao;
+        },
 
         aoDigitarNoInpunt: function(oEvent) {
             this._exibirEspera(() => {
