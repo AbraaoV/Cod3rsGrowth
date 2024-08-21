@@ -1,12 +1,14 @@
 sap.ui.define([
+	"sap/ui/core/Messaging",
     "ui5/codersgrowth/app/model/formatter",
 	"ui5/codersgrowth/common/ControllerBase",
 	"ui5/codersgrowth/common/ConstantesDoBanco",
 	"ui5/codersgrowth/common/ConstantesDaRota",
 	"ui5/codersgrowth/common/HttpRequest",
     "ui5/codersgrowth/common/ConstatesDasRequests",
-	'sap/ui/model/json/JSONModel',
-], function (formatter, ControllerBase, ConstantesDoBanco, ConstantesDaRota, HttpRequest, ConstatesDasRequests, JSONModel){
+	"sap/ui/model/json/JSONModel",
+	"sap/m/MessageBox"
+], function (Messaging, formatter, ControllerBase, ConstantesDoBanco, ConstantesDaRota, HttpRequest, ConstatesDasRequests, JSONModel, MessageBox){
 	"use strict";
 
 	let _filtroFormaPagamento = "todos"
@@ -14,25 +16,37 @@ sap.ui.define([
 	let _filtroValorMax
 	let _filtroData
 
-	const CAMINHO_PARA_API_ENUM_PAGAMENTO = "/api/EnumFormaPagamento"
-	const ID_DO_CLIENTE_NA_ROTA = 1
-	const ID_DA_COMBOX_FORMA_PAGAMENTO = "comboBoxFormaDePagamento"
-	const LOCAL_DA_MOEDA = 'pt-BR'
-	const MOEDA_CORRENTE = 'BRL'
-	const VALOR_PADRAO_VAZIO = "00"
-	const CHAVE_PADRAO_DA_COMBOBOX = "todos"
-	const FILTRO_DE_PEDIDOS_DO_CLIENTE = 'clienteId'
-	const CAMPO_PADRAO_COMBOX = "Todos pagamentos"
-	const NOME_DO_MODELO_DA_COMBO_BOX = "formasDePagamento"
-	const NOME_DO_MODELO_DA_MOEDA = "modeloMoeda"
-	const NOME_DO_MODELO_DA_LISTA_DE_PEDIDOS = "listaDePedidos"
-	const PARAMETRO_FILTRO_PAGAMENTO = "formaPagamento"
-	const PARAMETRO_FILTRO_VALOR_MIN = "valorMin"
-	const PARAMETRO_FILTRO_VALOR_MAX = "valorMax"
-	const PARAMETRO_FILTRO_DATA = "dataPedido"
-	const ID_INPUT_VALOR_MIN = "inputValorMin"
-	const ID_INPUT_VALOR_MAX = "inputValorMax"
-	const ID_DATAPICKER = "filtroDataPicker"
+	const CHAVE_ITEM_CARTAO_COMBOX = "1"
+	const MSG_DE_ERRO_DE_VALIDACAO = "validationErrorMenssage"
+	const PARAMETRO_ITEM_SELECIONADO = "selectedItem"
+    const CAMINHO_PARA_API_ENUM_PAGAMENTO = "/api/EnumFormaPagamento"
+    const ID_DO_CLIENTE_NA_ROTA = 1
+    const ID_DA_COMBOX_FORMA_PAGAMENTO = "comboBoxFormaDePagamento"
+    const LOCAL_DA_MOEDA = 'pt-BR'
+    const MOEDA_CORRENTE = 'BRL'
+    const VALOR_PADRAO_VAZIO = "00"
+    const CHAVE_PADRAO_DA_COMBOBOX = "4"
+    const FILTRO_DE_PEDIDOS_DO_CLIENTE = 'clienteId'
+    const CAMPO_PADRAO_COMBOX = "Todos pagamentos"
+    const NOME_DO_MODELO_DA_COMBO_BOX = "formasDePagamento"
+    const NOME_DO_MODELO_DA_MOEDA = "modeloMoeda"
+    const NOME_DO_MODELO_DA_LISTA_DE_PEDIDOS = "listaDePedidos"
+    const PARAMETRO_FILTRO_PAGAMENTO = "formaPagamento"
+    const PARAMETRO_FILTRO_VALOR_MIN = "valorMin"
+    const PARAMETRO_FILTRO_VALOR_MAX = "valorMax"
+    const PARAMETRO_FILTRO_DATA = "dataPedido"
+    const ID_INPUT_VALOR_MIN = "inputValorMin"
+    const ID_INPUT_VALOR_MAX = "inputValorMax"
+    const ID_DATAPICKER = "filtroDataPicker"
+    const DIALOGO_ADICIONAR_E_EDITAR = "ui5.codersgrowth.app.cliente.pedido.AdicionarEditarPedido"
+    const ID_DATAPICKER_ADCIONAR = "datapickerAdicionarPedido"
+    const ID_COMBOBOX_PAGAMENTO_ADICIONAR = "comboxAdicionarPagamento"
+    const ID_INPUT_NUMERO_CARTAO = "inputNumeroDoCartao"
+    const ID_INPUT_VALOR = "inputValorDoPedido"
+    const MSG_DE_SUCESSO_AO_ADICIONAR_I18N = "successMessageAddingOrder"
+    const VALOR_PADRAO = "None"
+    const VALOR_DE_ERRO = "Error"
+	const ID_LABEL_CARTAO = "labelCartao"
 	
 	return ControllerBase.extend("ui5.codersgrowth.app.cliente.DetalhesCliente", {
         formatter: formatter,
@@ -188,5 +202,143 @@ sap.ui.define([
 			this.getView().byId(ID_INPUT_VALOR_MAX).setValue(_filtroValorMax).fireLiveChange();;
 			this.getView().byId(ID_DATAPICKER).setValue(_filtroData);
 		},
+
+		aoClicarEmAdicionar: function(){
+			this._exibirEspera(async () => { 
+				this.oDialog ??= await this.loadFragment({
+					name: DIALOGO_ADICIONAR_E_EDITAR,
+					controller: this
+				});
+				this._definirValoresPadroes();
+				this.oDialog.open();
+			});
+		},
+
+		aoAdicionarPedido: function(){
+			this._exibirEspera(async () => {
+				const data = this.getView().byId(ID_DATAPICKER_ADCIONAR)
+				const formaPagamento = this.getView().byId(ID_COMBOBOX_PAGAMENTO_ADICIONAR)
+				const numeroCartao = this.getView().byId(ID_INPUT_NUMERO_CARTAO)
+				const valor = this.getView().byId(ID_INPUT_VALOR)
+
+				let aInputs = [
+					data,
+					valor,
+				],
+				bErroDeVaidacao = false;
+
+				if(formaPagamento.getSelectedKey === CHAVE_ITEM_CARTAO_COMBOX){
+					aInputs[2] = numeroCartao
+				};
+				
+				aInputs.forEach(function (oInput) {
+					bErroDeVaidacao = this._validarInput(oInput) || bErroDeVaidacao;
+				}   , this);
+				if (bErroDeVaidacao) {
+					MessageBox.alert(this.obterTextoI18n(MSG_DE_ERRO_DE_VALIDACAO));
+					return;
+				} 
+
+				let pedido = {
+					data: data.getValue(),
+					formaPagamento: parseInt(formaPagamento.getSelectedKey()),
+					numeroCartao: numeroCartao.getValue().replace(/\D/g, ''),
+					valor: this._removerMascaraDeMoeda(valor.getValue()),
+					clienteId: this.obterParametros()[ID_DO_CLIENTE_NA_ROTA]
+				};
+
+				await this._adicionarPedido(pedido);
+			});    
+		},
+
+		_removerItemTodosDaComboBox: function(){
+			let controleComboBox = this.byId(ID_COMBOBOX_PAGAMENTO_ADICIONAR);
+			let oItemToRemove = controleComboBox.getItems().find(item => item.getKey() === CHAVE_PADRAO_DA_COMBOBOX);
+			if (oItemToRemove) {
+				controleComboBox.removeItem(oItemToRemove);
+			}
+		},
+
+		_adicionarPedido: async function(pedido){
+			await HttpRequest._request(ConstatesDasRequests.REQUISICAO_POST, ConstantesDoBanco.CAMINHO_PARA_API_PEDIDO, pedido);
+			MessageBox.success(this.obterTextoI18n(MSG_DE_SUCESSO_AO_ADICIONAR_I18N))
+			this.oDialog.close();
+		},
+
+		aoDigitarValor: function(oEvent){
+			let oInput = oEvent.getSource();
+			this._validarInput(oInput);
+			this._mascararMoeda(oEvent);
+		},
+
+		_validarInput: function (oInput) {
+			let inputNumeroDoCartao = this.getView().byId(ID_INPUT_NUMERO_CARTAO);
+			let sEstadoDoValor = VALOR_PADRAO;
+			let bErroDeVaidacao = false;
+
+			let sInput = oInput.getValue();
+			
+			if (oInput === inputNumeroDoCartao) {
+				sInput = sInput.replace(/\D/g, '');
+			}
+
+			if (oInput === inputNumeroDoCartao && inputNumeroDoCartao.length !== 16) {
+				sEstadoDoValor = VALOR_DE_ERRO;
+				bErroDeVaidacao = true;
+			}
+
+			if(sInput === ""){
+				sEstadoDoValor = VALOR_DE_ERRO;
+				bErroDeVaidacao = true;
+			}
+			oInput.setValueState(sEstadoDoValor);
+
+			return bErroDeVaidacao;
+		},
+
+		aoSelecionarData: function(oEvent){
+			let oInput = oEvent.getSource();
+			this._validarInput(oInput);
+		},
+
+		_registarModeloParaVailidacao: function(){
+			let oView = this.getView(),
+			oMM = Messaging;
+
+			oMM.registerObject(oView.byId(ID_DATAPICKER_ADCIONAR), true);
+			oMM.registerObject(oView.byId(ID_INPUT_VALOR), true);
+			oMM.registerObject(oView.byId(ID_INPUT_NUMERO_CARTAO), true);
+		},
+
+		aoSelecionarPagamentoDoPedido: function(){
+			this._exibirEspera(() => {
+				let controleDoComboBox = this.getView().byId(ID_COMBOBOX_PAGAMENTO_ADICIONAR);
+				let controleDoInputCartao = this.getView().byId(ID_INPUT_NUMERO_CARTAO);
+				let controleDaLabelCartao = this.getView().byId(ID_LABEL_CARTAO);
+				controleDoComboBox.attachChange(function(oEvent) {
+					let itemSelecionado = oEvent.getParameter(PARAMETRO_ITEM_SELECIONADO);
+					let key = itemSelecionado.getKey();
+					controleDoInputCartao.setVisible(key === CHAVE_ITEM_CARTAO_COMBOX);
+					controleDaLabelCartao.setVisible(key === CHAVE_ITEM_CARTAO_COMBOX);
+				});
+			});
+		},
+
+		aoClicarEmCancelar: function(){
+			this._limparCampos();
+			this.oDialog.close();
+		},
+
+		_limparCampos: function() {
+            this.getView().byId(ID_DATAPICKER_ADCIONAR).setValue("").setValueState(undefined);
+            this.getView().byId(ID_INPUT_VALOR).setValue("").setValueState(undefined);
+            this.getView().byId(ID_INPUT_NUMERO_CARTAO).setValue("").setValueState(undefined);
+        },
+
+		_definirValoresPadroes: function(){
+			this._removerItemTodosDaComboBox();
+			this._registarModeloParaVailidacao();
+			this.aoSelecionarPagamentoDoPedido();
+		}
 	});
 });

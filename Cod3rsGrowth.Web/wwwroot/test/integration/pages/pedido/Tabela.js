@@ -69,7 +69,18 @@ sap.ui.define([
                         },
                         errorMessage: "Input de data não encontrado"
                     })
-                }
+                },
+
+                aoClicarEmAdicionar: function(){
+                    return this.waitFor({
+						id: "botaoAdicionar",
+						viewName: sViewName,
+						actions: function (oMenuItem) {
+                            oMenuItem.firePress()
+                        },
+						errorMessage: "Não foi possível pressionar o botão de adicionar."
+					});
+                }   
             },
 
             

@@ -26,7 +26,7 @@ sap.ui.define([
     const KEY_PESSOA_FISICA = "1"
     const KEY_PESSOA_JURIDICA = "2"
     const PARAMETRO_ITEM_SELECIONADO = "selectedItem"
-    const MSG_DE_ERRO_DE_VALIDACAO = "Ocorreu um ou mais erros de validação."
+    const MSG_DE_ERRO_DE_VALIDACAO = "validationErrorMenssage"
     const INDEX_CPF = 1
     const INDEX_CPNJ = 2
     const VALOR_PADRAO = "None"
@@ -195,7 +195,7 @@ sap.ui.define([
                     bErroDeVaidacao = this._validarInput(oInput) || bErroDeVaidacao;
                 }   , this);
                 if (bErroDeVaidacao) {
-                    MessageBox.alert(MSG_DE_ERRO_DE_VALIDACAO);
+                    MessageBox.alert(this.obterTextoI18n(MSG_DE_ERRO_DE_VALIDACAO));
                     return;
                 } 
                 
