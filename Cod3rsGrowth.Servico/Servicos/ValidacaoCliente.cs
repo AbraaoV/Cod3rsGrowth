@@ -76,7 +76,7 @@ namespace Cod3rsGrowth.Servico.Servicos
                      return CnpjInedito(cnpj);
                  })
                 .When(cliente => cliente.Tipo == Cliente.TipoDeCliente.Juridica)
-                .WithMessage("Esse CPNJ já está cadastrado");
+                .WithMessage("Esse CNPJ já está cadastrado");
             });
 
             RuleSet(ConstantesDoValidador.REMOVER, () =>
