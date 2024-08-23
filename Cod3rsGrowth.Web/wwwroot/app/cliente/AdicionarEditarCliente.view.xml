@@ -23,39 +23,47 @@
                         width="100%"
                         valueStateText="Nome não pode estar vazio. Máximo de 50 caracteres."
                         value="{
-                            type : 'sap.ui.model.type.String'
+                            type : 'sap.ui.model.type.String',
+                            path : 'modeloDosInputs>/nome'
                         }"
-                        change=".aoDigitarNoInpunt"/>
+                        change=".aoDigitarNoInpuntNome"
+                        />
                         <Label text="Pessoa"/>
-                        <ComboBox id="comboxTipo" width="100%" items="{path: 'comboxTipoDePessoa>/'}" selectionChange=".aoSelecionarTipoPessoa" selectedKey="1">
+                        <ComboBox 
+                        id="comboxTipo" 
+                        width="100%" 
+                        items="{path: 'comboxTipoDePessoa>/'}" 
+                        selectionChange=".aoSelecionarTipoPessoa" 
+                        selectedKey="{modeloDosInputs>/tipoDeCliente}">
                             <items>
                                 <core:ListItem key="{comboxTipoDePessoa>key}" text="{comboxTipoDePessoa>descricao}"/>
                             </items>
                         </ComboBox>
-                        <Label id="labelCpf" text="CPF" visible="true"/>
+                        <Label id="labelCpf" text="CPF" visible="{= ${modeloDosInputs>/tipoDeCliente} === '1' ? true : false}"/>
                         <MaskInput 
                         mask="999.999.999-99" 
                         id="inputCpf" width="100%" 
-                        visible="true"
+                        visible="{= ${modeloDosInputs>/tipoDeCliente} === '1' ? true : false}"
                         valueStateText="Cpf deve conter 11 caracteres"
                         value="{
+                            path : 'modeloDosInputs>/cpf',
                             type : 'sap.ui.model.type.String',
                             formatter: '.formatter.formatarInputCpf'
                         }"
-                        change=".aoDigitarNoInpunt"/>
-                        <Label id="labelCnpj" text="CNPJ" visible="false"/>
+                        change=".aoDigitarNoInpuntCpf"/>
+                        <Label id="labelCnpj" text="CNPJ" visible="{= ${modeloDosInputs>/tipoDeCliente} === '2' ? true : false}"/>
                         <MaskInput 
                         mask="99.999.999/9999-99" 
                         id="inputCnpj" width="100%" 
-                        visible="false"
+                        visible="{= ${modeloDosInputs>/tipoDeCliente} === '2' ? true : false}"
                         valueStateText="Cnpj deve conter 14 caracteres."
                         required="true"
                         value="{
-                            path : 'clienteSelecionado>/cnpj',
+                            path : 'modeloDosInputs>/cnpj',
                             type : 'sap.ui.model.type.String',
                             formatter: '.formatter.formatarInputCnpj'
                         }"
-                        change=".aoDigitarNoInpunt"/>
+                        change=".aoDigitarNoInpuntCnpj"/>
                     </VBox>
                     <HBox alignItems="Center" justifyContent="Start" class="sapUiSmallMarginBegin">
                         <Button id="botaoSalvar" type="Emphasized" class="sapUiLargeMarginBeginEnd sapUiMediumMarginTopBottom" text="Salvar" press=".aoClicarEmSalvar" width="175%"/>

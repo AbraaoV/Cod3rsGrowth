@@ -18,20 +18,14 @@ sap.ui.define([
     const MSG_DE_SUCESSO_NO_CADASTRO_I18N = "sucessCustumerRegister"
     const MSG_DE_SUCESSO_NA_EDICAO_I18N = "sucessCustumerEdit"
     const ID_COMBO_BOX = "comboxTipo"
-    const ID_LABEL_CPF = "labelCpf"
     const ID_INPUT_CPF = "inputCpf"
-    const ID_LABEL_CPNJ = "labelCnpj"
     const ID_INPUT_CNPJ = "inputCnpj"
     const ID_INPUT_NOME = "inputNome"
     const KEY_PESSOA_FISICA = "1"
     const KEY_PESSOA_JURIDICA = "2"
-    const PARAMETRO_ITEM_SELECIONADO = "selectedItem"
     const MSG_DE_ERRO_DE_VALIDACAO = "validationErrorMenssage"
-    const INDEX_CPF = 1
-    const INDEX_CPNJ = 2
     const VALOR_PADRAO = "None"
     const VALOR_DE_ERRO = "Error"
-    const VALOR_PROPRIEDAE = "value"
     const NOME_DO_MODELO_DO_CLIENTE = "clienteSelecionado"
     const INDEX_DO_ID_DO_CLIENTE_NA_ROTA = 1
     const TITULO_DO_PANEL_CADASTRO = "Cadastro de Cliente"
@@ -40,9 +34,11 @@ sap.ui.define([
     const PROPRIEDADE_NOME = "/nome"
     const PROPRIEDADE_CPF = "/cpf"
     const PROPRIEDADE_CNPJ = "/cnpj"
+    const PROPRIEDADE_TIPO_DE_CLIENTE = "/tipoDeCliente"
     const PROPRIEDADE_TIPO = "/tipo"
     const ROTA_EDITAR = "editar"
     const INDEX_DO_NOME_DA_ROTA = 2
+    const NOME_dO_MODELO_DOS_INPUTS = "modeloDosInputs"
 
     return ControllerBase.extend("ui5.codersgrowth.app.cliente.AdicionarEditarCliente", {
         formatter: formatter,
@@ -71,7 +67,6 @@ sap.ui.define([
         _definirValoresPadroes: async function(){
             let retorno = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, CAMINHO_PARA_API_ENUM);
             this._modelo(new JSONModel(retorno), NOME_DO_MODELO_DA_COMBOX_BOX)
-            this.aoSelecionarTipoPessoa();
             this._registarModeloParaVailidacao()
             this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
             this.getView().byId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
@@ -87,25 +82,36 @@ sap.ui.define([
         },
 
         _prencherCliente: function(){
-            let controleDoComboBox = this.getView().byId(ID_COMBO_BOX);
+            let modeloDosInputs = this.obterModelo(NOME_dO_MODELO_DOS_INPUTS)
 
+            let controleDoComboBox = this.getView().byId(ID_COMBO_BOX);
             const modeloCliente = this.obterModelo(NOME_DO_MODELO_DO_CLIENTE)
-            this.getView().byId(ID_INPUT_NOME).setValue(modeloCliente.getProperty(PROPRIEDADE_NOME));
-            for(var i = 0; i < 2; i++){
-                if(controleDoComboBox.getItems()[i].getText() == modeloCliente.getProperty(PROPRIEDADE_TIPO)){
-                    controleDoComboBox.setSelectedItem(controleDoComboBox.getItems()[i], true)
-                }
-            }
-            let item = controleDoComboBox.getSelectedItem()
-            controleDoComboBox.setSelectedItem(modeloCliente.getProperty(PROPRIEDADE_TIPO)).fireSelectionChange({
-                selectedItem: item,
-                key: item.getKey()
+            let cpf = modeloCliente.getProperty(PROPRIEDADE_CPF)
+            let cnpj = modeloCliente.getProperty(PROPRIEDADE_CNPJ)
+            let nome = modeloCliente.getProperty(PROPRIEDADE_NOME)
+
+            let itemSelecionado = controleDoComboBox.getItems().find(item => item.getText() === modeloCliente.getProperty(PROPRIEDADE_TIPO));
+            controleDoComboBox.setSelectedItem(itemSelecionado, true);
+            controleDoComboBox.fireSelectionChange({
+                selectedItem: itemSelecionado,
+                key: itemSelecionado.getKey()
             });
-            this.getView().byId(ID_INPUT_CPF).setValue(modeloCliente.getProperty(PROPRIEDADE_CPF));
-            this.getView().byId(ID_INPUT_CNPJ).setValue(modeloCliente.getProperty(PROPRIEDADE_CNPJ));
+            
+            modeloDosInputs.setProperty(PROPRIEDADE_NOME, nome)
+            modeloDosInputs.setProperty(PROPRIEDADE_CPF, cpf)
+            modeloDosInputs.setProperty(PROPRIEDADE_CNPJ, cnpj)
         },
 
         _registarModeloParaVailidacao: function(){
+            let inputs = {
+                nome: "",
+                cpf: "",
+                cnpj: "",
+                tipoDeCliente: "1"
+            }
+
+            this._modelo(new JSONModel(inputs), NOME_dO_MODELO_DOS_INPUTS)
+
             let oView = this.getView(),
             oMM = Messaging;
             oMM.registerObject(oView.byId(ID_INPUT_NOME), true);
@@ -113,120 +119,102 @@ sap.ui.define([
             oMM.registerObject(oView.byId(ID_INPUT_CNPJ), true);
         },
 
-        _validarInputCpf: function(oInput){
+        _validarInputCpf: function(cpf){
             let sEstadoDoValor = VALOR_PADRAO;
             let bErroDeVaidacao = false;
 
-            let sInputSemMascara = oInput.replace(/\D/g, '');
+            let sInputSemMascara = cpf.replace(/\D/g, '');
             
             if(sInputSemMascara !== 11){
                 sEstadoDoValor = VALOR_DE_ERRO;
                 bErroDeVaidacao = true;
             }
 
-            oInput.setValueState(sEstadoDoValor);
+            this.getView().byId(ID_INPUT_CPF).setValueState(sEstadoDoValor);
 
             return bErroDeVaidacao;
         },
 
-        _validarInputCnpj: function(){
+        _validarInputCnpj: function(cnpj){
             let sEstadoDoValor = VALOR_PADRAO;
             let bErroDeVaidacao = false;
 
-            let sInputSemMascara = oInput.replace(/\D/g, '');
+            let sInputSemMascara = cnpj.replace(/\D/g, '');
             
             if(sInputSemMascara !== 14){
                 sEstadoDoValor = VALOR_DE_ERRO;
                 bErroDeVaidacao = true;
             }
 
-            oInput.setValueState(sEstadoDoValor);
+            this.getView().byId(ID_INPUT_CNPJ).setValueState(sEstadoDoValor);
 
             return bErroDeVaidacao;
         },
 
-        _validarInputNome: function(oInput){
+        _validarInputNome: function(nome){
             let sEstadoDoValor = VALOR_PADRAO;
             let bErroDeVaidacao = false;
             
-            if(oInput === ""){
+            if(nome === ""){
                 sEstadoDoValor = VALOR_DE_ERRO;
                 bErroDeVaidacao = true;
             }
 
-            oInput.setValueState(sEstadoDoValor);
+            this.getView().byId(ID_INPUT_NOME).setValueState(sEstadoDoValor);
 
             return bErroDeVaidacao;
         },
 
-        aoDigitarNoInpuntCpf: function(oEvent) {
+        aoDigitarNoInpuntCpf: function() {
             this._exibirEspera(() => {
-                let oInput = oEvent.getSource().getValue();
-                this._validarInputCpf(oInput);
+                let cpf = this.obterModelo(NOME_dO_MODELO_DOS_INPUTS).getProperty(PROPRIEDADE_CPF)
+                this._validarInputCpf(cpf);
             });
 		},
 
-        aoDigitarNoInpuntCnpj: function(oEvent) {
+        aoDigitarNoInpuntCnpj: function() {
             this._exibirEspera(() => {
-                let oInput = oEvent.getSource().getValue();
-                this._validarInputCnpj(oInput);
+                let cnpj = this.obterModelo(NOME_dO_MODELO_DOS_INPUTS).getProperty(PROPRIEDADE_CNPJ)
+                this._validarInputCnpj(cnpj);
             });
 		},
 
-        aoDigitarNoInpuntNome: function(oEvent) {
+        aoDigitarNoInpuntNome: function() {
             this._exibirEspera(() => {
-                let oInput = oEvent.getSource().getValue();
-                this._validarInputNome(oInput);
+                let nome = this.obterModelo(NOME_dO_MODELO_DOS_INPUTS).getProperty(PROPRIEDADE_NOME)
+                this._validarInputNome(nome);
             });
 		},
-
-        aoSelecionarTipoPessoa: function(){
-            this._exibirEspera(() => {
-                let controleDoComboBox = this.getView().byId(ID_COMBO_BOX);
-                let controleDaLabelCPF = this.getView().byId(ID_LABEL_CPF);
-                let controleDoInputCPF = this.getView().byId(ID_INPUT_CPF);
-                let controleDaLabelCNPJ = this.getView().byId(ID_LABEL_CPNJ);
-                let controleDoInputCNPJ = this.getView().byId(ID_INPUT_CNPJ);
-                controleDoComboBox.attachSelectionChange(function(oEvent) {
-                    let itemSelecionado = oEvent.getParameter(PARAMETRO_ITEM_SELECIONADO);
-                    let key = itemSelecionado.getKey();
-                    controleDoInputCPF.setValue(undefined);
-                    controleDoInputCNPJ.setValue(undefined);
-                    controleDaLabelCPF.setVisible(key === KEY_PESSOA_FISICA);
-                    controleDoInputCPF.setVisible(key === KEY_PESSOA_FISICA);
-                    controleDaLabelCNPJ.setVisible(key === KEY_PESSOA_JURIDICA);
-                    controleDoInputCNPJ.setVisible(key === KEY_PESSOA_JURIDICA);
-                });
-            });
-        },
 
         aoClicarEmSalvar: function(){
             this._exibirEspera(async () => {
-                const nome = this.getView().byId(ID_INPUT_NOME);
-                const cpf = this.getView().byId(ID_INPUT_CPF);
-                const cnpj = this.getView().byId(ID_INPUT_CNPJ);
+                let modeloDosInputs = this.obterModelo(NOME_dO_MODELO_DOS_INPUTS);
+
+                debugger
+                const nome = modeloDosInputs.getProperty(PROPRIEDADE_NOME)
+                const cpf = modeloDosInputs.getProperty(PROPRIEDADE_CPF)
+                const cnpj = modeloDosInputs.getProperty(PROPRIEDADE_CNPJ)
                 let oComboBox = this.getView().byId(ID_COMBO_BOX);
-                const tipoPessoa = oComboBox.getSelectedKey();
+                const tipoPessoa = modeloDosInputs.getProperty(PROPRIEDADE_TIPO_DE_CLIENTE);
 
 				let bErroDeVaidacao = false;
-                
                 if(oComboBox.getSelectedKey() === KEY_PESSOA_FISICA){
-                    this._validarInputCpf(cpf)
+                    bErroDeVaidacao = this._validarInputCpf(cpf)
                 }
                 if(oComboBox.getSelectedKey() === KEY_PESSOA_JURIDICA){
-                    this._validarInputCnpj(cnpj)
+                    bErroDeVaidacao = this._validarInputCnpj(cnpj)
                 }
-                this._validarInputNome(nome)
+                bErroDeVaidacao = this._validarInputNome(nome)
                 
                 if (bErroDeVaidacao) {
                     MessageBox.alert(this.obterTextoI18n(MSG_DE_ERRO_DE_VALIDACAO));
                     return;
                 } 
-                
+
                 let cliente = {
-                    nome: nome.getValue(),
-                    cpf: cpf.getValue().replace(/\D/g, ''),
-                    cnpj: cnpj.getValue().replace(/\D/g, ''),
+                    nome: nome,
+                    cpf: cpf.replace(/\D/g, ''),
+                    cnpj: cnpj.replace(/\D/g, ''),
                     tipo: parseInt(tipoPessoa)
                 };
                 if(this.obterParametros()[INDEX_DO_NOME_DA_ROTA] === ROTA_EDITAR){
