@@ -33,7 +33,7 @@ return ControllerBase.extend("ui5.codersgrowth.app.App", {
 					}
 				}
 			});
-			this._modelo(oViewModel, NOME_MODELO_DO_APP);
+			this._modelo(NOME_MODELO_DO_APP, oViewModel);
 		},
 
 		_definirModeloI18n: function(){

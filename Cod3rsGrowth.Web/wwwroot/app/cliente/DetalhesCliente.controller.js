@@ -32,13 +32,13 @@ sap.ui.define([
 			this._exibirEspera(async () => {
 				this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_DUAS_COLUNAS_DIVIDAS)
 				let retorno = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[ID_DO_CLIENTE_NA_ROTA])
-				this._modelo(new JSONModel(retorno), NOME_DO_MODELO_DO_CLIENTE);
+				this._modelo(NOME_DO_MODELO_DO_CLIENTE, new JSONModel(retorno));
 			})
 		},
 
         aoFecharDetalhes: function () {
 			this._exibirEspera(() => {
-				this.obterModelo(NOME_DO_MODELO_DO_APP).setProperty(ConstantesLayoutDoApp.LAYOUT_SAIR_TELA_CHEIA, false);
+				this._modelo(NOME_DO_MODELO_DO_APP).setProperty(ConstantesLayoutDoApp.LAYOUT_SAIR_TELA_CHEIA, false);
 				this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DA_LISTA_CLIENTE);
 			});
 		},
@@ -62,7 +62,7 @@ sap.ui.define([
             this._exibirEspera(() => {
                 this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
                 this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DE_EDITAR_CLIENTE, {
-                    clienteId: this.obterModelo(NOME_DO_MODELO_DO_CLIENTE).getProperty(PROPRIEDADE_ID_DO_CLIENTE)
+                    clienteId: this._modelo(NOME_DO_MODELO_DO_CLIENTE).getProperty(PROPRIEDADE_ID_DO_CLIENTE)
                 });
             });
         },

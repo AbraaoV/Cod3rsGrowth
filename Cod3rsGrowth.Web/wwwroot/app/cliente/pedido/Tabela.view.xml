@@ -18,7 +18,7 @@
                 <m:ToolbarSpacer/>
                 <m:ComboBox
                     id="comboBoxFormaDePagamento"
-                    selectedKey="{modeloDosFiltros>/formaDePagamento}"
+                    selectedKey="{filtro>/formaPagamento}"
                     placeholder="Forma de pagamento"
                     items="{path: 'formasDePagamento>/'}"
                     width="22%"
@@ -34,7 +34,7 @@
                     valueFormat="yyyy-MM-dd"
                     change=".aoFiltrarPelaData"
                     value="{
-                        path: 'modeloDosFiltros>/data'
+                        path: 'filtro>/data'
                     }"/>
                 <m:Input
                     id="inputValorMin"
@@ -42,7 +42,7 @@
                     liveChange=".aoDigitarValorMin"
                     placeholder="Valor míninimo"
                     value="{
-                        path: 'modeloDosFiltros>/valorMin'
+                        path: 'filtro>/valorMin'
                     }"/>
                 <m:Input
                     id="inputValorMax"
@@ -51,7 +51,7 @@
                     placeholder="Valor máximo"
                     value="{
                         type: 'sap.ui.model.odata.type.String',
-                        path: 'modeloDosFiltros>/valorMax'
+                        path: 'filtro>/valorMax'
                     }"/>
                 <m:Button
                     id="botaoAdicionar"

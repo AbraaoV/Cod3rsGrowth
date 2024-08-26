@@ -227,7 +227,6 @@ sap.ui.define([
 								return false;
 							} else {
 								var sNome = oElement.getBindingContext("listaDeClientes").getProperty("nome");
-								debugger
 								return sNome === sNomeDoCliente;
 							}
 						};

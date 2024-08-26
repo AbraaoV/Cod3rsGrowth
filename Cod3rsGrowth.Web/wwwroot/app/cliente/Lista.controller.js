@@ -55,7 +55,7 @@ sap.ui.define([
             this._filtrarPelaRota();
             this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
             let retorno = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, urlFinal)
-            this._modelo(new JSONModel(retorno), NOME_DO_MODELO_DA_LISTA);
+            this._modelo( NOME_DO_MODELO_DA_LISTA, new JSONModel(retorno));
          })
       },
 
@@ -142,7 +142,7 @@ sap.ui.define([
             window.history.pushState({}, '', url);
             urlFinal = ConstantesDoBanco.CAMINHO_PARA_API + "?" + urlParams;
             let retorno = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, urlFinal)
-            this._modelo(new JSONModel(retorno), NOME_DO_MODELO_DA_LISTA);
+            this._modelo(NOME_DO_MODELO_DA_LISTA, new JSONModel(retorno));
          });   
       },
 

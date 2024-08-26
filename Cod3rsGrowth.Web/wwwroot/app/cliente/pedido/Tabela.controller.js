@@ -49,10 +49,10 @@ sap.ui.define([
 	const PROPRIEDADE_VALOR = "/valor"
 	const PROPRIEDADE_VALOR_MAX = "/valorMax"
 	const PROPRIEDADE_VALOR_MIN = "/valorMin"
-	const PROPRIEDADE_FORMA_DE_PAGAMENTO = "/formaDePagamento"
+	const PROPRIEDADE_FORMA_DE_PAGAMENTO = "/formaPagamento"
 	const PROPRIEDADE_CARTAO = "/numeroCartao"
-	const NOME_DO_MODELO_DOS_INPUTS = "modeloDosInputs"
-	const NOME_DO_MODELO_DOS_FILTROS = "modeloDosFiltros"
+	const NOME_DO_MODELO_DO_PEDIDO = "pedido"
+	const NOME_DO_MODELO_DOS_FILTROS = "filtro"
     
     return ControllerBase.extend("ui5.codersgrowth.app.cliente.DetalhesCliente", {
         formatter: formatter,
@@ -60,29 +60,37 @@ sap.ui.define([
             this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._aoCoincidirRota, this);
         },
         
+        _modeloControleDeTela: function(modelo){
+            const nomeDoModelo = "controleDeTela"
+            return this._modelo(nomeDoModelo, modelo)
+        },
+
         _aoCoincidirRota: async function () {
             this._exibirEspera(async () => {
 				this._registarModeloDosFiltros();
                 this._popularComboBox();
                 this._filtrarPelaRota();
+                this._modeloControleDeTela(new JSONModel({
+                    controleVisibilidadeCartao: true
+                }))
             })
         },
 
 		_registarModeloDosFiltros: function(){
-			let filtros = {
+			let filtro = {
 				data: "",
 				valorMin: "",
 				valorMaX: "",
-				formaDePagamento: "1"
+				formaPagamento: 1
 			}
 
-			this._modelo(new JSONModel(filtros), NOME_DO_MODELO_DOS_FILTROS)
+			this._modelo(NOME_DO_MODELO_DOS_FILTROS, new JSONModel(filtro))
 		},
 
         aoDigitarValorMin: function(oEvent){
 			this._exibirEspera(() => {
 				this._mascararMoeda(oEvent);
-				_filtroValorMin = this._removerMascaraDeMoeda(this.obterModelo(NOME_DO_MODELO_DOS_FILTROS).getProperty(PROPRIEDADE_VALOR_MIN));
+				_filtroValorMin = this._removerMascaraDeMoeda(this._modelo(NOME_DO_MODELO_DOS_FILTROS).getProperty(PROPRIEDADE_VALOR_MIN));
 				this._filtrar()
 			});
 		},
@@ -90,21 +98,21 @@ sap.ui.define([
         aoDigitarValorMax: function(oEvent){
             this._exibirEspera(() => {
                 this._mascararMoeda(oEvent);
-                _filtroValorMax = this._removerMascaraDeMoeda(this.obterModelo(NOME_DO_MODELO_DOS_FILTROS).getProperty(PROPRIEDADE_VALOR_MAX));
+                _filtroValorMax = this._removerMascaraDeMoeda(this._modelo(NOME_DO_MODELO_DOS_FILTROS).getProperty(PROPRIEDADE_VALOR_MAX));
                 this._filtrar()
             });
         },
 
-        aoFiltrarPelaData: function(oEvent){
+        aoFiltrarPelaData: function(){
             this._exibirEspera(() => {
-                _filtroData = this.obterModelo(NOME_DO_MODELO_DOS_FILTROS).getProperty(PROPRIEDADE_DATA)
+                _filtroData = this._modelo(NOME_DO_MODELO_DOS_FILTROS).getProperty(PROPRIEDADE_DATA)
                 this._filtrar()
             });
         },
         
-        aoSelecionarFormaDePagamento: function(oEvent){
+        aoSelecionarFormaDePagamento: function(){
             this._exibirEspera(() => {
-				_filtroFormaPagamento = this.obterModelo(NOME_DO_MODELO_DOS_FILTROS).getProperty(PROPRIEDADE_FORMA_DE_PAGAMENTO)
+				_filtroFormaPagamento = this._modelo(NOME_DO_MODELO_DOS_FILTROS).getProperty(PROPRIEDADE_FORMA_DE_PAGAMENTO)
                 this._filtrar()
             });
         },
@@ -187,7 +195,7 @@ sap.ui.define([
                 descricao: CAMPO_PADRAO_COMBOX
             }
             retorno.push(todos);
-            this._modelo(new JSONModel(retorno), NOME_DO_MODELO_DA_COMBO_BOX)
+            this._modelo(NOME_DO_MODELO_DA_COMBO_BOX, new JSONModel(retorno), )
         },
         
         _popularTabelaDePedidos: async function(){
@@ -200,7 +208,7 @@ sap.ui.define([
                     currency: MOEDA_CORRENTE
                 });
                 this.getView().setModel(modeloMoeda, NOME_DO_MODELO_DA_MOEDA);
-                this._modelo(new JSONModel(retornoPedidos), NOME_DO_MODELO_DA_LISTA_DE_PEDIDOS);
+                this._modelo(NOME_DO_MODELO_DA_LISTA_DE_PEDIDOS, new JSONModel(retornoPedidos));
             });   
         },
 
@@ -235,32 +243,24 @@ sap.ui.define([
 
         aoAdicionarPedido: function(){
             this._exibirEspera(async () => {
-				let modeloDosInputs = this.obterModelo(NOME_DO_MODELO_DOS_INPUTS)
-
-                const data = modeloDosInputs.getProperty(PROPRIEDADE_DATA)
-                const formaPagamento = this.getView().byId(ID_COMBOBOX_PAGAMENTO_ADICIONAR)
-                const numeroCartao = modeloDosInputs.getProperty(PROPRIEDADE_CARTAO)
-                const valor = modeloDosInputs.getProperty(PROPRIEDADE_VALOR)
+				let pedido = this._modelo(NOME_DO_MODELO_DO_PEDIDO).getData();
 
                 let bErroDeVaidacao = false;
-                if(formaPagamento.getSelectedKey() === CHAVE_ITEM_CARTAO_COMBOX){
-                    bErroDeVaidacao = this._validarInputCartao(numeroCartao)
+                if(pedido.formaPagamento === CHAVE_ITEM_CARTAO_COMBOX){
+                    bErroDeVaidacao = this._validarInputCartao(pedido.numeroCartao)
                 };
-                bErroDeVaidacao = this._validarInputData(data)
-                bErroDeVaidacao = this._validarInputValor(valor)
+                bErroDeVaidacao = this._validarInputData(pedido.data)
+                bErroDeVaidacao = this._validarInputValor(pedido.valor)
                 
                 if (bErroDeVaidacao) {
                     MessageBox.alert(this.obterTextoI18n(MSG_DE_ERRO_DE_VALIDACAO));
                     return;
                 } 
 
-                let pedido = {
-                    data: data,
-                    formaPagamento: parseInt(formaPagamento.getSelectedKey()),
-                    numeroCartao: numeroCartao.replace(/\D/g, ''),
-                    valor: this._removerMascaraDeMoeda(valor),
-                    clienteId: this.obterParametros()[ID_DO_CLIENTE_NA_ROTA]
-                };
+                pedido.formaPagamento = parseInt(pedido.formaPagamento),
+                pedido.numeroCartao = pedido.numeroCartao.replace(/\D/g, ''),
+                pedido.valor = this._removerMascaraDeMoeda(pedido.valor),
+                pedido.clienteId = this.obterParametros()[ID_DO_CLIENTE_NA_ROTA]
 
                 await this._adicionarPedido(pedido);
             });    
@@ -281,12 +281,12 @@ sap.ui.define([
 
         aoDigitarNoInputValor: function(oEvent){
             this._mascararMoeda(oEvent);
-            let valor = this.obterModelo(NOME_DO_MODELO_DOS_INPUTS).getProperty(PROPRIEDADE_VALOR)
+            let valor = this._modelo(NOME_DO_MODELO_DO_PEDIDO).getProperty(PROPRIEDADE_VALOR)
             this._validarInputValor(valor)
         },
 
         aoDigitarNoInputCartao: function(oEvent){
-			let numeroCartao = this.obterModelo(NOME_DO_MODELO_DOS_INPUTS).getProperty(PROPRIEDADE_CARTAO)
+			let numeroCartao = this._modelo(NOME_DO_MODELO_DO_PEDIDO).getProperty(PROPRIEDADE_CARTAO)
             this._validarInputCartao(numeroCartao);
         },
 
@@ -331,19 +331,19 @@ sap.ui.define([
         },
 
         aoSelecionarData: function(){
-			let data = this.obterModelo(NOME_DO_MODELO_DOS_INPUTS).getProperty(PROPRIEDADE_DATA)
+			let data = this._modelo(NOME_DO_MODELO_DO_PEDIDO).getProperty(PROPRIEDADE_DATA)
             this._validarInputData(data)
         },
 
         _registarModeloParaVailidacao: function(){
-            let inputs = {
+            let pedido = {
                 data: "",
                 numeroCartao: "",
                 valor: "",
-				formaDePagamento: "1"
+				formaPagamento: "1"
             };
 
-            this._modelo(new JSONModel(inputs), NOME_DO_MODELO_DOS_INPUTS)
+            this._modelo(NOME_DO_MODELO_DO_PEDIDO, new JSONModel(pedido))
 
             let oView = this.getView(),
             oMM = Messaging;
@@ -359,15 +359,29 @@ sap.ui.define([
         },
 
         _limparCampos: function() {
-			let modeloDosInputs = this.obterModelo(NOME_DO_MODELO_DOS_INPUTS)
-
-			modeloDosInputs.setProperty(PROPRIEDADE_DATA, "")
-			modeloDosInputs.setProperty(PROPRIEDADE_CARTAO, "")
-			modeloDosInputs.setProperty(PROPRIEDADE_VALOR, "")
+            let pedido = {
+                data: "",
+                formaPagamento: CHAVE_ITEM_CARTAO_COMBOX,
+                numeroCartao: "",
+                valor: ""
+            }
+			this._modelo(NOME_DO_MODELO_DO_PEDIDO, new JSONModel(pedido))
 
             this.getView().byId(ID_DATAPICKER_ADCIONAR).setValueState(undefined);
             this.getView().byId(ID_INPUT_VALOR).setValueState(undefined);
             this.getView().byId(ID_INPUT_NUMERO_CARTAO).setValueState(undefined);
+        },
+
+        aoSelecionarPagamentoDoPedido: function(){
+            this._exibirEspera(() => {
+                let controleDeTela = this._modeloControleDeTela();
+                let chaveSelecionada = this._modelo(NOME_DO_MODELO_DO_PEDIDO).getProperty(PROPRIEDADE_FORMA_DE_PAGAMENTO)
+                
+                this._modelo(NOME_DO_MODELO_DO_PEDIDO).setProperty(PROPRIEDADE_CARTAO, "")
+                controleDeTela.getData().controleVisibilidadeCartao = chaveSelecionada === CHAVE_ITEM_CARTAO_COMBOX
+            
+                controleDeTela.updateBindings();
+            })
         },
 
         _definirValoresPadroes: function(){

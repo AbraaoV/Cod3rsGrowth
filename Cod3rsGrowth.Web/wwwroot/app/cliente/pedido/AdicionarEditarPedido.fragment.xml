@@ -33,31 +33,32 @@
                         valueStateText="A data é um campo obrigatório"
                         value="{
                             type : 'sap.ui.model.type.String',
-                            path: 'modeloDosInputs>/data'
+                            path: 'pedido>/data'
                         }"/>
                     <Label text="Forma de Pagamento" width="90%" class="sapUiSmallMarginBeginEnd"/>
                     <Select
                         class="sapUiSmallMarginBeginEnd"
                         id="comboxAdicionarPagamento"
-                        selectedKey="{modeloDosFiltros>/formaDePagamento}"
+                        selectedKey="{pedido>/formaPagamento}"
                         width="90%"
-                        items="{path: 'formasDePagamento>/'}">
+                        items="{path: 'formasDePagamento>/'}"
+                        change=".aoSelecionarPagamentoDoPedido">
                         <items>
                             <core:ListItem key="{formasDePagamento>key}" text="{formasDePagamento>descricao}"/>
                         </items>
                     </Select>
-                    <Label text="Número do Cartão" width="90%" id="labelCartao" visible="{= ${modeloDosFiltros>/formaDePagamento} === '1' ? true : false}" class="sapUiSmallMarginBeginEnd"/>
+                    <Label text="Número do Cartão" width="90%" id="labelCartao" visible="{controleDeTela>/controleVisibilidadeCartao}" class="sapUiSmallMarginBeginEnd"/>
                     <MaskInput
                         class="sapUiSmallMarginBeginEnd"
                         id="inputNumeroDoCartao"
                         width="90%"
                         placeholder="Número do Cartão"
                         mask="9999 9999 9999 9999"
-                        visible="{= ${modeloDosFiltros>/formaDePagamento} === '1' ? true : false}"
+                        visible="{controleDeTela>/controleVisibilidadeCartao}"
                         liveChange=".aoDigitarNoInputCartao"
                         valueStateText="Informe o numero de cartão para essa forma de pagamento"
                         value="{
-                            path: 'modeloDosInputs>/numeroCartao',
+                            path: 'pedido>/numeroCartao',
                             type : 'sap.ui.model.type.String'
                         }"/>
                     <Label text="Valor" width="90%" class="sapUiSmallMarginBeginEnd"/>
@@ -70,7 +71,7 @@
                         valueStateText="Informe o valor do pedido"
                         value="{
                             type : 'sap.ui.model.type.String',
-                            path: 'modeloDosInputs>/valor'
+                            path: 'pedido>/valor'
                         }"/>
                 </form:content>
             </form:SimpleForm>
