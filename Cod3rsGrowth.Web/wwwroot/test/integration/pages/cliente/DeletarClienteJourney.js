@@ -14,7 +14,7 @@ sap.ui.define([
         //Actions
         When.naTelaDeDetalhes.aoClicarNoBotaoDe("botaoDeletar");
         // Assertions
-        Then.naTelaDeDetalhes.deveAparecerMessagemBoxDeAvisoComOTexto("Tem certeza que deseja excluir este cliente");
+        Then.naTelaDeDetalhes.deveAparecerMessagemBoxDeAvisoComOTexto("Tem certeza que deseja excluir este cliente?");
     });
     opaTest("Deve ser possivel cancelar a remocao do cliente ao clicar em nao opcao 'nao' da messageBox", function (Given, When, Then) {
         //Actions

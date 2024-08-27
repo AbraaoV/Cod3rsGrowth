@@ -75,7 +75,7 @@
             </m:Column>
         </m:columns>
         <m:items>
-            <m:ColumnListItem>
+            <m:ColumnListItem type="DetailAndActive" press=".aoClicarNoPedido" detailPress=".aoClicarNoPedido">
                 <m:cells>
                     <m:ObjectIdentifier
                         title="{path: 'listaDePedidos>data', formatter: '.formatter.formatarData'}"/>

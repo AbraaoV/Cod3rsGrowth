@@ -15,7 +15,7 @@ sap.ui.define([
         When.naTabelaDePedido.aoClicarEmAdicionar();
 		// Assertions
 		Then.naTelaDeAdicionarEditarPedido
-		.deveAbrirFormularioDeAdicionarPedido();
+		.deveAbrirFormularioDeAdicionarEditarPedido();
 	});
 	opaTest("Ao tentar adicionar um pedido com campos vazios deve retornar erros de validacao", function(Given, When, Then) {
 		//Actions
