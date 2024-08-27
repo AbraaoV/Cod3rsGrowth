@@ -27,7 +27,6 @@ sap.ui.define([
     const CHAVE_PADRAO_DA_COMBOBOX = "4"
     const FILTRO_DE_PEDIDOS_DO_CLIENTE = 'clienteId'
     const CAMPO_PADRAO_COMBOX = "Todos pagamentos"
-    const NOME_DO_MODELO_DA_COMBO_BOX = "formasDePagamento"
     const NOME_DO_MODELO_DA_MOEDA = "modeloMoeda"
     const NOME_DO_MODELO_DA_LISTA_DE_PEDIDOS = "listaDePedidos"
     const PARAMETRO_FILTRO_PAGAMENTO = "formaPagamento"
@@ -39,7 +38,6 @@ sap.ui.define([
     const ID_DATAPICKER = "filtroDataPicker"
     const DIALOGO_ADICIONAR_E_EDITAR = "ui5.codersgrowth.app.cliente.pedido.AdicionarEditarPedido"
     const ID_DATAPICKER_ADCIONAR = "datapickerAdicionarPedido"
-    const ID_COMBOBOX_PAGAMENTO_ADICIONAR = "comboxAdicionarPagamento"
     const ID_INPUT_NUMERO_CARTAO = "inputNumeroDoCartao"
     const ID_INPUT_VALOR = "inputValorDoPedido"
     const MSG_DE_SUCESSO_AO_ADICIONAR_I18N = "successMessageAddingOrder"
@@ -51,8 +49,6 @@ sap.ui.define([
 	const PROPRIEDADE_VALOR_MIN = "/valorMin"
 	const PROPRIEDADE_FORMA_DE_PAGAMENTO = "/formaPagamento"
 	const PROPRIEDADE_CARTAO = "/numeroCartao"
-	const NOME_DO_MODELO_DO_PEDIDO = "pedido"
-	const NOME_DO_MODELO_DOS_FILTROS = "filtro"
     
     return ControllerBase.extend("ui5.codersgrowth.app.cliente.DetalhesCliente", {
         formatter: formatter,
@@ -62,6 +58,26 @@ sap.ui.define([
         
         _modeloControleDeTela: function(modelo){
             const nomeDoModelo = "controleDeTela"
+            return this._modelo(nomeDoModelo, modelo)
+        },
+
+        _modeloFiltro: function(modelo){
+            const nomeDoModelo = "filtro"
+            return this._modelo(nomeDoModelo, modelo)
+        },
+
+        _modeloPedido: function(modelo){
+            const nomeDoModelo = "pedido"
+            return this._modelo(nomeDoModelo, modelo)
+        },
+
+        _modeloComboBox: function(modelo){
+            const nomeDoModelo = "formasDePagamento"
+            return this._modelo(nomeDoModelo, modelo)
+        },
+
+        _modeloComboBoxFragment: function(modelo){
+            const nomeDoModelo = "formasDePagamentoFragment"
             return this._modelo(nomeDoModelo, modelo)
         },
 
@@ -84,13 +100,13 @@ sap.ui.define([
 				formaPagamento: CHAVE_ITEM_CARTAO_COMBOX
 			}
 
-			this._modelo(NOME_DO_MODELO_DOS_FILTROS, new JSONModel(filtro))
+			this._modeloFiltro(new JSONModel(filtro))
 		},
 
         aoDigitarValorMin: function(oEvent){
 			this._exibirEspera(() => {
 				this._mascararMoeda(oEvent);
-				_filtroValorMin = this._removerMascaraDeMoeda(this._modelo(NOME_DO_MODELO_DOS_FILTROS).getProperty(PROPRIEDADE_VALOR_MIN));
+				_filtroValorMin = this._removerMascaraDeMoeda(this._modeloFiltro().getProperty(PROPRIEDADE_VALOR_MIN));
 				this._filtrar()
 			});
 		},
@@ -98,21 +114,21 @@ sap.ui.define([
         aoDigitarValorMax: function(oEvent){
             this._exibirEspera(() => {
                 this._mascararMoeda(oEvent);
-                _filtroValorMax = this._removerMascaraDeMoeda(this._modelo(NOME_DO_MODELO_DOS_FILTROS).getProperty(PROPRIEDADE_VALOR_MAX));
+                _filtroValorMax = this._removerMascaraDeMoeda(this._modeloFiltro().getProperty(PROPRIEDADE_VALOR_MAX));
                 this._filtrar()
             });
         },
 
         aoFiltrarPelaData: function(){
             this._exibirEspera(() => {
-                _filtroData = this._modelo(NOME_DO_MODELO_DOS_FILTROS).getProperty(PROPRIEDADE_DATA)
+                _filtroData = this._modeloFiltro().getProperty(PROPRIEDADE_DATA)
                 this._filtrar()
             });
         },
         
         aoSelecionarFormaDePagamento: function(){
             this._exibirEspera(() => {
-				_filtroFormaPagamento = this._modelo(NOME_DO_MODELO_DOS_FILTROS).getProperty(PROPRIEDADE_FORMA_DE_PAGAMENTO)
+				_filtroFormaPagamento = this._modeloFiltro().getProperty(PROPRIEDADE_FORMA_DE_PAGAMENTO)
                 this._filtrar()
             });
         },
@@ -195,7 +211,7 @@ sap.ui.define([
                 descricao: CAMPO_PADRAO_COMBOX
             }
             retorno.push(todos);
-            this._modelo(NOME_DO_MODELO_DA_COMBO_BOX, new JSONModel(retorno), )
+            this._modeloComboBox(new JSONModel(retorno))
         },
         
         _popularTabelaDePedidos: async function(){
@@ -243,7 +259,7 @@ sap.ui.define([
 
         aoAdicionarPedido: function(){
             this._exibirEspera(async () => {
-				let pedido = this._modelo(NOME_DO_MODELO_DO_PEDIDO).getData();
+				let pedido = this. _modeloPedido().getData();
 
                 let bErroDeVaidacao = false;
                 if(pedido.formaPagamento === CHAVE_ITEM_CARTAO_COMBOX){
@@ -266,12 +282,9 @@ sap.ui.define([
             });    
         },
 
-        _removerItemTodosDaComboBox: function(){
-            let controleComboBox = this.byId(ID_COMBOBOX_PAGAMENTO_ADICIONAR);
-            let oItemToRemove = controleComboBox.getItems().find(item => item.getKey() === CHAVE_PADRAO_DA_COMBOBOX);
-            if (oItemToRemove) {
-                controleComboBox.removeItem(oItemToRemove);
-            }
+        _popularComboBoxFragment: async function(){
+            let retorno = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, CAMINHO_PARA_API_ENUM_PAGAMENTO)
+            this._modeloComboBoxFragment(new JSONModel(retorno))
         },
         _adicionarPedido: async function(pedido){
             await HttpRequest._request(ConstatesDasRequests.REQUISICAO_POST, ConstantesDoBanco.CAMINHO_PARA_API_PEDIDO, pedido);
@@ -281,12 +294,12 @@ sap.ui.define([
 
         aoDigitarNoInputValor: function(oEvent){
             this._mascararMoeda(oEvent);
-            let valor = this._modelo(NOME_DO_MODELO_DO_PEDIDO).getProperty(PROPRIEDADE_VALOR)
+            let valor = this._modeloPedido().getProperty(PROPRIEDADE_VALOR)
             this._validarInputValor(valor)
         },
 
         aoDigitarNoInputCartao: function(oEvent){
-			let numeroCartao = this._modelo(NOME_DO_MODELO_DO_PEDIDO).getProperty(PROPRIEDADE_CARTAO)
+			let numeroCartao = this._modeloPedido().getProperty(PROPRIEDADE_CARTAO)
             this._validarInputCartao(numeroCartao);
         },
 
@@ -331,7 +344,7 @@ sap.ui.define([
         },
 
         aoSelecionarData: function(){
-			let data = this._modelo(NOME_DO_MODELO_DO_PEDIDO).getProperty(PROPRIEDADE_DATA)
+			let data = this._modeloPedido().getProperty(PROPRIEDADE_DATA)
             this._validarInputData(data)
         },
 
@@ -343,7 +356,7 @@ sap.ui.define([
 				formaPagamento: CHAVE_ITEM_CARTAO_COMBOX
             };
 
-            this._modelo(NOME_DO_MODELO_DO_PEDIDO, new JSONModel(pedido))
+            this._modeloPedido(new JSONModel(pedido))
 
             let oView = this.getView(),
             oMM = Messaging;
@@ -365,7 +378,7 @@ sap.ui.define([
                 numeroCartao: "",
                 valor: ""
             }
-			this._modelo(NOME_DO_MODELO_DO_PEDIDO, new JSONModel(pedido))
+			this._modeloPedido(new JSONModel(pedido))
 
             this.getView().byId(ID_DATAPICKER_ADCIONAR).setValueState(undefined);
             this.getView().byId(ID_INPUT_VALOR).setValueState(undefined);
@@ -375,9 +388,9 @@ sap.ui.define([
         aoSelecionarPagamentoDoPedido: function(){
             this._exibirEspera(() => {
                 let controleDeTela = this._modeloControleDeTela();
-                let chaveSelecionada = this._modelo(NOME_DO_MODELO_DO_PEDIDO).getProperty(PROPRIEDADE_FORMA_DE_PAGAMENTO)
+                let chaveSelecionada = this._modeloPedido().getProperty(PROPRIEDADE_FORMA_DE_PAGAMENTO)
                 
-                this._modelo(NOME_DO_MODELO_DO_PEDIDO).setProperty(PROPRIEDADE_CARTAO, "")
+                this._modeloPedido().setProperty(PROPRIEDADE_CARTAO, "")
                 controleDeTela.getData().controleVisibilidadeCartao = chaveSelecionada === CHAVE_ITEM_CARTAO_COMBOX
             
                 controleDeTela.updateBindings();
@@ -385,7 +398,7 @@ sap.ui.define([
         },
 
         _definirValoresPadroes: function(){
-            this._removerItemTodosDaComboBox();
+            this._popularComboBoxFragment();
             this._registarModeloParaVailidacao();
         },
     });

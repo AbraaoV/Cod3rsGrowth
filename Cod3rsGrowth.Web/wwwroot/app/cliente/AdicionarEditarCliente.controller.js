@@ -14,7 +14,6 @@ sap.ui.define([
 ], (Messaging, ControllerBase, JSONModel, MessageBox, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, formatter, HttpRequest, ConstatesDasRequests, History) => {
     "use strict";
     const CAMINHO_PARA_API_ENUM = "/api/EnumTipo"
-    const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
     const MSG_DE_SUCESSO_NO_CADASTRO_I18N = "sucessCustumerRegister"
     const MSG_DE_SUCESSO_NA_EDICAO_I18N = "sucessCustumerEdit"
     const ID_INPUT_CPF = "inputCpf"
@@ -33,7 +32,6 @@ sap.ui.define([
     const PROPRIEDADE_CNPJ = "/cnpj"
     const ROTA_EDITAR = "editar"
     const INDEX_DO_NOME_DA_ROTA = 2
-    const NOME_DO_MODELO_CLIENTE = "cliente"
     const PROPRIEDADE_TITULO = "tituloDoPanel"
     const PROPRIEDADE_TIPO = "/tipo"
 
@@ -56,21 +54,31 @@ sap.ui.define([
             return this._modelo(nomeDoModelo, modelo)
         },
 
+        _modeloCliente: function(modelo){
+            const nomeDoModelo = "cliente"
+            return this._modelo(nomeDoModelo, modelo)
+        },
+
+        _modeloComboBox: function(modelo){
+            const nomeDoModelo = "comboxTipoDePessoa"
+            return this._modelo(nomeDoModelo, modelo)
+        },
+
         _aoCoincidirRotaEditar: async function(){
             this._exibirEspera(async () =>{
                 await this._definirValoresPadroes()
                 let resultado = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA]);
-                let modeloCombox = this._modelo(NOME_DO_MODELO_DA_COMBOX_BOX).getData();
+                let modeloCombox = this._modeloComboBox().getData();
                 let tipoEncontrado = modeloCombox.find(x => x.descricao === resultado.tipo);
                 resultado.tipo = tipoEncontrado.key;
-                this._modelo(NOME_DO_MODELO_CLIENTE, new JSONModel(resultado));
+                this._modeloCliente(new JSONModel(resultado));
                 this._definirTituloEdicao();
             })
         },
 
         _definirValoresPadroes: async function(){
             let retorno = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, CAMINHO_PARA_API_ENUM);
-            this._modelo(NOME_DO_MODELO_DA_COMBOX_BOX, new JSONModel(retorno))
+            this._modeloComboBox(new JSONModel(retorno))
             this._registarModeloParaVailidacao()
             this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
             this._modeloControleDeTela(new JSONModel({
@@ -101,7 +109,7 @@ sap.ui.define([
                 tipo: CHAVE_PESSOA_FISICA
             }
 
-            this._modelo(NOME_DO_MODELO_CLIENTE, new JSONModel(cliente))
+            this._modeloCliente(new JSONModel(cliente))
 
             let oView = this.getView(),
             oMM = Messaging;
@@ -158,28 +166,28 @@ sap.ui.define([
 
         aoDigitarNoInpuntCpf: function() {
             this._exibirEspera(() => {
-                let cpf = this._modelo(NOME_DO_MODELO_CLIENTE).getProperty(PROPRIEDADE_CPF)
+                let cpf = this._modeloCliente().getProperty(PROPRIEDADE_CPF)
                 this._validarInputCpf(cpf);
             });
         },
 
         aoDigitarNoInpuntCnpj: function() {
             this._exibirEspera(() => {
-                let cnpj = this._modelo(NOME_DO_MODELO_CLIENTE).getProperty(PROPRIEDADE_CNPJ)
+                let cnpj = this._modeloCliente().getProperty(PROPRIEDADE_CNPJ)
                 this._validarInputCnpj(cnpj);
             });
         },
 
         aoDigitarNoInpuntNome: function() {
             this._exibirEspera(() => {
-                let nome = this._modelo(NOME_DO_MODELO_CLIENTE).getProperty(PROPRIEDADE_NOME)
+                let nome = this._modeloCliente().getProperty(PROPRIEDADE_NOME)
                 this._validarInputNome(nome);
             });
         },
 
         aoSelecionarTipoPessoa: function(){
             this._exibirEspera(() => {
-                let cliente = this._modelo(NOME_DO_MODELO_CLIENTE).getData()
+                let cliente = this._modeloCliente().getData()
                 let controleDeTela = this._modeloControleDeTela();
 
                 cliente.cpf = "";
@@ -193,7 +201,7 @@ sap.ui.define([
 
         aoClicarEmSalvar: function(){
             this._exibirEspera(async () => {
-                let cliente = this._modelo(NOME_DO_MODELO_CLIENTE).getData()
+                let cliente = this._modeloCliente().getData()
 
                 let bErroDeVaidacao = false;
                 if(cliente.tipo === CHAVE_PESSOA_FISICA){
@@ -240,7 +248,7 @@ sap.ui.define([
                 cnpj: "",
                 tipo: CHAVE_PESSOA_FISICA
             }
-            this._modelo(NOME_DO_MODELO_CLIENTE, new JSONModel(cliente))
+            this._modeloCliente(new JSONModel(cliente))
 
             this.getView().byId(ID_INPUT_NOME).setValueState(undefined);
             this.getView().byId(ID_INPUT_CPF).setValueState(undefined);

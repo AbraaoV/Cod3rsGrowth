@@ -41,10 +41,10 @@
                         id="comboxAdicionarPagamento"
                         selectedKey="{pedido>/formaPagamento}"
                         width="90%"
-                        items="{path: 'formasDePagamento>/'}"
+                        items="{path: 'formasDePagamentoFragment>/'}"
                         change=".aoSelecionarPagamentoDoPedido">
                         <items>
-                            <core:ListItem key="{formasDePagamento>key}" text="{formasDePagamento>descricao}"/>
+                            <core:ListItem key="{formasDePagamentoFragment>key}" text="{formasDePagamentoFragment>descricao}"/>
                         </items>
                     </Select>
                     <Label text="Número do Cartão" width="90%" id="labelCartao" visible="{controleDeTela>/controleVisibilidadeCartao}" class="sapUiSmallMarginBeginEnd"/>

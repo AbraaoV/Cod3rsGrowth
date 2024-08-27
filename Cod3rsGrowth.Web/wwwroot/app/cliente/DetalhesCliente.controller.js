@@ -13,7 +13,6 @@ sap.ui.define([
 
 	const ID_BOTAO_TELA_CHEIA = "botaoTelaCheia"
 	const ID_BOTAO_SAIR_TELA_CHEIA = "botaoSairTelaCheia"
-	const NOME_DO_MODELO_DO_CLIENTE = "clienteSelecionado"
 	const NOME_DO_MODELO_DO_APP = "appView"
 	const ID_DO_CLIENTE_NA_ROTA = 1
 	const PROPRIEDADE_ID_DO_CLIENTE = "/id"
@@ -27,12 +26,17 @@ sap.ui.define([
 		onInit: function () {
 			this.obterRota().getRoute(ConstantesDaRota.NOME_DA_ROTA_DE_DETALHE).attachPatternMatched(this._aoCoincidirRota, this);
 		},
-		
+
+		_modeloCliente: function(modelo){
+            const nomeDoModelo = "clienteSelecionado"
+            return this._modelo(nomeDoModelo, modelo)
+        },
+
 		_aoCoincidirRota: async function () {
 			this._exibirEspera(async () => {
 				this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_DUAS_COLUNAS_DIVIDAS)
 				let retorno = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[ID_DO_CLIENTE_NA_ROTA])
-				this._modelo(NOME_DO_MODELO_DO_CLIENTE, new JSONModel(retorno));
+				this._modeloCliente(new JSONModel(retorno));
 			})
 		},
 
@@ -62,7 +66,7 @@ sap.ui.define([
             this._exibirEspera(() => {
                 this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
                 this.obterRota().navTo(ConstantesDaRota.NOME_DA_ROTA_DE_EDITAR_CLIENTE, {
-                    clienteId: this._modelo(NOME_DO_MODELO_DO_CLIENTE).getProperty(PROPRIEDADE_ID_DO_CLIENTE)
+                    clienteId: this._modeloCliente().getProperty(PROPRIEDADE_ID_DO_CLIENTE)
                 });
             });
         },
