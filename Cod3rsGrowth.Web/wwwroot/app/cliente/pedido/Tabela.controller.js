@@ -62,6 +62,10 @@ sap.ui.define([
     const TITULO_ADICIONAR = "addOrderDialogTitle"
     const TITULO_EDITAR = "editOrderDialogTitle"
     const PROPRIEDADE_TITULO = "/tituloFragment"
+    const MSG_DE_AVISO_AO_DELETAR_I18N = "warningMessageWhenDeleteOrder"
+    const MSG_DE_SUCESSO_AO_DELETAR_I18N = "sucessOnOrderDelete"
+    const OPCAO_SIM = "yesOption"
+	const OPCAO_NAO = "noOption"
     
     return ControllerBase.extend("ui5.codersgrowth.app.cliente.DetalhesCliente", {
         formatter: formatter,
@@ -444,7 +448,6 @@ sap.ui.define([
                             this.aoClicarEmEditar(idDoPedido);
                         }
                         else if (sAction === this.obterTextoI18n(TEXTO_BOTAO_DELETAR)) {
-                            debugger
                             this.aoClicarEmDeletar(idDoPedido);
                         }
                     }.bind(this)
@@ -496,5 +499,20 @@ sap.ui.define([
             this._popularTabelaDePedidos();
             this.oDialog.close();
         },
+
+        aoClicarEmDeletar: function(idDoPedido){
+            MessageBox.warning(this.obterTextoI18n(MSG_DE_AVISO_AO_DELETAR_I18N), {
+				actions: [this.obterTextoI18n(OPCAO_SIM), this.obterTextoI18n(OPCAO_NAO)],
+				onClose: async (sAction) => {
+					if (sAction ===  this.obterTextoI18n(OPCAO_SIM)) {
+						this._exibirEspera(async () => {
+							await HttpRequest._request(ConstatesDasRequests.REQUISICAO_DELETE, ConstantesDoBanco.CAMINHO_PARA_API_PEDIDO + "/" + idDoPedido)
+							MessageBox.success(this.obterTextoI18n(MSG_DE_SUCESSO_AO_DELETAR_I18N))
+                            this._popularTabelaDePedidos();
+						});
+					} 
+				}
+			})
+        }
     });
 });
