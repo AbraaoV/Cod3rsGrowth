@@ -99,7 +99,7 @@ sap.ui.define([
 			},
 
 			assertions: {
-                deveAbrirFormularioDeAdicionarPedido: function(){
+                deveAbrirFormularioDeAdicionarEditarPedido: function(){
                     return this.waitFor({
 						searchOpenDialogs: true,
                         controlType: controleDialog,

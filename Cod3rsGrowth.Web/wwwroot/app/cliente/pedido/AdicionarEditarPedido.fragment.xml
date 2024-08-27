@@ -25,7 +25,7 @@
                     />
                     <DatePicker
                         class="sapUiSmallMarginBeginEnd"
-                        id="datapickerAdicionarPedido"
+                        id="dataPickerAdicionarPedido"
                         valueFormat="yyyy-MM-ddTHH:mm:ss.000"
                         width="90%"
                         change=".aoSelecionarData"

@@ -4,7 +4,10 @@ sap.ui.define([
     "sap/ui/test/matchers/AggregationLengthEquals",
     "sap/ui/test/actions/EnterText",
     "sap/ui/test/matchers/PropertyStrictEquals",
-], (Opa5, Press, AggregationLengthEquals, EnterText, PropertyStrictEquals) => {
+    "sap/ui/test/matchers/BindingPath",
+    "sap/ui/test/matchers/Properties",
+	"sap/ui/test/matchers/Ancestor"
+], (Opa5, Press, AggregationLengthEquals, EnterText, PropertyStrictEquals, BindingPath, Properties, Ancestor) => {
     "use strict";
 
     const sViewName = "cliente.pedido.Tabela",
@@ -80,10 +83,51 @@ sap.ui.define([
                         },
 						errorMessage: "Não foi possível pressionar o botão de adicionar."
 					});
-                }   
+                },
+                
+                aoClicarNaOpcao: function(sTextoBotao){
+					return this.waitFor({
+						controlType: "sap.m.Button",
+						matchers: [
+							new Properties({ text: sTextoBotao }),
+							new Ancestor(Opa5.getContext().dialog, false) 
+						],
+						actions: new Press(),
+						success: function () {
+							Opa5.assert.ok(true, "Sucesso ao clicar no botao");
+						},
+						errorMessage: "Falhar ao clicar no botao"
+                    });
+				},
+
+                aoClicarNoPedidoDaPosicao: function(iPosicao){
+                    return this.waitFor({
+                        controlType: "sap.m.ColumnListItem",
+                        matchers:  new BindingPath({
+                            path: "/" + iPosicao,
+                            modelName: "listaDePedidos",
+                        }),
+                        actions: new Press(),
+                        errorMessage: "A lista de clientes não contem um cliente na posição" + iPosicao
+                    });
+                },
+
+                aoClicarNaOpacaoDaMessageBox: function(sTextoBotao){
+					return this.waitFor({
+						controlType: "sap.m.Button",
+						matchers: [
+							new Properties({ text: sTextoBotao }),
+							new Ancestor(Opa5.getContext().dialog, false) 
+						],
+						actions: new Press(),
+						success: function () {
+							Opa5.assert.ok(true, "Sucesso ao clicar no botao");
+						},
+						errorMessage: "Falhar ao clicar no botao"
+                    });
+				},			
             },
 
-            
             assertions: {
                 tabelaDePedidosDeveEstarCarregada: function(){
                     return this.waitFor({
@@ -144,7 +188,44 @@ sap.ui.define([
                         },
                         errorMessage: "A lista não está filtrada corretamente com os parâmetros fornecidos."
                     });
-                }
+                },
+
+                deveAparecerMessagemBoxDeAvisoComOTexto: function(sTexto){
+					return this.waitFor({
+						controlType: "sap.m.Dialog",
+						controlType: "sap.m.Text",
+						matchers: new Properties({ text: sTexto}),
+						success: function () {
+							Opa5.assert.ok("A MessageBox apareceu");
+						},
+						errorMessage: "A MessageBox não apareceu"
+					});
+				},
+
+                pedidoDeveEstarRemovidoDaLista: function(sValorDoPedido){
+					function fnCheckFilter(oList) {
+						var fnIsFiltered = function (oElement) {
+							if (!oElement.getBindingContext("listaDePedidos")) {
+								return false;
+							} else {
+								var sValor = oElement.getBindingContext("listaDePedidos").getProperty("valor");
+								return sValor === sValorDoPedido;
+							}
+						};
+				
+						return oList.getItems().every(fnIsFiltered);
+					}
+
+					return this.waitFor({
+						id: sIdLista,
+						viewName: sViewName,
+						matchers: !fnCheckFilter,
+						success: function () {
+							Opa5.assert.ok(true, "Pedido removido com sucesso");
+						},
+						errorMessage: "Falha ao remover pedido"
+					});
+				},
             }
         }
     });

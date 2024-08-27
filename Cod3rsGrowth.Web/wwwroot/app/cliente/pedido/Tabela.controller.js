@@ -37,7 +37,7 @@ sap.ui.define([
     const ID_INPUT_VALOR_MAX = "inputValorMax"
     const ID_DATAPICKER = "filtroDataPicker"
     const DIALOGO_ADICIONAR_E_EDITAR = "ui5.codersgrowth.app.cliente.pedido.AdicionarEditarPedido"
-    const ID_DATAPICKER_ADCIONAR = "datapickerAdicionarPedido"
+    const ID_DATAPICKER_ADCIONAR = "dataPickerAdicionarPedido"
     const ID_INPUT_NUMERO_CARTAO = "inputNumeroDoCartao"
     const ID_INPUT_VALOR = "inputValorDoPedido"
     const MSG_DE_SUCESSO_AO_ADICIONAR_I18N = "successMessageAddingOrder"
@@ -49,6 +49,19 @@ sap.ui.define([
 	const PROPRIEDADE_VALOR_MIN = "/valorMin"
 	const PROPRIEDADE_FORMA_DE_PAGAMENTO = "/formaPagamento"
 	const PROPRIEDADE_CARTAO = "/numeroCartao"
+	const NOME_DO_MODELO_DO_PEDIDO = "pedido"
+    const MSG_DE_SUCESSO_AO_EDITAR_I18N = "succesOnEditOrderMessage"
+    const PROPRIEDADE_ID = "/id"
+    const CONTEXTO_ID = "id"
+    const OPCAOES_DA_MESSAGE_BOX = "orderOptionsMessage"
+    const TITULO_DA_MESSAGE_BOX = "titleOptionsMessage"
+    const TEXTO_BOTAO_EDITAR = "editBtnText"
+    const TEXTO_BOTAO_DELETAR = "deleteBtnText"
+    const TEXTO_BOTAO_CANCELAR = "cancelBtnText"
+    const PROPRIEDADE_ESTA_NA_TELA_EDITAR = "/telaDeEditar"
+    const TITULO_ADICIONAR = "addOrderDialogTitle"
+    const TITULO_EDITAR = "editOrderDialogTitle"
+    const PROPRIEDADE_TITULO = "/tituloFragment"
     
     return ControllerBase.extend("ui5.codersgrowth.app.cliente.DetalhesCliente", {
         formatter: formatter,
@@ -87,7 +100,9 @@ sap.ui.define([
                 this._popularComboBox();
                 this._filtrarPelaRota();
                 this._modeloControleDeTela(new JSONModel({
-                    controleVisibilidadeCartao: true
+                    controleVisibilidadeCartao: true,
+                    telaDeEditar: false,
+                    tituloFragment: this.obterTextoI18n(TITULO_ADICIONAR)
                 }))
             })
         },
@@ -278,7 +293,11 @@ sap.ui.define([
                 pedido.valor = this._removerMascaraDeMoeda(pedido.valor),
                 pedido.clienteId = this.obterParametros()[ID_DO_CLIENTE_NA_ROTA]
 
-                await this._adicionarPedido(pedido);
+                if(this._modeloControleDeTela().getProperty(PROPRIEDADE_ESTA_NA_TELA_EDITAR) === true){
+                    await this._editarPedido(pedido)
+                }else{
+                    await this._adicionarPedido(pedido);
+                }
             });    
         },
 
@@ -400,6 +419,82 @@ sap.ui.define([
         _definirValoresPadroes: function(){
             this._popularComboBoxFragment();
             this._registarModeloParaVailidacao();
+            this._modeloControleDeTela().setProperty(PROPRIEDADE_ESTA_NA_TELA_EDITAR, false)
+            this._modeloControleDeTela().setProperty(PROPRIEDADE_TITULO, this.obterTextoI18n(TITULO_ADICIONAR))
+            this._modeloControleDeTela().updateBindings();
+        },
+
+        _definirValoresEditar: function(){
+            this._modeloControleDeTela().setProperty(PROPRIEDADE_ESTA_NA_TELA_EDITAR, true)
+            this._modeloControleDeTela().setProperty(PROPRIEDADE_TITULO, this.obterTextoI18n(TITULO_EDITAR))
+            this._modeloControleDeTela().updateBindings();
+        },
+
+        aoClicarNoPedido: function(oEvent){
+            let idDoPedido = oEvent.getSource().getBindingContext(NOME_DO_MODELO_DA_LISTA_DE_PEDIDOS).getProperty(CONTEXTO_ID);
+
+            MessageBox.show(
+                this.obterTextoI18n(OPCAOES_DA_MESSAGE_BOX),
+                {
+                    icon: MessageBox.Icon.QUESTION,
+                    title: this.obterTextoI18n(TITULO_DA_MESSAGE_BOX),
+                    actions: [this.obterTextoI18n(TEXTO_BOTAO_EDITAR), this.obterTextoI18n(TEXTO_BOTAO_DELETAR), this.obterTextoI18n(TEXTO_BOTAO_CANCELAR)],
+                    onClose: function (sAction) {
+                        if (sAction === this.obterTextoI18n(TEXTO_BOTAO_EDITAR)) {
+                            this.aoClicarEmEditar(idDoPedido);
+                        }
+                        else if (sAction === this.obterTextoI18n(TEXTO_BOTAO_DELETAR)) {
+                            debugger
+                            this.aoClicarEmDeletar(idDoPedido);
+                        }
+                    }.bind(this)
+                }
+            );
+        },
+
+        aoClicarEmEditar: function(idDoPedido){
+            this._exibirEspera(async () => {
+                this.oDialog ??= await this.loadFragment({
+                    name: DIALOGO_ADICIONAR_E_EDITAR,
+                    controller: this
+                    
+                });
+                this._definirValoresPadroes();
+                this._definirValoresEditar();
+                this._prencherPedido(idDoPedido);
+
+                
+
+                this.oDialog.open();
+            });
+        },
+
+        _abrirDialogo: async function(){
+            this.oDialog ??= await this.loadFragment({
+                name: DIALOGO_ADICIONAR_E_EDITAR,
+                controller: this
+                
+            });
+            this.oDialog.open();
+        },
+
+        _prencherPedido: async function(idDoPedido){
+            let urlFinal = ConstantesDoBanco.CAMINHO_PARA_API_PEDIDO + "/" + idDoPedido;
+            let pedidoSelecionado = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, urlFinal);
+
+            let modeloCombox = this._modeloComboBox().getData();
+            let pagamentoSelecionado = modeloCombox.find(x => x.descricao === pedidoSelecionado.formaPagamento);
+            pedidoSelecionado.formaPagamento = pagamentoSelecionado.key;
+
+            this._modelo(NOME_DO_MODELO_DO_PEDIDO, new JSONModel(pedidoSelecionado));
+        },
+
+        _editarPedido: async function(pedido,){
+            let idDoPedido = this._modelo(NOME_DO_MODELO_DO_PEDIDO).getProperty(PROPRIEDADE_ID);
+            await HttpRequest._request(ConstatesDasRequests.REQUISICAO_PUT, ConstantesDoBanco.CAMINHO_PARA_API_PEDIDO + "/" + idDoPedido, pedido);
+            MessageBox.success(this.obterTextoI18n(MSG_DE_SUCESSO_AO_EDITAR_I18N))
+            this._popularTabelaDePedidos();
+            this.oDialog.close();
         },
     });
 });
