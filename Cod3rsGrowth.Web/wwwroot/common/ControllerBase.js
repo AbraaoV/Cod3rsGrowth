@@ -46,15 +46,11 @@ sap.ui.define([
         },
 
         mudarLayout: function (sLayout) {
-            return this.obterModelo(NOME_MODELO_DO_APP).setProperty("/layout", sLayout);
-        },
-
-        obterModelo: function (sNome) {
-            return this.getView().getModel(sNome);
+            return this._modelo(NOME_MODELO_DO_APP).setProperty("/layout", sLayout);
         },
 
         _exibirEspera: function (funcao) {
-            this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", true);
+            this._modelo(NOME_MODELO_DO_APP).setProperty("/busy", true);
         
             return Promise.resolve(funcao())
                 .catch(error => {
@@ -90,12 +86,15 @@ sap.ui.define([
                     }
                 })
                 .finally(() => {
-                    this.obterModelo(NOME_MODELO_DO_APP).setProperty("/busy", false);
+                    this._modelo(NOME_MODELO_DO_APP).setProperty("/busy", false);
                 });
         },
 
-        _modelo: function (oModel, sNomeModelo) {
-            return this.getView().setModel(oModel, sNomeModelo);
+        _modelo: function (nomeDoModelo, oModel) {
+            if(oModel){
+                return this.getView().setModel(oModel, nomeDoModelo);
+            }
+            return this.getView().getModel(nomeDoModelo);
         },
 
         _formatarMensagemDeErro: function(data) {

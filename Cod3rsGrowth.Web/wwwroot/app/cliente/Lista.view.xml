@@ -35,7 +35,7 @@
                   type="Transparent"/>
                <Button 
                   id="botaoAdicionar"
-                  text="{i18n>addCustomerBtnText}"
+                  text="{i18n>addBtnText}"
                   icon="sap-icon://add-employee"
                   press=".aoClicarEmAdicionar"
                   type="Transparent"/>

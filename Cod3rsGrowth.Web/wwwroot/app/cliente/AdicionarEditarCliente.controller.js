@@ -14,35 +14,26 @@ sap.ui.define([
 ], (Messaging, ControllerBase, JSONModel, MessageBox, ConstantesDoBanco, ConstantesLayoutDoApp, ConstantesDaRota, formatter, HttpRequest, ConstatesDasRequests, History) => {
     "use strict";
     const CAMINHO_PARA_API_ENUM = "/api/EnumTipo"
-    const NOME_DO_MODELO_DA_COMBOX_BOX = "comboxTipoDePessoa"
     const MSG_DE_SUCESSO_NO_CADASTRO_I18N = "sucessCustumerRegister"
     const MSG_DE_SUCESSO_NA_EDICAO_I18N = "sucessCustumerEdit"
-    const ID_COMBO_BOX = "comboxTipo"
-    const ID_LABEL_CPF = "labelCpf"
     const ID_INPUT_CPF = "inputCpf"
-    const ID_LABEL_CPNJ = "labelCnpj"
     const ID_INPUT_CNPJ = "inputCnpj"
     const ID_INPUT_NOME = "inputNome"
-    const KEY_PESSOA_FISICA = "1"
-    const KEY_PESSOA_JURIDICA = "2"
-    const PARAMETRO_ITEM_SELECIONADO = "selectedItem"
-    const MSG_DE_ERRO_DE_VALIDACAO = "Ocorreu um ou mais erros de validação."
-    const INDEX_CPF = 1
-    const INDEX_CPNJ = 2
+    const CHAVE_PESSOA_FISICA = "1"
+    const CHAVE_PESSOA_JURIDICA = "2"
+    const MSG_DE_ERRO_DE_VALIDACAO = "validationErrorMenssage"
     const VALOR_PADRAO = "None"
     const VALOR_DE_ERRO = "Error"
-    const VALOR_PROPRIEDAE = "value"
-    const NOME_DO_MODELO_DO_CLIENTE = "clienteSelecionado"
     const INDEX_DO_ID_DO_CLIENTE_NA_ROTA = 1
-    const TITULO_DO_PANEL_CADASTRO = "Cadastro de Cliente"
-    const TITULO_DO_PANEL_EDITAR = "Editar Cliente"
-    const ID_PANEL = "panelCliente"
+    const TITULO_DO_PANEL_CADASTRO = "addCustomerPanelTittle"
+    const TITULO_DO_PANEL_EDITAR = "editCustomerPanelTittle"
     const PROPRIEDADE_NOME = "/nome"
     const PROPRIEDADE_CPF = "/cpf"
     const PROPRIEDADE_CNPJ = "/cnpj"
-    const PROPRIEDADE_TIPO = "/tipo"
     const ROTA_EDITAR = "editar"
     const INDEX_DO_NOME_DA_ROTA = 2
+    const PROPRIEDADE_TITULO = "tituloDoPanel"
+    const PROPRIEDADE_TIPO = "/tipo"
 
     return ControllerBase.extend("ui5.codersgrowth.app.cliente.AdicionarEditarCliente", {
         formatter: formatter,
@@ -58,54 +49,68 @@ sap.ui.define([
             })
         },
 
+        _modeloControleDeTela: function(modelo){
+            const nomeDoModelo = "controleDeTela"
+            return this._modelo(nomeDoModelo, modelo)
+        },
+
+        _modeloCliente: function(modelo){
+            const nomeDoModelo = "cliente"
+            return this._modelo(nomeDoModelo, modelo)
+        },
+
+        _modeloComboBox: function(modelo){
+            const nomeDoModelo = "comboxTipoDePessoa"
+            return this._modelo(nomeDoModelo, modelo)
+        },
+
         _aoCoincidirRotaEditar: async function(){
             this._exibirEspera(async () =>{
                 await this._definirValoresPadroes()
                 let resultado = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[INDEX_DO_ID_DO_CLIENTE_NA_ROTA]);
-                this._modelo(new JSONModel(resultado), NOME_DO_MODELO_DO_CLIENTE);
-                this._prencherCliente();
+                let modeloCombox = this._modeloComboBox().getData();
+                let tipoEncontrado = modeloCombox.find(x => x.descricao === resultado.tipo);
+                resultado.tipo = tipoEncontrado.key;
+                this._modeloCliente(new JSONModel(resultado));
                 this._definirTituloEdicao();
             })
         },
 
         _definirValoresPadroes: async function(){
             let retorno = await HttpRequest._request(ConstatesDasRequests.REQUISICAO_GET, CAMINHO_PARA_API_ENUM);
-            this._modelo(new JSONModel(retorno), NOME_DO_MODELO_DA_COMBOX_BOX)
-            this.aoSelecionarTipoPessoa();
+            this._modeloComboBox(new JSONModel(retorno))
             this._registarModeloParaVailidacao()
             this.mudarLayout(ConstantesLayoutDoApp.LAYOUT_UMA_COLUNA)
-            this.getView().byId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
+            this._modeloControleDeTela(new JSONModel({
+                controleVisibilidadeCpf: true,
+                controleVisibilidadeCnpj: false,
+                tituloDoPanel: this.obterTextoI18n(TITULO_DO_PANEL_CADASTRO)
+            }))
             this._definitTituloCadastro();
         },
 
         _definirTituloEdicao: function(){
-            this.getView().byId(ID_PANEL).setHeaderText(TITULO_DO_PANEL_EDITAR)
+            let titulo = this.obterTextoI18n(TITULO_DO_PANEL_EDITAR)
+            this._modeloControleDeTela().setProperty(PROPRIEDADE_TITULO, titulo)
+            this._modeloControleDeTela().updateBindings();
         },
 
         _definitTituloCadastro: function(){
-            this.getView().byId(ID_PANEL).setHeaderText(TITULO_DO_PANEL_CADASTRO)
-        },
-
-        _prencherCliente: function(){
-            let controleDoComboBox = this.getView().byId(ID_COMBO_BOX);
-
-            const modeloCliente = this.obterModelo(NOME_DO_MODELO_DO_CLIENTE)
-            this.getView().byId(ID_INPUT_NOME).setValue(modeloCliente.getProperty(PROPRIEDADE_NOME));
-            for(var i = 0; i < 2; i++){
-                if(controleDoComboBox.getItems()[i].getText() == modeloCliente.getProperty(PROPRIEDADE_TIPO)){
-                    controleDoComboBox.setSelectedItem(controleDoComboBox.getItems()[i], true)
-                }
-            }
-            let item = controleDoComboBox.getSelectedItem()
-            controleDoComboBox.setSelectedItem(modeloCliente.getProperty(PROPRIEDADE_TIPO)).fireSelectionChange({
-                selectedItem: item,
-                key: item.getKey()
-            });
-            this.getView().byId(ID_INPUT_CPF).setValue(modeloCliente.getProperty(PROPRIEDADE_CPF));
-            this.getView().byId(ID_INPUT_CNPJ).setValue(modeloCliente.getProperty(PROPRIEDADE_CNPJ));
+            let titulo = this.obterTextoI18n(TITULO_DO_PANEL_CADASTRO)
+            this. _modeloControleDeTela().setProperty(PROPRIEDADE_TITULO, titulo)
+            this._modeloControleDeTela().updateBindings();
         },
 
         _registarModeloParaVailidacao: function(){
+            let cliente = {
+                nome: "",
+                cpf: "",
+                cnpj: "",
+                tipo: CHAVE_PESSOA_FISICA
+            }
+
+            this._modeloCliente(new JSONModel(cliente))
+
             let oView = this.getView(),
             oMM = Messaging;
             oMM.registerObject(oView.byId(ID_INPUT_NOME), true);
@@ -113,105 +118,114 @@ sap.ui.define([
             oMM.registerObject(oView.byId(ID_INPUT_CNPJ), true);
         },
 
-        _validarInput: function (oInput) {
+        _validarInputCpf: function(cpf){
             let sEstadoDoValor = VALOR_PADRAO;
             let bErroDeVaidacao = false;
-            let oBinding = oInput.getBinding(VALOR_PROPRIEDAE);
-            let inputCpf = this.getView().byId(ID_INPUT_CPF)
-            let inputCnpj = this.getView().byId(ID_INPUT_CNPJ)
 
-            let sInputSemMascara = oInput.getValue();
+            let sInputSemMascara = cpf.replace(/\D/g, '');
             
-            if (oInput === inputCpf || oInput === inputCnpj) {
-                sInputSemMascara = sInputSemMascara.replace(/\D/g, '');
-            }
-            if(sInputSemMascara === ""){
-                sEstadoDoValor = VALOR_DE_ERRO;
-                bErroDeVaidacao = true;
-            }
-            if(oInput === inputCpf && sInputSemMascara.length !== 11){
-                sEstadoDoValor = VALOR_DE_ERRO;
-                bErroDeVaidacao = true;
-            }
-            if(oInput === inputCnpj && sInputSemMascara.length !== 14){
+            if(sInputSemMascara.length !== 11){
                 sEstadoDoValor = VALOR_DE_ERRO;
                 bErroDeVaidacao = true;
             }
 
-            oInput.setValueState(sEstadoDoValor);
+            this.getView().byId(ID_INPUT_CPF).setValueState(sEstadoDoValor);
 
             return bErroDeVaidacao;
         },
 
-        aoDigitarNoInpunt: function(oEvent) {
+        _validarInputCnpj: function(cnpj){
+            let sEstadoDoValor = VALOR_PADRAO;
+            let bErroDeVaidacao = false;
+
+            let sInputSemMascara = cnpj.replace(/\D/g, '');
+            
+            if(sInputSemMascara.length !== 14){
+                sEstadoDoValor = VALOR_DE_ERRO;
+                bErroDeVaidacao = true;
+            }
+
+            this.getView().byId(ID_INPUT_CNPJ).setValueState(sEstadoDoValor);
+
+            return bErroDeVaidacao;
+        },
+
+        _validarInputNome: function(nome){
+            let sEstadoDoValor = VALOR_PADRAO;
+            let bErroDeVaidacao = false;
+            
+            if(nome === ""){
+                sEstadoDoValor = VALOR_DE_ERRO;
+                bErroDeVaidacao = true;
+            }
+
+            this.getView().byId(ID_INPUT_NOME).setValueState(sEstadoDoValor);
+
+            return bErroDeVaidacao;
+        },
+
+        aoDigitarNoInpuntCpf: function() {
             this._exibirEspera(() => {
-                let oInput = oEvent.getSource();
-                this._validarInput(oInput);
+                let cpf = this._modeloCliente().getProperty(PROPRIEDADE_CPF)
+                this._validarInputCpf(cpf);
             });
-		},
+        },
+
+        aoDigitarNoInpuntCnpj: function() {
+            this._exibirEspera(() => {
+                let cnpj = this._modeloCliente().getProperty(PROPRIEDADE_CNPJ)
+                this._validarInputCnpj(cnpj);
+            });
+        },
+
+        aoDigitarNoInpuntNome: function() {
+            this._exibirEspera(() => {
+                let nome = this._modeloCliente().getProperty(PROPRIEDADE_NOME)
+                this._validarInputNome(nome);
+            });
+        },
 
         aoSelecionarTipoPessoa: function(){
             this._exibirEspera(() => {
-                let controleDoComboBox = this.getView().byId(ID_COMBO_BOX);
-                let controleDaLabelCPF = this.getView().byId(ID_LABEL_CPF);
-                let controleDoInputCPF = this.getView().byId(ID_INPUT_CPF);
-                let controleDaLabelCNPJ = this.getView().byId(ID_LABEL_CPNJ);
-                let controleDoInputCNPJ = this.getView().byId(ID_INPUT_CNPJ);
-                controleDoComboBox.attachSelectionChange(function(oEvent) {
-                    let itemSelecionado = oEvent.getParameter(PARAMETRO_ITEM_SELECIONADO);
-                    let key = itemSelecionado.getKey();
-                    controleDoInputCPF.setValue(undefined);
-                    controleDoInputCNPJ.setValue(undefined);
-                    controleDaLabelCPF.setVisible(key === KEY_PESSOA_FISICA);
-                    controleDoInputCPF.setVisible(key === KEY_PESSOA_FISICA);
-                    controleDaLabelCNPJ.setVisible(key === KEY_PESSOA_JURIDICA);
-                    controleDoInputCNPJ.setVisible(key === KEY_PESSOA_JURIDICA);
-                });
-            });
+                let cliente = this._modeloCliente().getData()
+                let controleDeTela = this._modeloControleDeTela();
+
+                cliente.cpf = "";
+                cliente.cnpj = "";
+                controleDeTela.getData().controleVisibilidadeCpf = cliente.tipo === CHAVE_PESSOA_FISICA;
+                controleDeTela.getData().controleVisibilidadeCnpj = cliente.tipo === CHAVE_PESSOA_JURIDICA;
+
+                controleDeTela.updateBindings();
+            })
         },
 
         aoClicarEmSalvar: function(){
             this._exibirEspera(async () => {
-                const nome = this.getView().byId(ID_INPUT_NOME);
-                const cpf = this.getView().byId(ID_INPUT_CPF);
-                const cnpj = this.getView().byId(ID_INPUT_CNPJ);
-                let oComboBox = this.getView().byId(ID_COMBO_BOX);
-                const tipoPessoa = oComboBox.getSelectedKey();
+                let cliente = this._modeloCliente().getData()
 
-				let aInputs = [
-                    nome,
-                    cpf,
-                    cnpj
-                ],
-				bErroDeVaidacao = false;
+                let bErroDeVaidacao = false;
+                if(cliente.tipo === CHAVE_PESSOA_FISICA){
+                    bErroDeVaidacao = this._validarInputCpf(cliente.cpf)
+                }
+                if(cliente.tipo === CHAVE_PESSOA_JURIDICA){
+                    bErroDeVaidacao = this._validarInputCnpj(cliente.cnpj)
+                }
+                bErroDeVaidacao = this._validarInputNome(cliente.nome)
                 
-                if(oComboBox.getSelectedKey() === KEY_PESSOA_FISICA){
-                    delete aInputs[INDEX_CPNJ]
-                }
-                if(oComboBox.getSelectedKey() === KEY_PESSOA_JURIDICA){
-                    delete aInputs[INDEX_CPF]
-                }
-                aInputs.forEach(function (oInput) {
-                    bErroDeVaidacao = this._validarInput(oInput) || bErroDeVaidacao;
-                }   , this);
                 if (bErroDeVaidacao) {
-                    MessageBox.alert(MSG_DE_ERRO_DE_VALIDACAO);
+                    MessageBox.alert(this.obterTextoI18n(MSG_DE_ERRO_DE_VALIDACAO));
                     return;
                 } 
-                
-                let cliente = {
-                    nome: nome.getValue(),
-                    cpf: cpf.getValue().replace(/\D/g, ''),
-                    cnpj: cnpj.getValue().replace(/\D/g, ''),
-                    tipo: parseInt(tipoPessoa)
-                };
+
+                cliente.cpf = cliente.cpf.replace(/\D/g, ''),
+                cliente.cnpj = cliente.cnpj.replace(/\D/g, ''),
+                cliente.tipo = parseInt(cliente.tipo)
+
                 if(this.obterParametros()[INDEX_DO_NOME_DA_ROTA] === ROTA_EDITAR){
                     await this._atualizarCliente(cliente);
                 }else{
                     await this._adicionarCliente(cliente);
                 }
-                
-                
             });    
         },
 
@@ -228,11 +242,17 @@ sap.ui.define([
         },  
         
         _limparCampos: function() {
-            this.getView().byId(ID_INPUT_NOME).setValue(undefined).setValueState(undefined);
-            this.getView().byId(ID_INPUT_CPF).setValue(undefined).setValueState(undefined);
-            this.getView().byId(ID_INPUT_CNPJ).setValue(undefined).setValueState(undefined);
-            this.getView().byId(ID_COMBO_BOX).setSelectedKey(KEY_PESSOA_FISICA);
+            let cliente = {
+                nome: "",
+                cpf: "",
+                cnpj: "",
+                tipo: CHAVE_PESSOA_FISICA
+            }
+            this._modeloCliente(new JSONModel(cliente))
+
+            this.getView().byId(ID_INPUT_NOME).setValueState(undefined);
+            this.getView().byId(ID_INPUT_CPF).setValueState(undefined);
+            this.getView().byId(ID_INPUT_CNPJ).setValueState(undefined);
         },
-        
     });
 });
