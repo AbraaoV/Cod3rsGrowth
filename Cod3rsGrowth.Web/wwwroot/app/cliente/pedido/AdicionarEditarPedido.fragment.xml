@@ -5,7 +5,7 @@
 
     <Dialog
         id="adicionarPedidoDialgo"
-        title="Adicionar Pedido"
+        title="{controleDeTela>/tituloFragment}"
         class="sapUiResponsivePadding"
         draggable="true"
         resizable="true">
