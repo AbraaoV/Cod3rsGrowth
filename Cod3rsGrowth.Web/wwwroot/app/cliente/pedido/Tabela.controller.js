@@ -81,7 +81,7 @@ sap.ui.define([
 				data: "",
 				valorMin: "",
 				valorMaX: "",
-				formaPagamento: 1
+				formaPagamento: CHAVE_ITEM_CARTAO_COMBOX
 			}
 
 			this._modelo(NOME_DO_MODELO_DOS_FILTROS, new JSONModel(filtro))
@@ -340,7 +340,7 @@ sap.ui.define([
                 data: "",
                 numeroCartao: "",
                 valor: "",
-				formaPagamento: "1"
+				formaPagamento: CHAVE_ITEM_CARTAO_COMBOX
             };
 
             this._modelo(NOME_DO_MODELO_DO_PEDIDO, new JSONModel(pedido))
