@@ -217,7 +217,7 @@ sap.ui.define([
 					}
 
 					return this.waitFor({
-						id: sIdLista,
+						id: sIdTabela,
 						viewName: sViewName,
 						matchers: !fnCheckFilter,
 						success: function () {

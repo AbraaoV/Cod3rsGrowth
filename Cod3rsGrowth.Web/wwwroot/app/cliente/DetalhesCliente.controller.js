@@ -72,17 +72,19 @@ sap.ui.define([
         },
 
 		aoClicarEmDeletar: function(){ 
-			MessageBox.warning(this.obterTextoI18n(MSG_DE_AVISO_AO_DELETAR_I18N), {
-				actions: [ OPCAO_SIM,  OPCAO_NAO],
-				onClose: async (sAction) => {
-					if (sAction ===  OPCAO_SIM) {
+			this._exibirEspera( () => {
+				MessageBox.warning(this.obterTextoI18n(MSG_DE_AVISO_AO_DELETAR_I18N), {
+					actions: [ OPCAO_SIM,  OPCAO_NAO],
+					onClose: async (sAction) => {
 						this._exibirEspera(async () => {
-							await HttpRequest._request(ConstatesDasRequests.REQUISICAO_DELETE, ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[ID_DO_CLIENTE_NA_ROTA])
-							this._sucessoNaRequicao(this.obterTextoI18n(MSG_DE_SUCESSO_AO_DELETAR_I18N))
+							if (sAction ===  OPCAO_SIM) {
+									await HttpRequest._request(ConstatesDasRequests.REQUISICAO_DELETE, ConstantesDoBanco.CAMINHO_PARA_API + "/" + this.obterParametros()[ID_DO_CLIENTE_NA_ROTA])
+									this._sucessoNaRequicao(this.obterTextoI18n(MSG_DE_SUCESSO_AO_DELETAR_I18N))
+							} 
 						});
-					} 
-				}
-			})
+					}
+				})
+			});	
 		}
 	});
 });
