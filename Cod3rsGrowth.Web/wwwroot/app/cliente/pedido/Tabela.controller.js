@@ -501,18 +501,20 @@ sap.ui.define([
         },
 
         aoClicarEmDeletar: function(idDoPedido){
-            MessageBox.warning(this.obterTextoI18n(MSG_DE_AVISO_AO_DELETAR_I18N), {
-				actions: [this.obterTextoI18n(OPCAO_SIM), this.obterTextoI18n(OPCAO_NAO)],
-				onClose: async (sAction) => {
-					if (sAction ===  this.obterTextoI18n(OPCAO_SIM)) {
-						this._exibirEspera(async () => {
-							await HttpRequest._request(ConstatesDasRequests.REQUISICAO_DELETE, ConstantesDoBanco.CAMINHO_PARA_API_PEDIDO + "/" + idDoPedido)
-							MessageBox.success(this.obterTextoI18n(MSG_DE_SUCESSO_AO_DELETAR_I18N))
-                            this._popularTabelaDePedidos();
-						});
-					} 
-				}
-			})
+            this._exibirEspera( () => {
+                MessageBox.warning(this.obterTextoI18n(MSG_DE_AVISO_AO_DELETAR_I18N), {
+                    actions: [this.obterTextoI18n(OPCAO_SIM), this.obterTextoI18n(OPCAO_NAO)],
+                    onClose: async (sAction) => {
+                        this._exibirEspera(async () => {
+                            if (sAction ===  this.obterTextoI18n(OPCAO_SIM)) {
+                                await HttpRequest._request(ConstatesDasRequests.REQUISICAO_DELETE, ConstantesDoBanco.CAMINHO_PARA_API_PEDIDO + "/" + idDoPedido)
+                                MessageBox.success(this.obterTextoI18n(MSG_DE_SUCESSO_AO_DELETAR_I18N))
+                                this._popularTabelaDePedidos();
+                            } 
+                        });
+                    }
+                })
+            });    
         }
     });
 });
