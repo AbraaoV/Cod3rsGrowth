@@ -13,5 +13,6 @@ namespace Cod3rsGrowth.Servico.Servicos
         public const decimal VALOR_MINIMO_PARA_PEDIDO = 0;
         public const string ATUALIZAR = "Atualizar";
         public const string REMOVER = "Remover";
+        public const string ADICIONAR = "Adicionar";
     }
 }

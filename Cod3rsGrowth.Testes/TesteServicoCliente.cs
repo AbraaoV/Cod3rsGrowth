@@ -16,7 +16,6 @@ namespace Cod3rsGrowth.Testes
     public class TesteServicoCliente : TesteBase
     {
         private readonly ServicoCliente _servicosCliente;
-        private readonly DataConnection _dataConnection;
         public TesteServicoCliente()
         {
             _servicosCliente = ServiceProvider.GetService<ServicoCliente>();
@@ -221,6 +220,56 @@ namespace Cod3rsGrowth.Testes
 
             var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(cliente1));
             Assert.Equal("Para pessoa júridica, o Cnpj é obrigatório.", mensagemErro.Errors.Single().ErrorMessage);
+        }
+
+        [Fact]
+        public void Ao_adicionar_cliente_com_cpf_que_ja_existe_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cpf = "95518508077",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var clienteNovo = new Cliente
+            {
+                Nome = "João",
+                Id = 100,
+                Cpf = "95518508077",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(clienteNovo));
+            Assert.Equal("Esse CPF já está cadastrado", mensagemErro.Errors.Single().ErrorMessage);
+        }
+
+        [Fact]
+        public void Ao_adicionar_cliente_com_cnpj_que_ja_existe_deve_retornar_erro()
+        {
+            var cliente1 = new Cliente
+            {
+                Nome = "Teste",
+                Id = 100,
+                Cnpj = "90667544000102",
+                Tipo = Cliente.TipoDeCliente.Fisica
+            };
+            TabelaCliente.Instance.Add(cliente1);
+
+            var clienteNovo = new Cliente
+            {
+                Nome = "João",
+                Id = 100,
+                Cnpj = "90667544000102",
+                Tipo = Cliente.TipoDeCliente.Juridica
+            };
+
+
+            var mensagemErro = Assert.Throws<ValidationException>(() => _servicosCliente.Adicionar(clienteNovo));
+            Assert.Equal("Esse CNPJ já está cadastrado", mensagemErro.Errors.Single().ErrorMessage);
         }
 
         [Fact]

@@ -3,7 +3,7 @@
 namespace Cod3rsGrowth.Dominio
 {
     [Migration(20240604123200)]
-    public class AdicionarTabelas : Migration
+    public class _20240604123200_CriarTabelas : Migration
     {
         public override void Up()
         {

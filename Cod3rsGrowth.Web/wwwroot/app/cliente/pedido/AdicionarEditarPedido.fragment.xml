@@ -1,0 +1,92 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form">
+
+    <Dialog
+        id="adicionarPedidoDialgo"
+        title="{controleDeTela>/tituloFragment}"
+        class="sapUiResponsivePadding"
+        draggable="true"
+        resizable="true">
+        
+        <content>
+            <form:SimpleForm
+                class="sapUiResponsivePadding"
+                layout="ResponsiveGridLayout"
+                labelSpanL="3"
+                labelSpanM="3"
+                adjustLabelSpan="true"
+                columnsL="2"
+                columnsM="1">
+                
+                <form:content>
+                    <Label text="Data" width="90%" class="sapUiSmallMarginBeginEnd"
+                    />
+                    <DatePicker
+                        class="sapUiSmallMarginBeginEnd"
+                        id="dataPickerAdicionarPedido"
+                        valueFormat="yyyy-MM-ddTHH:mm:ss.000"
+                        width="90%"
+                        change=".aoSelecionarData"
+                        placeholder="Selecione a data"
+                        valueStateText="A data é um campo obrigatório"
+                        value="{
+                            type : 'sap.ui.model.type.String',
+                            path: 'pedido>/data'
+                        }"/>
+                    <Label text="Forma de Pagamento" width="90%" class="sapUiSmallMarginBeginEnd"/>
+                    <Select
+                        class="sapUiSmallMarginBeginEnd"
+                        id="comboxAdicionarPagamento"
+                        selectedKey="{pedido>/formaPagamento}"
+                        width="90%"
+                        items="{path: 'formasDePagamentoFragment>/'}"
+                        change=".aoSelecionarPagamentoDoPedido">
+                        <items>
+                            <core:ListItem key="{formasDePagamentoFragment>key}" text="{formasDePagamentoFragment>descricao}"/>
+                        </items>
+                    </Select>
+                    <Label text="Número do Cartão" width="90%" id="labelCartao" visible="{controleDeTela>/controleVisibilidadeCartao}" class="sapUiSmallMarginBeginEnd"/>
+                    <MaskInput
+                        class="sapUiSmallMarginBeginEnd"
+                        id="inputNumeroDoCartao"
+                        width="90%"
+                        placeholder="Número do Cartão"
+                        mask="9999 9999 9999 9999"
+                        visible="{controleDeTela>/controleVisibilidadeCartao}"
+                        liveChange=".aoDigitarNoInputCartao"
+                        valueStateText="Informe o numero de cartão para essa forma de pagamento"
+                        value="{
+                            path: 'pedido>/numeroCartao',
+                            type : 'sap.ui.model.type.String'
+                        }"/>
+                    <Label text="Valor" width="90%" class="sapUiSmallMarginBeginEnd"/>
+                    <Input
+                        class="sapUiSmallMarginBeginEnd"
+                        id="inputValorDoPedido"
+                        liveChange=".aoDigitarNoInputValor"
+                        width="90%"
+                        placeholder="Valor"
+                        valueStateText="Informe o valor do pedido"
+                        value="{
+                            type : 'sap.ui.model.type.String',
+                            path: 'pedido>/valor'
+                        }"/>
+                </form:content>
+            </form:SimpleForm>
+        </content>
+        
+        <buttons>
+            <Button
+                id="botaoAdicionarPedido"
+                text="{i18n>addBtnText}"
+                press="aoAdicionarPedido"
+                type="Emphasized"/>
+            <Button
+                text="{i18n>cancelBtnText}"
+                press="aoClicarEmCancelar"
+                id="botaoCancelar"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

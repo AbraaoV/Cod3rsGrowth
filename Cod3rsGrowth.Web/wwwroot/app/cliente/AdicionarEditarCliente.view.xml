@@ -1,0 +1,73 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:semantic="sap.f.semantic"
+    id = "viewAdicionar"
+    controllerName="ui5.codersgrowth.app.cliente.AdicionarEditarCliente">
+    <Page id="paginaAdicionar" busy="{/busy}" class="sapUiResponsiveContentPadding" showHeader="true">
+        <customHeader>
+            <Toolbar>
+                <Button id="botaoVoltar" icon="sap-icon://nav-back" press=".aoClicarEmVoltar" tooltip="Voltar"/>
+                <Title text="{i18n>appTitle}" titleStyle="H3" textAlign="Begin" width="100%"/>
+            </Toolbar>
+        </customHeader>
+        <FlexBox direction="Column" alignItems="Center" justifyContent="Center" class="sapUiContentPadding" height="100%">
+            <Panel id= "panelCliente" width="400px" height="450px" backgroundDesign="Translucent"
+                headerText="{controleDeTela>/tituloDoPanel}" class="sapUiNoContentPadding">
+                <content>
+                    <VBox class="sapUiLargeMargin">
+                        <Label text="Nome"/>
+                        <Input
+                        id="inputNome"
+                        width="100%"
+                        valueStateText="Nome não pode estar vazio. Máximo de 50 caracteres."
+                        value="{
+                            type : 'sap.ui.model.type.String',
+                            path : 'cliente>/nome'
+                        }"
+                        change=".aoDigitarNoInpuntNome"
+                        />
+                        <Label text="Pessoa"/>
+                        <ComboBox 
+                        id="comboxTipo" 
+                        width="100%" 
+                        items="{path: 'comboxTipoDePessoa>/'}" 
+                        selectionChange=".aoSelecionarTipoPessoa" 
+                        selectedKey="{cliente>/tipo}">
+                            <items>
+                                <core:ListItem key="{comboxTipoDePessoa>key}" text="{comboxTipoDePessoa>descricao}"/>
+                            </items>
+                        </ComboBox>
+                        <Label id="labelCpf" text="CPF" visible="{controleDeTela>/controleVisibilidadeCpf}"/>
+                        <MaskInput 
+                        mask="999.999.999-99" 
+                        id="inputCpf" width="100%" 
+                        visible="{controleDeTela>/controleVisibilidadeCpf}"
+                        valueStateText="Cpf deve conter 11 caracteres"
+                        value="{
+                            path : 'cliente>/cpf',
+                            type : 'sap.ui.model.type.String'
+                        }"
+                        change=".aoDigitarNoInpuntCpf"/>
+                        <Label id="labelCnpj" text="CNPJ" visible="{controleDeTela>/controleVisibilidadeCnpj}"/>
+                        <MaskInput 
+                        mask="99.999.999/9999-99" 
+                        id="inputCnpj" width="100%" 
+                        visible="{controleDeTela>/controleVisibilidadeCnpj}"
+                        valueStateText="Cnpj deve conter 14 caracteres."
+                        required="true"
+                        value="{
+                            path : 'cliente>/cnpj',
+                            type : 'sap.ui.model.type.String'
+                        }"
+                        change=".aoDigitarNoInpuntCnpj"/>
+                    </VBox>
+                    <HBox alignItems="Center" justifyContent="Start" class="sapUiSmallMarginBegin">
+                        <Button id="botaoSalvar" type="Emphasized" class="sapUiLargeMarginBeginEnd sapUiMediumMarginTopBottom" text="Salvar" press=".aoClicarEmSalvar" width="175%"/>
+                    </HBox>
+                </content>
+            </Panel>
+        </FlexBox>
+    </Page>
+</mvc:View>

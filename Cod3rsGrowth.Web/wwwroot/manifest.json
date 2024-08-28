@@ -1,0 +1,117 @@
+{
+"_version": "1.58.0",
+"sap.app": {
+	"id": "ui5.codersgrowth",
+	"i18n": "i18n/i18n.properties",
+	"title": "{{appTitle}}",
+	"description": "",
+	"type": "application",
+	"applicationVersion": {
+		"version": "1.0.0"
+	}
+	
+},
+"sap.ui": {
+"technology": "UI5",
+"deviceTypes": {
+	"desktop": true,
+	"tablet": true,
+	"phone": true
+	}
+},
+"sap.ui5": {
+	"dependencies": {
+		"minUI5Version": "1.108.0",
+		"libs": {
+		"sap.ui.core": {},
+		"sap.f": {},
+		"sap.m": {}
+		}
+	},
+	"models": {
+		"i18n": {
+		"type": "sap.ui.model.resource.ResourceModel",
+		"settings": {
+			"bundleName": "ui5.codersgrowth.i18n.i18n",
+			"supportedLocales": ["pt_BR"],
+			"fallbackLocale": "pt_BR"
+			}
+		},
+		"cliente" : {
+		"type": "sap.ui.model.json.JSONModel",
+		"uri" : "https://localhost:7205/api/Cliente"
+		}
+	},
+	"rootView": {
+		"viewName": "ui5.codersgrowth.app.App",
+		"type": "XML",
+		"id": "app"
+	},
+	"routing": {
+		"config": {
+			"routerClass": "sap.f.routing.Router",
+			"type": "View",
+			"viewType": "XML",
+			"path": "ui5.codersgrowth.app",
+			"controlId": "layout",
+			"controlAggregation": "beginColumnPages",
+			"transition": "slide",
+			"bypassed": {
+			"target": "notFound"
+			},
+			"async": true
+		},
+		"routes": [
+			{
+				"pattern": ":?queryFiltro:",
+				"name": "lista",
+				"target": "lista"
+			},
+			{
+				"pattern": "adicionar",
+				"name": "adicionarCliente",
+				"target": "adicionarEditarCliente"
+			},
+			{
+				"pattern": "cliente/{clienteId}/:?queryFiltro:",
+				"name": "detalhesCliente",
+				"target": [
+					"lista",
+					"detalhesCliente"
+				]
+			},
+			{
+				"pattern": "cliente/{clienteId}/editar",
+				"name": "editarCliente",
+				"target": "adicionarEditarCliente"
+			}
+		],
+		"targets": {
+			"lista": {
+				"path" : "ui5.codersgrowth.app.cliente",
+				"id": "lista",
+				"name": "Lista",
+				"level" : 1
+			},
+			"detalhesCliente": {
+					"path" : "ui5.codersgrowth.app.cliente",
+					"name": "DetalhesCliente",
+					"id": "detalhesCliente",
+					"level": 1,
+					"controlAggregation": "midColumnPages"
+			},
+			"adicionarEditarCliente":{
+				"path" : "ui5.codersgrowth.app.cliente",
+				"id": "adicionarEditarCliente",
+				"name": "AdicionarEditarCliente",
+				"level" : 1
+			},
+			"notFound": {
+			"path": "ui5.codersgrowth.app.notFound",
+				"id": "notFound",
+				"name": "NotFound"
+				}
+			}
+		}
+	}
+}

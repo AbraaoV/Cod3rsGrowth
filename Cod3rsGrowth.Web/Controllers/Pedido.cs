@@ -10,10 +10,10 @@ namespace Cod3rsGrowth.Web.Controllers
 {
     [Route(ConstantesDaController.ROTA)]
     [ApiController]
-    public class ControllerPedido : ControllerBase
+    public class Pedido : ControllerBase
     {
         private readonly ServicoPedido _servicoPedido;
-        public ControllerPedido(ServicoPedido servicoPedido)
+        public Pedido(ServicoPedido servicoPedido)
         {
             _servicoPedido = servicoPedido;
         }
@@ -33,13 +33,13 @@ namespace Cod3rsGrowth.Web.Controllers
             return Ok(_servicoPedido.ObterPorId(id));
         }
         [HttpPost]
-        public IActionResult Adicionar(Pedido pedido)
+        public IActionResult Adicionar(Dominio.Pedido pedido)
         {
             _servicoPedido.Adicionar(pedido);
             return Created("Pedido", pedido);
         }
         [HttpPut(ConstantesDaController.PARAMETRO_ID)]
-        public IActionResult Atualizar(int id, Pedido pedido)
+        public IActionResult Atualizar(int id, Dominio.Pedido pedido)
         {
             _servicoPedido.Atualizar(id, pedido);
             return Ok();

@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
+using System.Reflection;
 using LinqToDB.Mapping;
 using ColumnAttribute = LinqToDB.Mapping.ColumnAttribute;
 using TableAttribute = LinqToDB.Mapping.TableAttribute;

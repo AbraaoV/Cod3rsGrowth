@@ -1,0 +1,28 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<ViewSettingsDialog
+		id="filtroFragment"
+        title="Filtros"
+		confirm=".aoClicarEmConfirmarNoFiltro"
+        reset=".aoClicarEmLimparFiltro">
+		<filterItems>
+			<ViewSettingsFilterItem
+				id="filterItems"
+				text="{i18n>filterName}"
+				key="tipo"
+				multiSelect="false">
+				<items>
+					<ViewSettingsItem
+						id="pessoaFisica"
+						text="Pessoa Física"
+						key="fisica"/>
+					<ViewSettingsItem
+						id="pessoaJuridica"
+						text="Pessoa Jurídica"
+						key="juridica"/>
+				</items>
+			</ViewSettingsFilterItem>
+		</filterItems>
+	</ViewSettingsDialog>
+</core:FragmentDefinition>

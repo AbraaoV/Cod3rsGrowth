@@ -1,0 +1,62 @@
+<mvc:View xmlns:f="sap.f"
+   controllerName="ui5.codersgrowth.app.cliente.Lista"
+   xmlns:core="sap.ui.core"
+   xmlns="sap.m"
+   xmlns:mvc="sap.ui.core.mvc"
+   xmlns:semantic="sap.f.semantic">
+   <Page id="pagina" busy="{/busy}" class="sapUiResponsiveContentPadding" showHeader="true">
+   <customHeader>
+      <Toolbar>
+         <Title text="{i18n>appTitle}" titleStyle="H3" textAlign="Begin" width="100%" class="sapUiMediumMarginBegin"/>
+      </Toolbar>
+   </customHeader>
+      <List id ="listaClientes" items="{path:'listaDeClientes>/'}" growing="true" growingThreshold="10" width="auto" class="sapFDynamicPageAlignContent">
+         <headerToolbar>
+            <Toolbar>
+               <Title text="{i18n>listTitle}" titleStyle="H4"/>
+               <ToolbarSpacer/>
+               <SearchField
+                  id="filtroPesquisa"
+                  width="20%"
+                  placeholder="{i18n>placeHolderFilter}"
+                  liveChange=".aoFiltrarNome">
+                  <layoutData>
+                     <OverflowToolbarLayoutData
+                        minWidth="150px"
+                        maxWidth="240px"
+                        shrinkable="true"
+                        priority="NeverOverflow"/>
+                  </layoutData>
+                  </SearchField>
+               <Button
+                  id="botaoFiltro"
+                  icon="sap-icon://filter"
+                  press=".aoClicarEmFiltro"
+                  type="Transparent"/>
+               <Button 
+                  id="botaoAdicionar"
+                  text="{i18n>addBtnText}"
+                  icon="sap-icon://add-employee"
+                  press=".aoClicarEmAdicionar"
+                  type="Transparent"/>
+            </Toolbar>
+         </headerToolbar>
+         <CustomListItem type="Navigation" press=".aoClicarEmDetalhe">
+            <HBox>
+               <core:Icon size="3rem" src="{= ${listaDeClientes>tipo} === 'Pessoa Física' ? 'sap-icon://customer' : 'sap-icon://customer-and-supplier'}" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" />
+               <VBox width="100%" class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom" >
+                  <Title text="{listaDeClientes>nome}"/>
+                  <Label text="{path: 'listaDeClientes>cpf', formatter: '.formatter.formatarCpf'}{path: 'listaDeClientes>cnpj', formatter: '.formatter.formatarCnpj'}"/>
+               </VBox>
+               <FlexBox
+                  class= "sapUiSmallMarginEnd"
+                  height="60px"
+                  alignItems="Center"
+                  justifyContent="End">
+                  <Title text="{listaDeClientes>tipo}"/>
+               </FlexBox>
+            </HBox>
+         </CustomListItem>
+      </List>
+   </Page>   
+</mvc:View>

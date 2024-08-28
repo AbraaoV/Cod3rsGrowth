@@ -3,7 +3,7 @@
 namespace Cod3rsGrowth.Dominio.Migracoes
 {
     [Migration(20240606135200)]
-    public class AtualizarTabela : Migration
+    public class _20240606135200_Editar_Coluna_Cpf_Cpnj_e_Cartao : Migration
     {
         public override void Up()
         {

@@ -1,25 +1,37 @@
 using Cod3rsGrowth.Dominio;
 using Cod3rsGrowth.Dominio.Migracoes;
+using Cod3rsGrowth.Dominio.MigracoesBancoDeTeste;
 using Cod3rsGrowth.Infra;
 using Cod3rsGrowth.Servico.Servicos;
+using Cod3rsGrowth.Web;
 using FluentMigrator.Runner;
 using FluentValidation;
+using System.Reflection;
+using System.Text.Json.Serialization;
+using static Cod3rsGrowth.Dominio.Cliente;
+using static Cod3rsGrowth.Dominio.Pedido;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-var appSettings = ConfigurationManager.AppSettings;
-string result = appSettings[ConstantesDosRepositorios.CONNECTION_STRING];
+if (args.FirstOrDefault() == ConstantesApi.VALOR_DO_COMMAND_LINE_ARGS_PERFIL_DE_TESTE)
+{
+    ConnectionString.connectionString = ConstantesDosRepositorios.CONNECTION_STRING_TESTE;
+    Migracoes.Executar(builder, typeof(_20240606135200_Editar_Coluna_Cpf_Cpnj_e_Cartao).Assembly, ConstantesMigracao.PERFIL_POPULAR_BANCO_DE_TESTES);
+}
+else
+{
+    Migracoes.Executar(builder, typeof(_20240606135200_Editar_Coluna_Cpf_Cpnj_e_Cartao).Assembly);
+}
 
-builder.Services.AddFluentMigratorCore().ConfigureRunner(rb => rb
-    .AddSqlServer()
-    .WithGlobalConnectionString(result)
-    .ScanIn(typeof(AtualizarTabela).Assembly).For.Migrations()
-).AddLogging(lb => lb.AddFluentMigratorConsole());
-
-builder.Services.AddMvc();
+builder.Services.AddMvc().AddJsonOptions(x =>
+{
+    x.JsonSerializerOptions.Converters.Add(new ConverterDescricaoEnum<TipoDeCliente>());
+    x.JsonSerializerOptions.Converters.Add(new ConverterDescricaoEnum<Pagamentos>());
+});
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddDirectoryBrowser();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ServicoCliente>();
 builder.Services.AddScoped<ServicoPedido>();
@@ -37,12 +49,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-using(var scope = app.Services.CreateScope())
-{
-    var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
-    runner.MigrateUp();
-}
 app.UseHttpsRedirection();
+
+app.UseFileServer(new FileServerOptions()
+{
+    EnableDirectoryBrowsing = true
+});
+app.UseStaticFiles(new StaticFileOptions()
+{
+    ServeUnknownFileTypes = true
+});
 
 app.UseProblemDetailsExceptionHandler(app.Services.GetRequiredService<ILoggerFactory>());
 
